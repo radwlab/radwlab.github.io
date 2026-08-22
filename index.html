@@ -12,23 +12,74 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('https://i.pinimg.com/736x/27/56/78/275678444dbddd8183616ca8f1afa167.jpg') no-repeat center center/cover;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #ffffff;
             user-select: none;
             overflow: hidden;
+            background: #000;
         }
 
-        .overlay {
+        /* Giriş Ekranı (Overlay) */
+        .entry-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .entry-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .entry-text {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Arka Plan TikTok Videosu */
+        .bg-video {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: 0;
         }
 
+        /* Karartma Katmanı */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        /* Ortadaki Buzlu Cam Kart */
         .card {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             width: 90%;
             max-width: 380px;
             padding: 40px 25px 25px 25px;
@@ -128,6 +179,16 @@
 </head>
 <body>
 
+    <!-- İlk Karşılama Ekranı -->
+    <div id="entry-screen" class="entry-screen">
+        <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
+    </div>
+
+    <!-- Arka Plan Videosu -->
+    <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
     <div class="overlay"></div>
 
     <div class="card">
@@ -148,45 +209,26 @@
         </div>
     </div>
 
-    <div id="yt-player" style="display:none;"></div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        var player;
-        var lastVolume = 70;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '0',
-                width: '0',
-                videoId: 'F1K7GJFqUQc',
-                playerVars: {
-                    'start': 94,
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'F1K7GJFqUQc',
-                    'enablejsapi': 1
-                }
-            });
-        }
-
-        document.addEventListener('click', function() {
-            if (player && player.playVideo) {
-                player.seekTo(94);
-                player.playVideo();
-                player.setVolume(70);
-            }
-        }, { once: true });
-
+        const entryScreen = document.getElementById('entry-screen');
+        const video = document.getElementById('bg-video');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
+        let lastVolume = 70;
+
+        // Giriş ekranına tıklandığında overlay kaybolur ve video sesi açılır
+        entryScreen.addEventListener('click', function() {
+            entryScreen.classList.add('hidden');
+            video.muted = false;
+            video.volume = 0.7;
+            setVolumeUI(70);
+        });
 
         function setVolumeUI(val) {
             volumeSlider.value = val;
             volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.2) ${val}%)`;
             
-            if (val == 0) {
+            if (val == 0 || video.muted) {
                 muteBtn.textContent = '🔇';
             } else if (val < 50) {
                 muteBtn.textContent = '🔉';
@@ -197,24 +239,22 @@
 
         volumeSlider.addEventListener('input', function() {
             var val = this.value;
-            if (player && typeof player.setVolume === 'function') {
-                player.setVolume(val);
-            }
+            video.volume = val / 100;
+            video.muted = (val == 0);
             setVolumeUI(val);
         });
 
         muteBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (!player) return;
-
-            if (volumeSlider.value > 0) {
-                lastVolume = volumeSlider.value;
-                if (typeof player.setVolume === 'function') player.setVolume(0);
-                setVolumeUI(0);
-            } else {
+            if (video.muted || video.volume === 0) {
+                video.muted = false;
                 var targetVol = lastVolume > 0 ? lastVolume : 70;
-                if (typeof player.setVolume === 'function') player.setVolume(targetVol);
+                video.volume = targetVol / 100;
                 setVolumeUI(targetVol);
+            } else {
+                lastVolume = volumeSlider.value;
+                video.muted = true;
+                setVolumeUI(0);
             }
         });
     </script>
