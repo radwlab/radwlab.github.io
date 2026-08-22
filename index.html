@@ -142,6 +142,7 @@
             justify-content: center;
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 12px;
         }
 
         .volume-bar {
@@ -182,6 +183,25 @@
             transform: scale(1.2);
         }
 
+        /* Ziyaretçi Sayacı Tasarımı */
+        .visitor-counter {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .visitor-counter span {
+            color: #fff;
+            font-weight: 700;
+        }
+
         /* Geliştirilmiş Kayan Yazı Şeridi */
         .marquee-container {
             position: absolute;
@@ -201,11 +221,10 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-weight: 700;
             font-size: 0.75rem;
-            color: #ffffff; /* Ana yazı artık net beyaz */
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 3px;
             animation: marqueeScroll 20s linear infinite;
-            /* Aşırı kırmızı/mavi yerine kartın tasarımına uygun şık, hafif buzlu/neon gölge */
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))
                       drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
         }
@@ -245,6 +264,11 @@
                 <span id="mute-btn">🔊</span>
                 <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
             </div>
+        </div>
+
+        <!-- Ziyaretçi Sayacı (436'dan Başlayan) -->
+        <div class="visitor-counter">
+            👁️ Görüntülenme: <span id="visit-count">436</span>
         </div>
 
         <!-- Geliştirilmiş Kayan Yazı -->
@@ -303,6 +327,16 @@
                 setVolumeUI(0);
             }
         });
+
+        // Ziyaretçi Sayacı Mantığı (436'dan başlar, tarayıcı hafızasında saklanır ve her yeni oturumda artar)
+        let visits = localStorage.getItem('site_visits');
+        if (!visits) {
+            visits = 436; // İlk defa açılıyorsa 436'dan başlat
+        } else {
+            visits = parseInt(visits) + 1; // Daha önceden açıldıysa her ziyarette artır
+        }
+        localStorage.setItem('site_visits', visits);
+        document.getElementById('visit-count').textContent = visits;
 
         // Fare Parçacık Efekti Scripti
         const canvas = document.getElementById('particle-canvas');
