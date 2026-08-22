@@ -182,7 +182,7 @@
             transform: scale(1.2);
         }
 
-        /* Glitch Efektli Kayan Yazı Şeridi */
+        /* Geliştirilmiş Kayan Yazı Şeridi */
         .marquee-container {
             position: absolute;
             bottom: -35px;
@@ -198,14 +198,16 @@
         .marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #ffffff; /* Ana yazı artık net beyaz */
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             animation: marqueeScroll 20s linear infinite;
-            filter: drop-shadow(2px 0px 0px rgba(255, 0, 255, 0.5)) 
-                      drop-shadow(-2px 0px 0px rgba(0, 255, 255, 0.5));
+            /* Aşırı kırmızı/mavi yerine kartın tasarımına uygun şık, hafif buzlu/neon gölge */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))
+                      drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
         }
 
         @keyframes marqueeScroll {
@@ -245,7 +247,7 @@
             </div>
         </div>
 
-        <!-- Glitch Kayan Yazı (Mert Keskin olarak güncellendi) -->
+        <!-- Geliştirilmiş Kayan Yazı -->
         <div class="marquee-container">
             <div class="marquee-text">
                 // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
