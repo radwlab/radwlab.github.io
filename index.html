@@ -19,7 +19,7 @@
             background: #000;
         }
 
-        /* Giriş Ekranı (Overlay) */
+        /* İlk Giriş Ekranı */
         .entry-screen {
             position: fixed;
             top: 0;
@@ -57,7 +57,7 @@
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan TikTok Videosu */
+        /* Arka Plan Videosu */
         .bg-video {
             position: absolute;
             top: 0;
@@ -133,7 +133,7 @@
             padding: 10px 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.6);
         }
@@ -201,7 +201,6 @@
         </a>
 
         <div class="audio-player">
-            <div>👁 1</div>
             <div class="volume-bar">
                 <span id="mute-btn">🔊</span>
                 <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
@@ -216,7 +215,6 @@
         const muteBtn = document.getElementById('mute-btn');
         let lastVolume = 70;
 
-        // Giriş ekranına tıklandığında overlay kaybolur ve video sesi açılır
         entryScreen.addEventListener('click', function() {
             entryScreen.classList.add('hidden');
             video.muted = false;
