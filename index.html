@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>radw</title>
+    <title>radw :: Interactive</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,6 +17,17 @@
             user-select: none;
             overflow: hidden;
             background: #000;
+        }
+
+        /* Parçacık Efekti Kanvası */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* İlk Giriş Ekranı */
@@ -66,18 +77,19 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            filter: brightness(0.6);
         }
 
         /* Ortadaki Buzlu Cam Kart */
         .card {
             position: relative;
-            z-index: 2;
+            z-index: 10;
             width: 90%;
             max-width: 380px;
             padding: 40px 25px 25px 25px;
             background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
@@ -105,7 +117,7 @@
 
         .spotify-icon {
             display: inline-block;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             opacity: 0.9;
             transition: transform 0.3s, opacity 0.3s;
         }
@@ -117,7 +129,7 @@
             width: 24px;
             height: 24px;
             fill: #ffffff;
-            filter: drop-drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
         .audio-player {
@@ -126,7 +138,6 @@
             border-radius: 14px;
             padding: 10px 16px;
             display: flex;
-            flex-direction: column; /* Ses barı ve köpek balığını alt alta koymak için dikey yaptık */
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
@@ -137,7 +148,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px; /* Ses barı ile köpek balığı arası boşluk */
         }
 
         #mute-btn {
@@ -172,40 +182,35 @@
             transform: scale(1.2);
         }
 
-        /* Köpek Balığı Taşıyıcı ve Animasyon Stili */
-        .shark-wrapper {
-            width: 100%;
-            height: 35px; /* Köpek balığının yüzme alanı yüksekliği */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Sağdan sola taşmayı engeller */
-            position: relative;
-        }
-
-        .swimming-shark {
-            width: 35px; /* Köpek balığının boyutu */
-            height: auto;
+        /* Glitch Efektli Kayan Yazı Şeridi */
+        .marquee-container {
             position: absolute;
-            animation: sharkSwim 5s linear infinite alternate; /* Sadece sağa-sola kayma */
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            bottom: -35px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            z-index: 20;
+            display: flex;
+            align-items: center;
         }
 
-        @keyframes sharkSwim {
-            0% {
-                left: -40px;  /* Sol dışarıdan başlar */
-                transform: scaleX(1); /* Normal bakar */
-            }
-            49% {
-                transform: scaleX(1); /* Sağ tarafa kadar normal bakar */
-            }
-            50% {
-                transform: scaleX(-1); /* Tam döner (yön değiştirir) */
-            }
-            100% {
-                left: calc(100% - 10px); /* Sağ kenara kadar gider */
-                transform: scaleX(-1); /* Sola bakmaya devam eder */
-            }
+        .marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: marqueeScroll 20s linear infinite;
+            filter: drop-shadow(2px 0px 0px rgba(255, 0, 255, 0.5)) 
+                      drop-shadow(-2px 0px 0px rgba(0, 255, 255, 0.5));
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
     </style>
 </head>
@@ -221,6 +226,9 @@
         <source src="video.mp4" type="video/mp4">
     </video>
 
+    <!-- Parçacık Efekti Kanvası -->
+    <canvas id="particle-canvas"></canvas>
+
     <div class="card">
         <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
@@ -235,14 +243,18 @@
                 <span id="mute-btn">🔊</span>
                 <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
             </div>
-            <!-- Köpek Balığı buraya taşındı -->
-            <div class="shark-wrapper">
-                <img src="https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=100" alt="Shark" class="swimming-shark">
+        </div>
+
+        <!-- Glitch Kayan Yazı (Mert Keskin olarak güncellendi) -->
+        <div class="marquee-container">
+            <div class="marquee-text">
+                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
             </div>
         </div>
     </div>
 
     <script>
+        // Ses Kontrol Scripti
         const entryScreen = document.getElementById('entry-screen');
         const video = document.getElementById('bg-video');
         const volumeSlider = document.getElementById('volume-slider');
@@ -289,7 +301,52 @@
                 setVolumeUI(0);
             }
         });
-    </script>
 
+        // Fare Parçacık Efekti Scripti
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('mousemove', function(event) {
+            for (let i = 0; i < 2; i++) {
+                particles.push({
+                    x: event.x,
+                    y: event.y,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
+                    life: 100
+                });
+            }
+        });
+
+        function handleParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.life -= 2;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            requestAnimationFrame(handleParticles);
+        }
+        handleParticles();
+    </script>
 </body>
 </html>
