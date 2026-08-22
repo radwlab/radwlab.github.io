@@ -117,7 +117,7 @@
             width: 24px;
             height: 24px;
             fill: #ffffff;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            filter: drop-drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
         .audio-player {
@@ -126,6 +126,7 @@
             border-radius: 14px;
             padding: 10px 16px;
             display: flex;
+            flex-direction: column; /* Ses barı ve köpek balığını alt alta koymak için dikey yaptık */
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
@@ -136,6 +137,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 8px; /* Ses barı ile köpek balığı arası boşluk */
         }
 
         #mute-btn {
@@ -170,26 +172,39 @@
             transform: scale(1.2);
         }
 
-        /* Köpek Balığı Animasyon Stili */
+        /* Köpek Balığı Taşıyıcı ve Animasyon Stili */
+        .shark-wrapper {
+            width: 100%;
+            height: 35px; /* Köpek balığının yüzme alanı yüksekliği */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Sağdan sola taşmayı engeller */
+            position: relative;
+        }
+
         .swimming-shark {
-            width: 28px;
+            width: 35px; /* Köpek balığının boyutu */
             height: auto;
-            margin-left: 8px;
-            vertical-align: middle;
-            display: inline-block;
-            animation: sharkSwim 3s ease-in-out infinite alternate;
+            position: absolute;
+            animation: sharkSwim 5s linear infinite alternate; /* Sadece sağa-sola kayma */
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
         }
 
         @keyframes sharkSwim {
             0% {
-                transform: translateY(0px) rotate(0deg);
+                left: -40px;  /* Sol dışarıdan başlar */
+                transform: scaleX(1); /* Normal bakar */
+            }
+            49% {
+                transform: scaleX(1); /* Sağ tarafa kadar normal bakar */
             }
             50% {
-                transform: translateY(-3px) rotate(-4deg);
+                transform: scaleX(-1); /* Tam döner (yön değiştirir) */
             }
             100% {
-                transform: translateY(3px) rotate(4deg);
+                left: calc(100% - 10px); /* Sağ kenara kadar gider */
+                transform: scaleX(-1); /* Sola bakmaya devam eder */
             }
         }
     </style>
@@ -219,7 +234,9 @@
             <div class="volume-bar">
                 <span id="mute-btn">🔊</span>
                 <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
-                <!-- Renkli Köpek Balığı Eklendi -->
+            </div>
+            <!-- Köpek Balığı buraya taşındı -->
+            <div class="shark-wrapper">
                 <img src="https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=100" alt="Shark" class="swimming-shark">
             </div>
         </div>
