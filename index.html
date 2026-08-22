@@ -169,6 +169,29 @@
         .slider-input::-webkit-slider-thumb:hover {
             transform: scale(1.2);
         }
+
+        /* Köpek Balığı Animasyon Stili */
+        .swimming-shark {
+            width: 28px;
+            height: auto;
+            margin-left: 8px;
+            vertical-align: middle;
+            display: inline-block;
+            animation: sharkSwim 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+        }
+
+        @keyframes sharkSwim {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-3px) rotate(-4deg);
+            }
+            100% {
+                transform: translateY(3px) rotate(4deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -196,6 +219,8 @@
             <div class="volume-bar">
                 <span id="mute-btn">🔊</span>
                 <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
+                <!-- Renkli Köpek Balığı Eklendi -->
+                <img src="https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=100" alt="Shark" class="swimming-shark">
             </div>
         </div>
     </div>
