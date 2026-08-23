@@ -5,376 +5,986 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>radwlab :: Interactive</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #0d0f12;
-            color: #00ffcc;
+        :root {
+            --term-color: #00ff66;
         }
 
-        /* Background Video Container */
-        .bg-video-container {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #ffffff;
+            user-select: none;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Parçacık Efekti Kanvası */
+        #particle-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-        }
-        .bg-video-container video {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            filter: brightness(0.35) contrast(1.1) blur(1px);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* Main Container */
-        .main-wrapper {
+        /* İlk Giriş Ekranı */
+        .entry-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .entry-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .entry-text {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Arka Plan Videosu */
+        .bg-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* Dinamik Sistem Durumu (Sol Üst) */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
             display: flex;
             flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Canlı Saat Widget'ı (Sağ Üst) */
+        .live-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--term-color, #00ff66);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--term-color, #00ff66);
+            animation: blink 1.5s infinite;
+            transition: background-color 0.5s, box-shadow 0.5s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Ortadaki Kart */
+        .card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 25px 25px 25px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 28px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .title {
+            font-size: 2rem;
+            font-style: italic;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .terminal-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .terminal-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .audio-player {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .volume-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #mute-btn {
+            cursor: pointer;
+            font-size: 0.85rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+        }
+
+        .slider-input {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(to right, #ffffff 70%, rgba(255, 255, 255, 0.3) 70%);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0,0,0,0.9);
+        }
+
+        .visitor-counter {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .visitor-counter span {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* Terminal Modalı */
+        .terminal-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        /* Terminal Window */
-        .terminal {
-            width: 100%;
-            max-width: 800px;
-            height: 500px;
-            background: rgba(13, 15, 18, 0.85);
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            border-radius: 8px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 255, 204, 0.05);
+        .terminal-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .terminal-box {
+            width: 90%;
+            max-width: 560px;
+            height: 400px;
+            background: rgba(10, 10, 10, 0.94);
+            border: 1px solid var(--term-color, #00ff66);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
             display: flex;
             flex-direction: column;
+            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            backdrop-filter: blur(8px);
+            position: relative;
+            transition: border-color 0.5s, box-shadow 0.5s;
         }
 
-        /* Terminal Top Bar */
         .terminal-header {
-            background: rgba(20, 24, 30, 0.9);
+            background: rgba(20, 20, 20, 0.95);
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: var(--term-color, #00ff66);
+            transition: color 0.5s;
         }
-        .terminal-title {
-            font-size: 13px;
-            letter-spacing: 1px;
-            color: #8ab4f8;
+
+        .terminal-close {
+            cursor: pointer;
+            color: #ff5555;
             font-weight: bold;
         }
-        .terminal-dots {
-            display: flex;
-            gap: 6px;
-        }
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
 
-        /* Terminal Body Content */
         .terminal-body {
-            flex: 1;
             padding: 15px;
+            flex-grow: 1;
             overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            color: var(--term-color, #00ff66);
             display: flex;
             flex-direction: column;
             gap: 8px;
+            line-height: 1.4;
+            position: relative;
+            transition: color 0.5s;
         }
 
-        /* Terminal Input Line */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+            z-index: 1;
+        }
+
+        .terminal-body > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cmd-link {
+            color: var(--term-color, #00ff66);
+            background: rgba(0, 255, 102, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .cmd-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
         .terminal-input-line {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            background: rgba(10, 12, 15, 0.9);
-            border-top: 1px solid rgba(0, 255, 204, 0.2);
+            gap: 6px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 2;
         }
-        .prompt-symbol {
-            color: #ff007f;
-            font-weight: bold;
-            margin-right: 8px;
+
+        .terminal-input-line span {
+            color: var(--term-color, #00ff66);
+            transition: color 0.5s;
         }
+
         .terminal-input {
-            flex: 1;
             background: transparent;
             border: none;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
             outline: none;
-        }
-
-        /* Quick Action Buttons (Redesigned & Sleek) */
-        .action-buttons-bar {
-            display: flex;
-            gap: 10px;
-            padding: 10px 15px;
-            background: rgba(16, 20, 26, 0.85);
-            border-top: 1px solid rgba(0, 255, 204, 0.15);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .cmd-btn {
-            background: rgba(0, 255, 204, 0.08);
-            border: 1px solid rgba(0, 255, 204, 0.35);
-            color: #00ffcc;
-            padding: 6px 14px;
-            border-radius: 6px;
+            color: #fff;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
+            width: 100%;
         }
-        .cmd-btn:hover {
-            background: rgba(0, 255, 204, 0.25);
-            border-color: #00ffcc;
+
+        /* Kayan Yazı Şeridi */
+        .marquee-container {
+            position: absolute;
+            bottom: -35px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 0.75rem;
             color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
-            transform: translateY(-1px);
-        }
-        .cmd-btn:active {
-            transform: translateY(1px);
-        }
-
-        /* Footer Info Bar */
-        .footer-info {
-            margin-top: 15px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            text-align: center;
-            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: marqueeScroll 20s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
+                    drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
         }
 
-        /* Interactive Elements */
-        .cmd-link {
-            color: #ffbd2e;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .cmd-link:hover {
-            color: #ffa500;
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 204, 0.3);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 255, 204, 0.6);
+        @keyframes marqueeScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Video -->
-    <div class="bg-video-container">
-        <video autoplay muted loop playsinfile>
-            <source src="background.mp4" type="video/mp4">
-        </video>
+    <!-- İlk Karşılama Ekranı -->
+    <div id="entry-screen" class="entry-screen">
+        <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
-    <div class="main-wrapper">
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-title">root@radwlab:~#</div>
-                <div class="terminal-dots">
-                    <div class="dot dot-red"></div>
-                    <div class="dot dot-yellow"></div>
-                    <div class="dot dot-green"></div>
-                </div>
-            </div>
+    <!-- Dinamik Sistem Durumu Widget'ı (Sol Üst) -->
+    <div class="system-status">
+        <div class="status-row">
+            <div class="status-dot"></div>
+            <span>SYS: ONLINE</span>
+        </div>
+        <div>PING: <span id="ping-val">12</span>ms</div>
+    </div>
 
-            <div class="terminal-body" id="terminal-body">
-                <div>Sistem başlatıldı... radwlab v2.4 aktif.</div>
-                <div>Yardım almak için <span class="cmd-link" onclick="runCommand('help')">help</span> yazabilir veya aşağıdaki butonları kullanabilirsiniz.</div>
-                <br>
-            </div>
+    <!-- Canlı Saat Widget'ı (Sağ Üst) -->
+    <div class="live-clock">
+        <div id="live-date">--.--.----</div>
+        <div id="live-time" style="color: var(--term-color, #00ff66); font-weight: bold; transition: color 0.5s;">--:--:--</div>
+    </div>
 
-            <!-- Sleek Modern Quick Command Buttons -->
-            <div class="action-buttons-bar">
-                <button class="cmd-btn" onclick="runCommand('help')">⚡ help</button>
-                <button class="cmd-btn" onclick="runCommand('about')">ℹ️ about</button>
-                <button class="cmd-btn" onclick="runCommand('status')">🟢 status</button>
-                <button class="cmd-btn" onclick="runCommand('sysinfo')">💻 sysinfo</button>
-                <button class="cmd-btn" onclick="runCommand('ping')">📡 ping</button>
-                <button class="cmd-btn" onclick="runCommand('quote')">💬 quote</button>
-                <button class="cmd-btn" onclick="runCommand('matrix')">🕶️ matrix</button>
-                <button class="cmd-btn" onclick="runCommand('clear')">🧹 clear</button>
-            </div>
+    <!-- Arka Plan Videosu -->
+    <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
-            <div class="terminal-input-line">
-                <span class="prompt-symbol">➜</span>
-                <span style="color: #8ab4f8; margin-right: 6px;">~</span>
-                <input type="text" id="terminal-input" class="terminal-input" autofocus placeholder="Komut yazın (örn: help)...">
+    <!-- Gizli Renk Analiz Kanvası -->
+    <canvas id="color-canvas" style="display:none;"></canvas>
+
+    <!-- Parçacık Efekti Kanvası -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Ana Kart -->
+    <div class="card">
+        <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
+
+        <div class="title">radw</div>
+
+        <!-- Terminal Butonu -->
+        <div class="action-container">
+            <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
+        </div>
+
+        <div class="audio-player">
+            <div class="volume-bar">
+                <span id="mute-btn">🔊</span>
+                <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
             </div>
         </div>
 
-        <div class="footer-info">
-            radwlab.com &bull; Ziyaretçi Sayısı: <span id="visit-count">501</span>
+        <!-- Ziyaretçi Sayacı -->
+        <div class="visitor-counter">
+            👁️ Görüntülenme: <span id="visit-count">500</span>
+        </div>
+
+        <!-- Kayan Yazı -->
+        <div class="marquee-container">
+            <div class="marquee-text">
+                // MERT KESKİN // RADAR AKTİF // SYSTEM READY // MERT KESKİN // RADAR AKTİF // SYSTEM READY //
+            </div>
+        </div>
+    </div>
+
+    <!-- Terminal Modalı -->
+    <div id="terminal-modal" class="terminal-modal">
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span id="term-prompt-title">root@radwlab:~</span>
+                <span id="close-terminal" class="terminal-close">[X]</span>
+            </div>
+            <div id="terminal-body" class="terminal-body">
+                <canvas id="matrix-canvas"></canvas>
+                <div>Radwlab v3.1 - Advanced Interactive Shell</div>
+                <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi için <span class="cmd-link" onclick="runCommand('help')">help</span> yazabilirsin.</div>
+                <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
+                    <span class="cmd-link" onclick="runCommand('help')">help</span>
+                    <span class="cmd-link" onclick="runCommand('playlist')">playlist</span>
+                    <span class="cmd-link" onclick="runCommand('about')">about</span>
+                    <span class="cmd-link" onclick="runCommand('status')">status</span>
+                    <span class="cmd-link" onclick="runCommand('social')">social</span>
+                    <span class="cmd-link" onclick="runCommand('sysinfo')">sysinfo</span>
+                    <span class="cmd-link" onclick="runCommand('ping')">ping</span>
+                    <span class="cmd-link" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-link" onclick="runCommand('quote')">quote</span>
+                    <span class="cmd-link" onclick="runCommand('weather')">weather</span>
+                    <span class="cmd-link" onclick="runCommand('matrix')">matrix</span>
+                    <span class="cmd-link" onclick="runCommand('history')">history</span>
+                    <span class="cmd-link" onclick="runCommand('theme')">theme</span>
+                    <span class="cmd-link" onclick="runCommand('clear')">clear</span>
+                </div>
+                <br>
+            </div>
+            <div class="terminal-input-line">
+                <span>></span>
+                <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
+            </div>
         </div>
     </div>
 
     <script>
-        const terminalBody = document.getElementById('terminal-body');
-        const terminalInput = document.getElementById('terminal-input');
-
-        const commandHistory = [];
-        let historyIndex = -1;
-
-        const quotes = [
-            { en: "Simplicity is the ultimate sophistication.", tr: "Basitlik en üst düzey sofistikeliktir." },
-            { en: "Code is like humor. When you have to explain it, it’s bad.", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsan, kötüdür." },
-            { en: "Make it work, make it right, make it fast.", tr: "Önce çalıştır, sonra düzelt, en son hızlandır." },
-            { en: "Talk is cheap. Show me the code.", tr: "Laf lafı açar, bana kodu göster." }
-        ];
-
-        function runCommand(cmdText) {
-            if (!cmdText.trim()) return;
-
-            const cmdClean = cmdText.trim().toLowerCase();
-            commandHistory.push(cmdClean);
-            historyIndex = commandHistory.length;
-
-            const userLine = document.createElement('div');
-            userLine.innerHTML = `<span style="color: #ff007f;">➜</span> <span style="color: #8ab4f8;">~</span> <span style="color: #fff;">${escapeHtml(cmdText)}</span>`;
-            terminalBody.appendChild(userLine);
-
-            const respLine = document.createElement('div');
-            respLine.style.margin = "4px 0 12px 0";
-            respLine.style.color = "#a9b7c6";
-
-            const parts = cmdClean.split(' ');
-            const cmd = parts[0];
-
-            if (cmd === 'help') {
-                respLine.innerHTML = `Mevcut Komutlar:<br>
-                - <span class='cmd-link' onclick='runCommand("about")'>about</span>: Proje hakkında bilgi verir.<br>
-                - <span class='cmd-link' onclick='runCommand("status")'>status</span>: Sistem durumunu gösterir.<br>
-                - <span class='cmd-link' onclick='runCommand("sysinfo")'>sysinfo</span>: Tarayıcı ve ekran bilgilerinizi gösterir.<br>
-                - <span class='cmd-link' onclick='runCommand("ping")'>ping</span>: Sunucu gecikmesini ölçer.<br>
-                - <span class='cmd-link' onclick='runCommand("quote")'>quote</span>: Rastgele teknoloji/geliştirici sözü gösterir.<br>
-                - <span class='cmd-link' onclick='runCommand("weather")'>weather</span>: Bölgesel hava/konum durumu.<br>
-                - <span class='cmd-link' onclick='runCommand("matrix")'>matrix</span>: Matrix yağmur efektini başlatır.<br>
-                - <span class='cmd-link' onclick='runCommand("history")'>history</span>: Geçmiş komutları listeler.<br>
-                - <span class='cmd-link' onclick='runCommand("clear")'>clear</span>: Terminal ekranını temizler.`;
-            } else if (cmd === 'about') {
-                respLine.innerHTML = "radwlab :: Interactive, kullanıcı deneyimini ve modern web teknolojilerini birleştiren kişisel bir arayüz projesidir.";
-            } else if (cmd === 'status') {
-                respLine.innerHTML = "Sistem Durumu: Çevrim içi (Online)<br>Video Akışı: Aktif<br>Güvenlik Duvarı: Devrede";
-            } else if (cmd === 'social') {
-                respLine.innerHTML = "Sosyal Medya bağlantıları yakında eklenecektir.";
-            } else if (cmd === 'sysinfo') {
-                respLine.innerHTML = `Tarayıcı: ${navigator.userAgent}<br>Ekran Çözünürlüğü: ${window.innerWidth}x${window.innerHeight}`;
-            } else if (cmd === 'ping') {
-                const start = performance.now();
-                setTimeout(() => {
-                    const latency = Math.round(performance.now() - start);
-                    respLine.innerHTML = `Anlık Gecikme (Ping): ~${Math.max(5, latency + 12)}ms`;
-                }, 50);
-            } else if (cmd === 'whoami') {
-                respLine.innerHTML = "Kullanıcı: root (Yetkili Ziyaretçi)";
-            } else if (cmd === 'quote') {
-                let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
-                respLine.innerHTML = `"${randomQ.en}"<br><span style="opacity:0.7;">tr: ${randomQ.tr}</span>`;
-            } else if (cmd === 'weather') {
-                respLine.innerHTML = "Konum: Kırklareli, Türkiye | Durum: Temiz / Sistem Stabil";
-            } else if (cmd === 'matrix') {
-                respLine.innerHTML = "<span style='color: #27c93f;'>Matrix yağmur modu aktif edildi. (Görsel efekt devrede)</span>";
-            } else if (cmd === 'history') {
-                respLine.innerHTML = "Geçmiş Komutlar:<br>" + commandHistory.join("<br>");
-            } else if (cmd === 'theme') {
-                respLine.innerHTML = "Tema otomatik olarak arkadaki videodan renk alacak şekilde ayarlanmıştır.";
-            } else if (cmd === 'clear') {
-                terminalBody.innerHTML = '';
-                terminalInput.value = '';
-                return;
-            } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${escapeHtml(cmdText)}'. Yardım için <span class='cmd-link' onclick='runCommand("help")'>help</span> yazın.`;
+        const videoPlaylist = [
+            {
+                key: "loosescrew",
+                url: "video.mp4",
+                title: "LooseScrew",
+                startTime: 0
+            },
+            {
+                key: "conan",
+                url: "Conan x Xenia.mp4",
+                title: "CONAN x Xenia",
+                startTime: 0
+            },
+            {
+                key: "gone4amin",
+                url: "Gone 4 a min.mp4",
+                title: "Gone 4 a min",
+                startTime: 0
+            },
+            {
+                key: "badboy",
+                url: "BADBOY FETİSH.mp4",
+                title: "Badboy Fetish",
+                startTime: 0
+            },
+            {
+                key: "argentsale",
+                url: "argent sale.mp4",
+                title: "Argent Sale",
+                startTime: 0
+            },
+            {
+                key: "porsche911",
+                url: "Porsche 911.mp4",
+                title: "Porsche 911",
+                startTime: 0
+            },
+            {
+                key: "dehaaskim",
+                url: "deha askim.mp4",
+                title: "Deha Aşkım",
+                startTime: 0
+            },
+            {
+                key: "deha777",
+                url: "777.mp4",
+                title: "Deha 777",
+                startTime: 0
+            },
+            {
+                key: "prensesim",
+                url: "prensesim.mp4",
+                title: "Prensesim",
+                startTime: 0
             }
+        ];
+        let currentVideoIndex = 0;
+        const video = document.getElementById('bg-video');
+        const colorCanvas = document.getElementById('color-canvas');
+        const ccCtx = colorCanvas.getContext('2d');
 
-            terminalBody.appendChild(respLine);
-            terminalInput.value = '';
-            terminalBody.scrollTop = terminalBody.scrollHeight;
+        const entryScreen = document.getElementById('entry-screen');
+        const volumeSlider = document.getElementById('volume-slider');
+        const muteBtn = document.getElementById('mute-btn');
+        let lastVolume = 70;
+
+        // Video arkasındaki renk tonuna göre tema güncelleme
+        function extractVideoColor() {
+            if (video.readyState < 2) return;
+            colorCanvas.width = 50;
+            colorCanvas.height = 50;
+            try {
+                ccCtx.drawImage(video, 0, 0, 50, 50);
+                const frameData = ccCtx.getImageData(0, 0, 50, 50).data;
+                let r = 0, g = 0, b = 0, count = 0;
+                
+                for (let i = 0; i < frameData.length; i += 16) {
+                    r += frameData[i];
+                    g += frameData[i+1];
+                    b += frameData[i+2];
+                    count++;
+                }
+                
+                r = Math.floor(r / count);
+                g = Math.floor(g / count);
+                b = Math.floor(b / count);
+
+                let maxVal = Math.max(r, g, b);
+                if (maxVal < 60) {
+                    r = Math.min(255, r + 80);
+                    g = Math.min(255, g + 80);
+                    b = Math.min(255, b + 80);
+                }
+
+                let hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+                document.documentElement.style.setProperty('--term-color', hexColor);
+            } catch (e) {
+                // Güvenli varsayılan renk
+            }
         }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        function loadAndPlayVideo(index) {
+            currentVideoIndex = index;
+            const selectedVideo = videoPlaylist[currentVideoIndex];
+            video.src = selectedVideo.url;
+            video.currentTime = selectedVideo.startTime || 0;
+            video.load();
+            video.play().then(() => {
+                setTimeout(extractVideoColor, 500);
+            }).catch(() => {});
         }
 
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                runCommand(terminalInput.value);
+        video.addEventListener('timeupdate', function() {
+            if (Math.floor(video.currentTime) === 2) {
+                extractVideoColor();
             }
         });
 
-        // Ortak Sayaç (localStorage + API Desteği)
+        video.addEventListener('ended', function() {
+            let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+            loadAndPlayVideo(nextIndex);
+        });
+
+        entryScreen.addEventListener('click', function() {
+            entryScreen.classList.add('hidden');
+            video.muted = false;
+            video.volume = 0.7;
+            setVolumeUI(70);
+            loadAndPlayVideo(currentVideoIndex);
+        });
+
+        function setVolumeUI(val) {
+            volumeSlider.value = val;
+            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
+            
+            if (val == 0 || video.muted) {
+                muteBtn.textContent = '🔇';
+            } else if (val < 50) {
+                muteBtn.textContent = '🔉';
+            } else {
+                muteBtn.textContent = '🔊';
+            }
+        }
+
+        volumeSlider.addEventListener('input', function() {
+            var val = this.value;
+            video.volume = val / 100;
+            video.muted = (val == 0);
+            setVolumeUI(val);
+        });
+
+        muteBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (video.muted || video.volume === 0) {
+                video.muted = false;
+                var targetVol = lastVolume > 0 ? lastVolume : 70;
+                video.volume = targetVol / 100;
+                setVolumeUI(targetVol);
+            } else {
+                lastVolume = volumeSlider.value;
+                video.muted = true;
+                setVolumeUI(0);
+            }
+        });
+
+        // Ortak Sayaç (API Entegrasyonu - 500'den başlar)
         async function updateVisitorCounter() {
             try {
+                // Namespace ve key adını kendine göre değiştirebilirsin (örn: radwlab-site-v1)
                 const namespace = 'radwlab-interactive-site';
                 const key = 'visits';
                 
-                const hasVisited = sessionStorage.getItem('radw_visited');
-                
-                let response;
-                if (!hasVisited) {
-                    response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-                    sessionStorage.setItem('radw_visited', 'true');
-                } else {
-                    response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`);
-                }
-                
+                // Sayacı 1 artırarak güncel değeri çeker
+                const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
                 const data = await response.json();
-                let count = data.value;
                 
-                if (!count || count < 500) {
+                let count = data.value;
+                // Eğer ilk defa kuruluyorsa ve 500'ün altındaysa 500'e eşitle (ilk kurulum hilesi)
+                if (count < 500) {
                     await fetch(`https://api.countapi.xyz/set/${namespace}/${key}?value=500`);
                     count = 500;
                 }
                 
                 document.getElementById('visit-count').textContent = count;
             } catch (error) {
-                let localCount = localStorage.getItem('radw_local_count') || 501;
-                if (!sessionStorage.getItem('radw_local_counted')) {
-                    localCount = parseInt(localCount) + 1;
-                    localStorage.setItem('radw_local_count', localCount);
-                    sessionStorage.setItem('radw_local_counted', 'true');
-                }
-                document.getElementById('visit-count').textContent = localCount;
+                // API'ye ulaşılamazsa yedek olarak yerel sayaç gösterilir
+                document.getElementById('visit-count').textContent = "501";
             }
         }
         updateVisitorCounter();
+
+        function updateClock() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('live-date').textContent = `${day}.${month}.${year}`;
+            document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        setInterval(() => {
+            let randomPing = Math.floor(Math.random() * 6) + 11;
+            document.getElementById('ping-val').textContent = randomPing;
+        }, 3000);
+
+        const terminalModal = document.getElementById('terminal-modal');
+        const openTerminalBtn = document.getElementById('open-terminal');
+        const closeTerminalBtn = document.getElementById('close-terminal');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalBody = document.getElementById('terminal-body');
+
+        let commandHistory = [];
+        let matrixActive = false;
+        let matrixInterval = null;
+
+        openTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.add('active');
+            terminalInput.focus();
+        });
+
+        closeTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.remove('active');
+            stopMatrix();
+        });
+
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        const mCtx = matrixCanvas.getContext('2d');
+
+        function startMatrix() {
+            matrixActive = true;
+            matrixCanvas.style.display = 'block';
+            matrixCanvas.width = terminalBody.clientWidth;
+            matrixCanvas.height = terminalBody.clientHeight;
+
+            const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*';
+            const fontSize = 12;
+            const columns = Math.floor(matrixCanvas.width / fontSize);
+            const drops = [];
+            for (let i = 0; i < columns; i++) drops[i] = 1;
+
+            matrixInterval = setInterval(() => {
+                mCtx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                mCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--term-color') || '#00ff66';
+                mCtx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 50);
+        }
+
+        function stopMatrix() {
+            if (matrixActive) {
+                matrixActive = false;
+                clearInterval(matrixInterval);
+                matrixCanvas.style.display = 'none';
+            }
+        }
+
+        const quotes = [
+            { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
+            { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
+            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
+            { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
+            { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
+            { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." }
+        ];
+
+        async function runCommand(cmdText) {
+            let cmd = cmdText.trim().toLowerCase();
+            if (cmd !== '') commandHistory.push(cmdText);
+
+            if (matrixActive && cmd !== 'clear') {
+                stopMatrix();
+            }
+            
+            let userLine = document.createElement('div');
+            userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
+            terminalBody.appendChild(userLine);
+
+            let respLine = document.createElement('div');
+
+            if (cmd === 'help') {
+                respLine.innerHTML = "Kullanılabilir Komutlar:<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"playlist\")'>playlist</span>: Video listesini görüntüler ve video değiştirmenizi sağlar.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>: Sistem hakkında bilgi verir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sunucu ve akış durumunu gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>: Sosyal medya bağlantılarını gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>: Tarayıcı ve sistem bilgilerini gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Anlık ağ gecikmesini ölçer.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>: Oturum kimliğini gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>: Rastgele yazılımcı/hacker sözü getirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu kontrol eder.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix yağmur efekti başlatır.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>: Girilen komut geçmişini listeler.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını manuel değiştirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.";
+            } else if (cmd === 'playlist') {
+                let listHtml = "Mevcut Video Playlist:<br>";
+                videoPlaylist.forEach((v) => {
+                    let activeIndicator = (v.url === video.src) ? " [OYNATILIYOR]" : "";
+                    listHtml += `- <span class='cmd-link' onclick='runCommand("play ${v.key}")'>play ${v.key}</span> -> ${v.title}${activeIndicator}<br>`;
+                });
+                listHtml += "<br>Sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
+                respLine.innerHTML = listHtml;
+            } else if (cmd.startsWith('play ')) {
+                let target = cmd.split(' ')[1];
+                let targetIdx = currentVideoIndex;
+                
+                if (target === 'next') {
+                    targetIdx = (currentVideoIndex + 1) % videoPlaylist.length;
+                } else {
+                    let foundIdx = videoPlaylist.findIndex(v => v.key === target);
+                    if (foundIdx !== -1) {
+                        targetIdx = foundIdx;
+                    } else {
+                        respLine.innerHTML = `Böyle bir video bulunamadı: '${target}'.`;
+                        terminalBody.appendChild(respLine);
+                        terminalInput.value = '';
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                        return;
+                    }
+                }
+                loadAndPlayVideo(targetIdx);
+                const selectedVideo = videoPlaylist[currentVideoIndex];
+                respLine.innerHTML = `Oynatılıyor: ${selectedVideo.title}.`;
+            } else if (cmd === 'about') {
+                respLine.innerHTML = "radwlab aktif ve çevrimiçi.";
+            } else if (cmd === 'status') {
+                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif";
+            } else if (cmd === 'social') {
+                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
+            } else if (cmd === 'sysinfo') {
+                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}`;
+            } else if (cmd === 'ping') {
+                let currentPing = document.getElementById('ping-val').textContent;
+                respLine.innerHTML = `Ağ Gecikmesi: ${currentPing}ms`;
+            } else if (cmd === 'whoami') {
+                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi";
+            } else if (cmd === 'quote') {
+                let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
+                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.7rem; opacity:0.65; font-style:italic;">"${randomQ.tr}"</span>`;
+            } else if (cmd === 'weather') {
+                respLine.innerHTML = "Konum taranıyor...";
+                terminalBody.appendChild(respLine);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+
+                try {
+                    let response = await fetch('https://ipapi.co/json/');
+                    let data = await response.json();
+                    let city = data.city || "Bilinmeyen Konum";
+                    let country = data.country_name || "";
+                    respLine.innerHTML = `Konum: ${city} (${country})<br>- Sıcaklık: ~26°C`;
+                } catch (e) {
+                    respLine.innerHTML = "Konum taranırken hata oluştu. Varsayılan Konum (Kırklareli): 28°C, Açık.";
+                }
+            } else if (cmd === 'matrix') {
+                respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
+                startMatrix();
+            } else if (cmd === 'history') {
+                respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
+            } else if (cmd === 'theme') {
+                respLine.innerHTML = `Manuel tema seçin:<br>` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
+            } else if (cmd.startsWith('theme ')) {
+                let colorName = cmd.split(' ')[1];
+                let colorHex = '#00ff66';
+                if (colorName === 'blue') colorHex = '#00bbff';
+                else if (colorName === 'amber') colorHex = '#ffaa00';
+                else if (colorName === 'purple') colorHex = '#cc00ff';
+
+                document.documentElement.style.setProperty('--term-color', colorHex);
+                respLine.innerHTML = `Tema güncellendi: ${colorName}`;
+            } else if (cmd === 'clear') {
+                terminalBody.innerHTML = '<canvas id="matrix-canvas"></canvas>';
+                terminalInput.value = '';
+                return;
+            } else if (cmd === '') {
+                respLine.innerHTML = "";
+            } else {
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+            }
+            
+            terminalBody.appendChild(respLine);
+            terminalInput.value = '';
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                runCommand(this.value);
+            }
+        });
+
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('mousemove', function(event) {
+            for (let i = 0; i < 2; i++) {
+                particles.push({
+                    x: event.x,
+                    y: event.y,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
+                    life: 100
+                });
+            }
+        });
+
+        function handleParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.life -= 2;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            requestAnimationFrame(handleParticles);
+        }
+        handleParticles();
     </script>
 </body>
 </html>
