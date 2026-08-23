@@ -200,19 +200,6 @@
             transform: scale(1.05);
         }
 
-        /* Playlist Bilgilendirme Alanı (İstediğin Gibi Düzenlendi) */
-        .playlist-notice {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px dashed rgba(255, 255, 255, 0.25);
-            border-radius: 12px;
-            padding: 8px 12px;
-            font-size: 0.68rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 12px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-            letter-spacing: 0.5px;
-        }
-
         .audio-player {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -405,7 +392,7 @@
             width: 100%;
         }
 
-        /* Kayan Yazı Şeridi (Alttaki Glitch Efekti Alanı) */
+        /* Kayan Yazı Şeridi */
         .marquee-container {
             position: absolute;
             bottom: -35px;
@@ -478,11 +465,6 @@
             <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
         </div>
 
-        <!-- Bilgilendirme Notu -->
-        <div class="playlist-notice">
-            💡 Terminal playlist'ten videoyu değiştirebilirsiniz
-        </div>
-
         <div class="audio-player">
             <div class="volume-bar">
                 <span id="mute-btn">🔊</span>
@@ -495,10 +477,10 @@
             👁️ Görüntülenme: <span id="visit-count">436</span>
         </div>
 
-        <!-- Kayan Yazı (Alttaki Glitch) -->
+        <!-- Kayan Yazı -->
         <div class="marquee-container">
             <div class="marquee-text">
-                // 7/24 online // radar aktif // mert keskin // system ready // terminal playlistten videoyu değiştirebilirsin // 7/24 online //
+                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
             </div>
         </div>
     </div>
@@ -540,32 +522,57 @@
     </div>
 
     <script>
-        // Video Playlist Tanımlamaları (Buraya yeni video linkleri ekleyebilirsin)
         const videoPlaylist = [
             {
                 url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&",
-                title: "Video 1"
+                title: "Blockkids x Argent Sale",
+                startTime: 0
             },
             {
-                url: "BURAYA_İKİNCİ_VİDEONUN_URL_ADRESİNİ_YAZ.mp4",
-                title: "Video 2"
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541113220453003407/video.mp4?ex=6a8c6902&is=6a8b1782&hm=1bfba26c9aa9696cf1e4f62bfce5c083bc701f55a1dcfdd2106e25fbdbcf70e3&",
+                title: "Light - Ptasinski",
+                startTime: 7
+            },
+            {
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541113575924760728/video.mp4?ex=6a8c6957&is=6a8b17d7&hm=59196b0266da55086d066bda3a79dcf7a6e12a64c44f378a9c22881cf426cfcb&",
+                title: "Beyaz x Meltdown",
+                startTime: 236
+            },
+            {
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541102847842582648/Ebru_Gundes_-_Ask_Video_Klip.mp4?ex=6a8c5f5f&is=6a8b0ddf&hm=5127907d7735144a7ff5afed6efc62c377181880154d194dcfa91ee50b63c5a5&",
+                title: "Ebru Gündeş - Aşk",
+                startTime: 73
             }
         ];
         let currentVideoIndex = 0;
         const video = document.getElementById('bg-video');
 
-        // Ses ve Giriş Kontrolü
         const entryScreen = document.getElementById('entry-screen');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
         let lastVolume = 70;
+
+        function loadAndPlayVideo(index) {
+            currentVideoIndex = index;
+            const selectedVideo = videoPlaylist[currentVideoIndex];
+            video.src = selectedVideo.url;
+            video.currentTime = selectedVideo.startTime || 0;
+            video.load();
+            video.play().catch(() => {});
+        }
+
+        // Video bittiğinde otomatik sonraki videoya geç ve başlangıç saniyesini ayarla
+        video.addEventListener('ended', function() {
+            let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+            loadAndPlayVideo(nextIndex);
+        });
 
         entryScreen.addEventListener('click', function() {
             entryScreen.classList.add('hidden');
             video.muted = false;
             video.volume = 0.7;
             setVolumeUI(70);
-            video.play().catch(() => {});
+            loadAndPlayVideo(currentVideoIndex);
         });
 
         function setVolumeUI(val) {
@@ -602,7 +609,6 @@
             }
         });
 
-        // Ziyaretçi Sayacı
         let visits = localStorage.getItem('site_visits');
         if (!visits) {
             visits = 436;
@@ -612,7 +618,6 @@
         localStorage.setItem('site_visits', visits);
         document.getElementById('visit-count').textContent = visits;
 
-        // Canlı Saat ve Tarih
         function updateClock() {
             const now = new Date();
             const day = String(now.getDate()).padStart(2, '0');
@@ -628,13 +633,11 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Rastgele Ping Oynaması
         setInterval(() => {
             let randomPing = Math.floor(Math.random() * 6) + 11;
             document.getElementById('ping-val').textContent = randomPing;
         }, 3000);
 
-        // Terminal Modalı
         const terminalModal = document.getElementById('terminal-modal');
         const openTerminalBtn = document.getElementById('open-terminal');
         const closeTerminalBtn = document.getElementById('close-terminal');
@@ -720,18 +723,19 @@
                 let listHtml = "Mevcut Video Playlist:<br>";
                 videoPlaylist.forEach((v, idx) => {
                     let activeIndicator = (idx === currentVideoIndex) ? " [OYNATILIYOR]" : "";
-                    listHtml += `- <span class='cmd-link' onclick='runCommand(\"play ${idx}\")'>[Video ${idx + 1}]</span> ${v.title}${activeIndicator}<br>`;
+                    listHtml += `- <span class='cmd-link' onclick='runCommand(\"play ${idx}\")'>[Video ${idx + 1}]</span> ${v.title} (Başlangıç: ${v.startTime}s)${activeIndicator}<br>`;
                 });
                 listHtml += "<br>Veya sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
                 respLine.innerHTML = listHtml;
             } else if (cmd.startsWith('play ')) {
                 let target = cmd.split(' ')[1];
+                let targetIdx = currentVideoIndex;
                 if (target === 'next') {
-                    currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+                    targetIdx = (currentVideoIndex + 1) % videoPlaylist.length;
                 } else {
                     let idx = parseInt(target);
                     if (!isNaN(idx) && idx >= 0 && idx < videoPlaylist.length) {
-                        currentVideoIndex = idx;
+                        targetIdx = idx;
                     } else {
                         respLine.innerHTML = "Geçersiz video indeksi.";
                         terminalBody.appendChild(respLine);
@@ -740,11 +744,9 @@
                         return;
                     }
                 }
+                loadAndPlayVideo(targetIdx);
                 const selectedVideo = videoPlaylist[currentVideoIndex];
-                video.src = selectedVideo.url;
-                video.load();
-                video.play().catch(() => {});
-                respLine.innerHTML = `Video değiştirildi: ${selectedVideo.title} aktif edildi.`;
+                respLine.innerHTML = `Video değiştirildi: ${selectedVideo.title} aktif edildi (${selectedVideo.startTime}. saniyeden başlatıldı).`;
             } else if (cmd === 'about') {
                 respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
             } else if (cmd === 'status') {
@@ -820,7 +822,6 @@
             }
         });
 
-        // Fare Parçacık Efekti
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
