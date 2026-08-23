@@ -19,7 +19,20 @@
             background: #000;
         }
 
-        /* Arka Planda YouTube Video Oynatıcısı için iframe / Konteyner */
+        /* Orijinal Arka Plan Görseli / Videosu (Başlangıçta Aktif) */
+        #bg-visual {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: brightness(0.4) blur(4px);
+            transition: opacity 0.5s ease;
+        }
+
+        /* Arka Planda YouTube Video Oynatıcısı (Playlist Seçilince Aktif Olur) */
         .bg-video-container {
             position: absolute;
             top: 0;
@@ -30,18 +43,28 @@
             pointer-events: none;
             overflow: hidden;
             filter: brightness(0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
         }
 
+        .bg-video-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Tam Ekranı Kusursuz Kaplama Ayarı */
         .bg-video-container iframe {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 100vw;
-            height: 56.25vw; /* 16:9 Oranı */
+            height: 56.25vw; /* 16:9 Oranı (100 * 9 / 16) */
             min-height: 100vh;
-            min-width: 177.77vh;
+            min-width: 177.77vh; /* 16:9 Oranı için minimum genişlik */
             transform: translate(-50%, -50%);
             border: none;
+            pointer-events: none;
         }
 
         /* Parçacık Efekti Kanvası */
@@ -237,6 +260,45 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
+        /* İleri/Geri Sarma Çubuğu (Seekbar) ve Zaman Bilgisi */
+        .player-seek-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .seek-bar {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .seek-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .seek-bar::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .player-controls {
             display: flex;
             align-items: center;
@@ -267,6 +329,32 @@
 
         .player-btn:hover {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Ses Kontrol Grubu */
+        .volume-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .volume-bar {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
         }
 
         .visitor-counter {
@@ -450,8 +538,11 @@
         <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
     </div>
 
-    <!-- Arka Planda YouTube Video Oynatıcısı -->
-    <div class="bg-video-container">
+    <!-- 1. Başlangıçta Görünen Orijinal Arka Plan Görseli -->
+    <img id="bg-visual" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Visual">
+
+    <!-- 2. Playlist'ten Şarkı Açılınca Aktifleşen YouTube Arka Planı -->
+    <div class="bg-video-container" id="bg-video-box">
         <div id="youtube-player"></div>
     </div>
 
@@ -473,11 +564,26 @@
         <!-- Müzik Çalar Paneli -->
         <div class="music-player-box">
             <div class="track-info" id="track-name">🎵 Parça seçilmedi</div>
+            
+            <!-- İleri/Geri Sarma ve Zaman Çubuğu -->
+            <div class="player-seek-container">
+                <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" step="1">
+                <div class="time-info">
+                    <span id="current-time">00:00</span>
+                    <span id="total-duration">00:00</span>
+                </div>
+            </div>
+
             <div class="player-controls">
                 <div class="control-group">
                     <button class="player-btn" id="prev-btn" title="Önceki">⏮</button>
                     <button class="player-btn" id="play-pause-btn" title="Oynat/Durdur">▶</button>
                     <button class="player-btn" id="next-btn" title="Sonraki">⏭</button>
+                </div>
+                <!-- Ses Kontrol -->
+                <div class="volume-group">
+                    <button class="player-btn" id="mute-btn" title="Sesi Aç/Kapat">🔊</button>
+                    <input type="range" id="volume-bar" class="volume-bar" min="0" max="100" value="80">
                 </div>
             </div>
         </div>
@@ -503,7 +609,7 @@
                 <span id="close-terminal" class="terminal-close">[X]</span>
             </div>
             <div id="terminal-body" class="terminal-body">
-                <div>Radwlab v3.3 - YouTube Playlist Shell</div>
+                <div>Radwlab v3.6 - YouTube Playlist Shell</div>
                 <div>Komut listesi için <span class="cmd-link" onclick="runCommand('help')">help</span> yazabilirsin.</div>
                 <br>
             </div>
@@ -518,19 +624,21 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // Şarkı Listesi ve Başlangıç Saniyeleri (Saniye Cinsinden)
         const playlist = [
-            { title: "Parça 1 (HyYRSEGtKS8)", id: "HyYRSEGtKS8", start: 154 }, // 2:34 -> 154 sn
-            { title: "Parça 2 (6RV8yS5AOqA)", id: "6RV8yS5AOqA", start: 59 },  // 0:59 -> 59 sn
-            { title: "Parça 3 (7pZK8aEmtKU)", id: "7pZK8aEmtKU", start: 7 },   // 0:07 -> 7 sn
-            { title: "Parça 4 (kxXDDttL5xs)", id: "kxXDDttL5xs", start: 0 },   // 0:00 -> 0 sn
-            { title: "Parça 5 (NBv-cvxgKiI)", id: "NBv-cvxgKiI", start: 119 }, // 1:59 -> 119 sn
-            { title: "Parça 6 (F1K7GJFqUQc)", id: "F1K7GJFqUQc", start: 73 }   // 1:13 -> 73 sn
+            { id: "HyYRSEGtKS8", start: 154 },
+            { id: "6RV8yS5AOqA", start: 59 },
+            { id: "7pZK8aEmtKU", start: 7 },
+            { id: "kxXDDttL5xs", start: 0 },
+            { id: "NBv-cvxgKiI", start: 119 },
+            { id: "F1K7GJFqUQc", start: 73 }
         ];
 
         let currentTrackIndex = 0;
-        let player;
+        let player = null;
         let isPlaying = false;
+        let playerReady = false;
+        let isUserSeeking = false;
+        let timeUpdateInterval = null;
 
         const entryScreen = document.getElementById('entry-screen');
         const trackNameEl = document.getElementById('track-name');
@@ -538,64 +646,154 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const openPlaylistBtn = document.getElementById('open-playlist-btn');
+        const bgVisual = document.getElementById('bg-visual');
+        const bgVideoBox = document.getElementById('bg-video-box');
+        
+        const seekBar = document.getElementById('seek-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalDurationEl = document.getElementById('total-duration');
+        const muteBtn = document.getElementById('mute-btn');
+        const volumeBar = document.getElementById('volume-bar');
 
-        // YouTube API Hazır Olduğunda Çalışır
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '100%',
                 width: '100%',
-                videoId: playlist[0].id,
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'disablekb': 1,
-                    'loop': 1,
-                    'playlist': playlist[0].id,
                     'modestbranding': 1,
-                    'silent': 0
+                    'cc_load_policy': 0,
+                    'iv_load_policy': 3
                 },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': (event) => {
+                        playerReady = true;
+                        player.setVolume(volumeBar.value);
+                    },
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
-        function onPlayerReady(event) {
-            // İlk tıklamada başlatma ayarı
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+                startTimeTracking();
+                updateVideoTitle();
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                stopTimeTracking();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                nextBtn.click();
+            }
         }
+
+        function updateVideoTitle() {
+            if (player && playerReady) {
+                try {
+                    const videoData = player.getVideoData();
+                    if (videoData && videoData.title) {
+                        playlist[currentTrackIndex].title = videoData.title;
+                        trackNameEl.textContent = `🎵 ${videoData.title}`;
+                    }
+                } catch (e) {}
+            }
+        }
+
+        function startTimeTracking() {
+            clearInterval(timeUpdateInterval);
+            timeUpdateInterval = setInterval(() => {
+                if (player && playerReady && !isUserSeeking && isPlaying) {
+                    const current = player.getCurrentTime();
+                    const duration = player.getDuration() || 0;
+                    if (duration > 0) {
+                        seekBar.max = duration;
+                        seekBar.value = current;
+                        currentTimeEl.textContent = formatTime(current);
+                        totalDurationEl.textContent = formatTime(duration);
+                    }
+                }
+            }, 500);
+        }
+
+        function stopTimeTracking() {
+            clearInterval(timeUpdateInterval);
+        }
+
+        seekBar.addEventListener('mousedown', () => { isUserSeeking = true; });
+        seekBar.addEventListener('touchstart', () => { isUserSeeking = true; });
+
+        seekBar.addEventListener('input', () => {
+            currentTimeEl.textContent = formatTime(seekBar.value);
+        });
+
+        seekBar.addEventListener('change', () => {
+            isUserSeeking = false;
+            if (player && playerReady) {
+                player.seekTo(parseFloat(seekBar.value), true);
+            }
+        });
+
+        volumeBar.addEventListener('input', () => {
+            const val = volumeBar.value;
+            if (player && playerReady) {
+                player.setVolume(val);
+            }
+            muteBtn.textContent = val == 0 ? '🔇' : '🔊';
+        });
+
+        muteBtn.addEventListener('click', () => {
+            if (!player || !playerReady) return;
+            if (player.isMuted()) {
+                player.unMute();
+                muteBtn.textContent = '🔊';
+                volumeBar.value = player.getVolume();
+            } else {
+                player.mute();
+                muteBtn.textContent = '🔇';
+                volumeBar.value = 0;
+            }
+        });
 
         entryScreen.addEventListener('click', function() {
             entryScreen.classList.add('hidden');
-            playTrack(0);
         });
 
         function playTrack(index) {
             currentTrackIndex = index;
             const track = playlist[currentTrackIndex];
-            trackNameEl.textContent = `🎵 ${track.title}`;
             
-            if (player && player.loadVideoById) {
-                player.loadVideoByUrl({
-                    'mediaContentUrl': `https://www.youtube.com/v/${track.id}?version=3`,
-                    'startSeconds': track.start,
-                    'suggestedQuality': 'large'
+            trackNameEl.textContent = track.title ? `🎵 ${track.title}` : `🎵 Yükleniyor...`;
+
+            bgVisual.style.opacity = '0';
+            bgVideoBox.classList.add('active');
+
+            if (playerReady && player) {
+                player.loadVideoById({
+                    'videoId': track.id,
+                    'startSeconds': track.start
                 });
-                player.playVideo();
                 isPlaying = true;
                 playPauseBtn.textContent = '⏸';
             }
         }
 
         playPauseBtn.addEventListener('click', function() {
-            if (!player) return;
+            if (!player || !playerReady) return;
             if (isPlaying) {
                 player.pauseVideo();
-                isPlaying = false;
-                playPauseBtn.textContent = '▶';
             } else {
                 player.playVideo();
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
             }
         });
 
@@ -605,7 +803,7 @@
         });
 
         nextBtn.addEventListener('click', function() {
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            currentTrackIndex = (currentTrackIndex + 1 + playlist.length) % playlist.length;
             playTrack(currentTrackIndex);
         });
 
@@ -615,13 +813,11 @@
             runCommand('playlist');
         });
 
-        // Ziyaretçi Sayacı
         let visits = localStorage.getItem('site_visits') || 436;
         visits = parseInt(visits) + 1;
         localStorage.setItem('site_visits', visits);
         document.getElementById('visit-count').textContent = visits;
 
-        // Canlı Saat
         function updateClock() {
             const now = new Date();
             document.getElementById('live-date').textContent = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear();
@@ -630,12 +826,10 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Ping Animasyonu
         setInterval(() => {
             document.getElementById('ping-val').textContent = Math.floor(Math.random() * 6) + 11;
         }, 3000);
 
-        // Terminal Mantığı
         const terminalModal = document.getElementById('terminal-modal');
         const openTerminalBtn = document.getElementById('open-terminal');
         const closeTerminalBtn = document.getElementById('close-terminal');
@@ -664,7 +858,8 @@
             } else if (cmd === 'playlist' || cmd === 'music') {
                 let listHtml = "YouTube Müzik Listesi:<br>";
                 playlist.forEach((tr, i) => {
-                    listHtml += `- <span class='cmd-link' onclick='playTrack(${i})'>${tr.title}</span><br>`;
+                    let displayName = tr.title ? tr.title : `Video ID: ${tr.id}`;
+                    listHtml += `- <span class='cmd-link' onclick='playTrack(${i})'>${displayName}</span><br>`;
                 });
                 respLine.innerHTML = listHtml;
             } else if (cmd === 'social') {
@@ -688,7 +883,6 @@
             if (e.key === 'Enter') runCommand(this.value);
         });
 
-        // Parçacıklar
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
