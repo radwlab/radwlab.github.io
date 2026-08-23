@@ -77,10 +77,9 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            filter: brightness(1);
         }
 
-        /* Dinamik Sistem Durumu (Sol Üst Köşe) */
+        /* Dinamik Sistem Durumu (Sol Üst) */
         .system-status {
             position: fixed;
             top: 20px;
@@ -98,6 +97,25 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+        }
+
+        /* Canlı Saat Widget'ı (Sağ Üst) */
+        .live-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .status-row {
@@ -128,8 +146,6 @@
             max-width: 380px;
             padding: 40px 25px 25px 25px;
             background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
             border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 28px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
@@ -156,7 +172,6 @@
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        /* Aksiyon Butonları */
         .action-container {
             display: flex;
             justify-content: center;
@@ -240,7 +255,6 @@
             box-shadow: 0 0 8px rgba(0,0,0,0.9);
         }
 
-        /* Ziyaretçi Sayacı */
         .visitor-counter {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.18);
@@ -286,8 +300,8 @@
 
         .terminal-box {
             width: 90%;
-            max-width: 520px;
-            height: 350px;
+            max-width: 540px;
+            height: 380px;
             background: rgba(10, 10, 10, 0.92);
             border: 1px solid rgba(0, 255, 102, 0.4);
             border-radius: 12px;
@@ -325,6 +339,24 @@
             flex-direction: column;
             gap: 8px;
             line-height: 1.4;
+        }
+
+        /* Tıklanabilir Komut Etiketleri */
+        .cmd-link {
+            color: #00ff66;
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px dashed rgba(0, 255, 102, 0.4);
+            padding: 1px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .cmd-link:hover {
+            background: rgba(0, 255, 102, 0.25);
+            color: #fff;
         }
 
         .terminal-input-line {
@@ -389,13 +421,19 @@
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
-    <!-- Dinamik Sistem Durumu Widget'ı -->
+    <!-- Dinamik Sistem Durumu Widget'ı (Sol Üst) -->
     <div class="system-status">
         <div class="status-row">
             <div class="status-dot"></div>
             <span>SYS: ONLINE</span>
         </div>
         <div>PING: <span id="ping-val">12</span>ms</div>
+    </div>
+
+    <!-- Canlı Saat Widget'ı (Sağ Üst) -->
+    <div class="live-clock">
+        <div id="live-date">--.--.----</div>
+        <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
     </div>
 
     <!-- Arka Plan Videosu -->
@@ -440,7 +478,7 @@
         </div>
     </div>
 
-    <!-- Terminal Penceresi (Modal) -->
+    <!-- Terminal Modalı -->
     <div id="terminal-modal" class="terminal-modal">
         <div class="terminal-box">
             <div class="terminal-header">
@@ -448,13 +486,17 @@
                 <span id="close-terminal" class="terminal-close">[X]</span>
             </div>
             <div id="terminal-body" class="terminal-body">
-                <div>Radwlab v2.4 - Interactive Shell</div>
-                <div>Sistem aktif. Kullanılabilir komutlar:</div>
-                <div style="color: #fff; margin-top: 4px;">
-                    - <span style="color: #00ff66;">about</span> : Sistem sahibi hakkında bilgi al<br>
-                    - <span style="color: #00ff66;">status</span> : Sunucu ve bağlantı durumunu göster<br>
-                    - <span style="color: #00ff66;">help</span> : Komut listesini tekrar göster<br>
-                    - <span style="color: #00ff66;">clear</span> : Terminal ekranını temizle
+                <div>Radwlab v2.6 - Interactive Shell</div>
+                <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
+                <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
+                    <span class="cmd-link" onclick="runCommand('about')">about</span>
+                    <span class="cmd-link" onclick="runCommand('status')">status</span>
+                    <span class="cmd-link" onclick="runCommand('social')">social</span>
+                    <span class="cmd-link" onclick="runCommand('sysinfo')">sysinfo</span>
+                    <span class="cmd-link" onclick="runCommand('ping')">ping</span>
+                    <span class="cmd-link" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-link" onclick="runCommand('help')">help</span>
+                    <span class="cmd-link" onclick="runCommand('clear')">clear</span>
                 </div>
                 <br>
             </div>
@@ -524,13 +566,29 @@
         localStorage.setItem('site_visits', visits);
         document.getElementById('visit-count').textContent = visits;
 
-        // Rastgele Ping Oynaması (Sistem Durumu)
+        // Canlı Saat ve Tarih (Sağ Üst Köşe)
+        function updateClock() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('live-date').textContent = `${day}.${month}.${year}`;
+            document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Rastgele Ping Oynaması
         setInterval(() => {
             let randomPing = Math.floor(Math.random() * 6) + 11;
             document.getElementById('ping-val').textContent = randomPing;
         }, 3000);
 
-        // Terminal Mantığı
+        // Terminal ve Genişletilmiş Komut Mantığı
         const terminalModal = document.getElementById('terminal-modal');
         const openTerminalBtn = document.getElementById('open-terminal');
         const closeTerminalBtn = document.getElementById('close-terminal');
@@ -546,38 +604,51 @@
             terminalModal.classList.remove('active');
         });
 
+        function runCommand(cmdText) {
+            let cmd = cmdText.trim().toLowerCase();
+            
+            let userLine = document.createElement('div');
+            userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
+            terminalBody.appendChild(userLine);
+
+            let respLine = document.createElement('div');
+            if (cmd === 'help') {
+                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
+            } else if (cmd === 'about') {
+                respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
+            } else if (cmd === 'status') {
+                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif<br>- Widget Altyapısı: Çevrimiçi";
+            } else if (cmd === 'social') {
+                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:#00ff66; text-decoration:underline;'>Profilime Git</a>";
+            } else if (cmd === 'sysinfo') {
+                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}<br>- Tarayıcı Dili: ${navigator.language}`;
+            } else if (cmd === 'ping') {
+                let currentPing = document.getElementById('ping-val').textContent;
+                respLine.innerHTML = `Ağ Gecikmesi (Ping Testi): ${currentPing}ms - Bağlantı mükemmel.`;
+            } else if (cmd === 'whoami') {
+                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi [Yetki: Okuma/Etkileşim]";
+            } else if (cmd === 'clear') {
+                terminalBody.innerHTML = "";
+                terminalInput.value = '';
+                return;
+            } else if (cmd === '') {
+                respLine.innerHTML = "";
+            } else {
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+            }
+            
+            terminalBody.appendChild(respLine);
+            terminalInput.value = '';
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
         terminalInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                let cmd = this.value.trim().toLowerCase();
-                
-                let userLine = document.createElement('div');
-                userLine.innerHTML = `<span style="color:#fff;">> ${this.value}</span>`;
-                terminalBody.appendChild(userLine);
-
-                let respLine = document.createElement('div');
-                if (cmd === 'help') {
-                    respLine.innerHTML = "Komut listesi:<br>- <span style='color:#fff;'>about</span>: Sistem sahibi hakkında<br>- <span style='color:#fff;'>status</span>: Sunucu durumu<br>- <span style='color:#fff;'>clear</span>: Ekranı temizle";
-                } else if (cmd === 'about') {
-                    respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli.";
-                } else if (cmd === 'status') {
-                    respLine.innerHTML = "Tüm modüller kararlı çalışıyor. Video ve ses akışı aktif.";
-                } else if (cmd === 'clear') {
-                    terminalBody.innerHTML = "";
-                    this.value = '';
-                    return;
-                } else if (cmd === '') {
-                    respLine.innerHTML = "";
-                } else {
-                    respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
-                }
-                
-                terminalBody.appendChild(respLine);
-                this.value = '';
-                terminalBody.scrollTop = terminalBody.scrollHeight;
+                runCommand(this.value);
             }
         });
 
-        // Parçacık Efekti
+        // Fare Parçacık Efekti
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
