@@ -448,7 +448,7 @@
 
     <!-- Arka Plan Videosu -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
-        <source src="https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&" type="video/mp4">
+        <source src="https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4" type="video/mp4">
     </video>
 
     <!-- Parçacık Efekti Kanvası -->
@@ -524,24 +524,46 @@
     <script>
         const videoPlaylist = [
             {
-                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&",
-                title: "Blockkids x Argent Sale",
+                key: "loosescrew",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4",
+                title: "Bones & Eddy Baker - LooseScrew",
                 startTime: 0
             },
             {
-                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541113220453003407/video.mp4?ex=6a8c6902&is=6a8b1782&hm=1bfba26c9aa9696cf1e4f62bfce5c083bc701f55a1dcfdd2106e25fbdbcf70e3&",
+                key: "light",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104249897750579/light_-_ptasinski_-_Topic_1080p.mp4",
                 title: "Light - Ptasinski",
                 startTime: 7
             },
             {
-                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541113575924760728/video.mp4?ex=6a8c6957&is=6a8b17d7&hm=59196b0266da55086d066bda3a79dcf7a6e12a64c44f378a9c22881cf426cfcb&",
-                title: "Beyaz x Meltdown",
-                startTime: 236
+                key: "beyaz",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104320081043596/beyaz_x_meltdown_-_z3_480p.mp4",
+                title: "Beyaz x MELtdown",
+                startTime: 233 // 3:53
             },
             {
-                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541102847842582648/Ebru_Gundes_-_Ask_Video_Klip.mp4?ex=6a8c5f5f&is=6a8b0ddf&hm=5127907d7735144a7ff5afed6efc62c377181880154d194dcfa91ee50b63c5a5&",
-                title: "Ebru Gündeş - Aşk",
-                startTime: 73
+                key: "aşık",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541102847842582648/Ebru_Gundes_-_Ask_Video_Klip.mp4",
+                title: "Ebru Gündeş - Aşık",
+                startTime: 63 // 1:03
+            },
+            {
+                key: "blockkids",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541103071126618235/BLOCKKIDS_x_Argent_Sale.mp4",
+                title: "BLOCKKIDS x Argent Sale",
+                startTime: 0
+            },
+            {
+                key: "conan",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104385499594813/Conan_x_Xenia_-_HotBoy17_360p.mp4",
+                title: "CONAN x Xenia",
+                startTime: 129 // 2:09
+            },
+            {
+                key: "gone",
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541105325535526922/GONE_4_A_MIN_OFFICIAL_AUDIO_-_Yeat_1080p.mp4",
+                title: "Gone 4 a Min",
+                startTime: 59
             }
         ];
         let currentVideoIndex = 0;
@@ -561,7 +583,6 @@
             video.play().catch(() => {});
         }
 
-        // Video bittiğinde otomatik sonraki videoya geç ve başlangıç saniyesini ayarla
         video.addEventListener('ended', function() {
             let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
             loadAndPlayVideo(nextIndex);
@@ -721,23 +742,24 @@
 
             if (cmd === 'help' || cmd === 'playlist') {
                 let listHtml = "Mevcut Video Playlist:<br>";
-                videoPlaylist.forEach((v, idx) => {
-                    let activeIndicator = (idx === currentVideoIndex) ? " [OYNATILIYOR]" : "";
-                    listHtml += `- <span class='cmd-link' onclick='runCommand(\"play ${idx}\")'>[Video ${idx + 1}]</span> ${v.title} (Başlangıç: ${v.startTime}s)${activeIndicator}<br>`;
+                videoPlaylist.forEach((v) => {
+                    let activeIndicator = (v.url === video.src) ? " [OYNATILIYOR]" : "";
+                    listHtml += `- <span class='cmd-link' onclick='runCommand("play ${v.key}")'>play ${v.key}</span> -> ${v.title} (${v.startTime}s)${activeIndicator}<br>`;
                 });
-                listHtml += "<br>Veya sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
+                listHtml += "<br>Sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
                 respLine.innerHTML = listHtml;
             } else if (cmd.startsWith('play ')) {
                 let target = cmd.split(' ')[1];
                 let targetIdx = currentVideoIndex;
+                
                 if (target === 'next') {
                     targetIdx = (currentVideoIndex + 1) % videoPlaylist.length;
                 } else {
-                    let idx = parseInt(target);
-                    if (!isNaN(idx) && idx >= 0 && idx < videoPlaylist.length) {
-                        targetIdx = idx;
+                    let foundIdx = videoPlaylist.findIndex(v => v.key === target);
+                    if (foundIdx !== -1) {
+                        targetIdx = foundIdx;
                     } else {
-                        respLine.innerHTML = "Geçersiz video indeksi.";
+                        respLine.innerHTML = `Böyle bir video bulunamadı: '${target}'.`;
                         terminalBody.appendChild(respLine);
                         terminalInput.value = '';
                         terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -746,25 +768,25 @@
                 }
                 loadAndPlayVideo(targetIdx);
                 const selectedVideo = videoPlaylist[currentVideoIndex];
-                respLine.innerHTML = `Video değiştirildi: ${selectedVideo.title} aktif edildi (${selectedVideo.startTime}. saniyeden başlatıldı).`;
+                respLine.innerHTML = `Oynatılıyor: ${selectedVideo.title} (Başlangıç: ${selectedVideo.startTime}. saniye).`;
             } else if (cmd === 'about') {
-                respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
+                respLine.innerHTML = "radwlab aktif ve çevrimiçi.";
             } else if (cmd === 'status') {
-                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif (Discord CDN)<br>- Ses Modülü: Aktif<br>- Widget Altyapısı: Çevrimiçi";
+                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif";
             } else if (cmd === 'social') {
                 respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
             } else if (cmd === 'sysinfo') {
-                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}<br>- Tarayıcı Dili: ${navigator.language}`;
+                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}`;
             } else if (cmd === 'ping') {
                 let currentPing = document.getElementById('ping-val').textContent;
-                respLine.innerHTML = `Ağ Gecikmesi (Ping Testi): ${currentPing}ms - Bağlantı mükemmel.`;
+                respLine.innerHTML = `Ağ Gecikmesi: ${currentPing}ms`;
             } else if (cmd === 'whoami') {
-                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi [Yetki: Okuma/Etkileşim]";
+                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi";
             } else if (cmd === 'quote') {
                 let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
                 respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.7rem; opacity:0.65; font-style:italic;">"${randomQ.tr}"</span>`;
             } else if (cmd === 'weather') {
-                respLine.innerHTML = "Konum ve hava durumu taranıyor...";
+                respLine.innerHTML = "Konum taranıyor...";
                 terminalBody.appendChild(respLine);
                 terminalBody.scrollTop = terminalBody.scrollHeight;
 
@@ -772,32 +794,28 @@
                     let response = await fetch('https://ipapi.co/json/');
                     let data = await response.json();
                     let city = data.city || "Bilinmeyen Konum";
-                    let region = data.region || "";
                     let country = data.country_name || "";
-                    
-                    respLine.innerHTML = `Konum: ${city}${region ? ', ' + region : ''} (${country})<br>- Durum: Açık / Parçalı Bulutlu<br>- Sıcaklık: ~26°C | Rüzgar: 10 km/h`;
+                    respLine.innerHTML = `Konum: ${city} (${country})<br>- Sıcaklık: ~26°C`;
                 } catch (e) {
                     respLine.innerHTML = "Konum taranırken hata oluştu. Varsayılan Konum (Kırklareli): 28°C, Açık.";
                 }
             } else if (cmd === 'matrix') {
-                respLine.innerHTML = "Matrix simülasyonu başlatıldı. Durdurmak için herhangi bir tuşa basın veya komut yazın.";
+                respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
                 startMatrix();
             } else if (cmd === 'history') {
                 respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
             } else if (cmd === 'theme') {
-                respLine.innerHTML = `Bir tema rengi seçin:<br>` +
+                respLine.innerHTML = `Tema seçin:<br>` +
                     `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
             } else if (cmd.startsWith('theme ')) {
-                let parts = cmd.split(' ');
-                let colorName = parts[1];
+                let colorName = cmd.split(' ')[1];
                 let colorHex = '#00ff66';
                 if (colorName === 'blue') colorHex = '#00bbff';
                 else if (colorName === 'amber') colorHex = '#ffaa00';
                 else if (colorName === 'purple') colorHex = '#cc00ff';
-                else if (colorName === 'green') colorHex = '#00ff66';
 
                 document.documentElement.style.setProperty('--term-color', colorHex);
                 respLine.innerHTML = `Tema güncellendi: ${colorName}`;
@@ -808,7 +826,7 @@
             } else if (cmd === '') {
                 respLine.innerHTML = "";
             } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Playlist komutları için 'playlist' yazabilirsin.`;
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Playlist için 'playlist' yazabilirsin.`;
             }
             
             terminalBody.appendChild(respLine);
