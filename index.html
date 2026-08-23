@@ -1,876 +1,816 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>radwlab :: Interactive</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>radwlab :: Interactive</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: #ffffff;
-            user-select: none;
-            overflow: hidden;
-            background: #000;
-        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #ffffff;
+            user-select: none;
+            overflow: hidden;
+            background: #000;
+        }
 
-        /* Parçacık Efekti Kanvası */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+        /* Parçacık Efekti Kanvası */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-        /* İlk Giriş Ekranı */
-        .entry-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
+        /* İlk Giriş Ekranı */
+        .entry-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
 
-        .entry-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+        .entry-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
-        .entry-text {
-            font-size: 1.1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            animation: pulse 2s infinite;
-        }
+        .entry-text {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            animation: pulse 2s infinite;
+        }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.98); }
-            50% { opacity: 1; transform: scale(1); }
-        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+        }
 
-        /* Dinamik Arka Plan / Görsel Alanı */
-        .bg-visualizer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            filter: brightness(0.4) blur(4px);
-            transition: opacity 0.5s ease;
-        }
+        /* Arka Plan Videosu */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
 
-        /* Şarkı Sözleri Modu Ekranı */
-        .lyrics-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            text-align: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
+        /* Dinamik Sistem Durumu (Sol Üst) */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-        .lyrics-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* Canlı Saat Widget'ı (Sağ Üst) */
+        .live-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
+        }
 
-        .lyrics-title {
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            color: #00ff66;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        .lyrics-content {
-            font-size: 1rem;
-            line-height: 1.8;
-            max-width: 600px;
-            color: rgba(255, 255, 255, 0.9);
-            font-style: italic;
-            font-family: 'Courier New', Courier, monospace;
-            max-height: 50vh;
-            overflow-y: auto;
-        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #00ff66;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00ff66;
+            animation: blink 1.5s infinite;
+        }
 
-        /* Dinamik Sistem Durumu (Sol Üst) */
-        .system-status {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
 
-        /* Canlı Saat Widget'ı (Sağ Üst) */
-        .live-clock {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.85);
-            text-align: right;
-            font-family: 'Courier New', Courier, monospace;
-        }
+        /* Ortadaki Kart */
+        .card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 25px 25px 25px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 28px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
 
-        .status-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: #00ff66;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #00ff66;
-            animation: blink 1.5s infinite;
-        }
+        .title {
+            font-size: 2rem;
+            font-style: italic;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
+        }
 
-        @keyframes blink {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
+        .action-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
 
-        /* Ortadaki Kart */
-        .card {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 400px;
-            padding: 35px 25px 25px 25px;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 28px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
+        .terminal-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
 
-        .avatar {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            margin-bottom: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-        }
+        .terminal-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
 
-        .title {
-            font-size: 1.8rem;
-            font-style: italic;
-            font-weight: 800;
-            letter-spacing: 4px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
-        }
+        .audio-player {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
 
-        .action-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
+        .volume-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .terminal-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 8px 16px;
-            font-size: 0.75rem;
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-        }
+        #mute-btn {
+            cursor: pointer;
+            font-size: 0.85rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+        }
 
-        .terminal-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-        }
+        .slider-input {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(to right, #ffffff 70%, rgba(255, 255, 255, 0.3) 70%);
+            outline: none;
+            cursor: pointer;
+        }
 
-        /* Gelişmiş Müzik Çalar Paneli */
-        .music-player-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0,0,0,0.9);
+        }
 
-        .track-info {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.9);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-family: 'Courier New', Courier, monospace;
-        }
+        .visitor-counter {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
 
-        .player-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
+        .visitor-counter span {
+            color: #fff;
+            font-weight: 700;
+        }
 
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        /* Terminal Modalı */
+        .terminal-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
-        .player-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border-radius: 8px;
-            width: 28px;
-            height: 28px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
+        .terminal-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-        .player-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        .terminal-box {
+            width: 90%;
+            max-width: 560px;
+            height: 400px;
+            background: rgba(10, 10, 10, 0.94);
+            border: 1px solid var(--term-color, #00ff66);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            position: relative;
+        }
 
-        .slider-input {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 70px;
-            height: 4px;
-            border-radius: 2px;
-            background: linear-gradient(to right, #ffffff 70%, rgba(255, 255, 255, 0.3) 70%);
-            outline: none;
-            cursor: pointer;
-        }
+        .terminal-header {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: var(--term-color, #00ff66);
+        }
 
-        .slider-input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-        }
+        .terminal-close {
+            cursor: pointer;
+            color: #ff5555;
+            font-weight: bold;
+        }
 
-        .visitor-counter {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.9);
-            letter-spacing: 1px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-        }
+        .terminal-body {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            color: var(--term-color, #00ff66);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            line-height: 1.4;
+            position: relative;
+        }
 
-        .visitor-counter span {
-            color: #fff;
-            font-weight: 700;
-        }
+        /* Matrix Tuval Arka Planı (Terminal İçi) */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+            z-index: 1;
+        }
 
-        /* Terminal Modalı */
-        .terminal-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
+        .terminal-body > * {
+            position: relative;
+            z-index: 2;
+        }
 
-        .terminal-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* Tıklanabilir Komut Etiketleri */
+        .cmd-link {
+            color: var(--term-color, #00ff66);
+            background: rgba(0, 255, 102, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            margin: 2px;
+        }
 
-        .terminal-box {
-            width: 90%;
-            max-width: 560px;
-            height: 400px;
-            background: rgba(10, 10, 10, 0.94);
-            border: 1px solid var(--term-color, #00ff66);
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
-            display: flex;
-            flex-direction: column;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            position: relative;
-        }
+        .cmd-link:hover {
+            background: rgba(0, 255, 102, 0.25);
+            color: #fff;
+        }
 
-        .terminal-header {
-            background: rgba(20, 20, 20, 0.95);
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.75rem;
-            color: var(--term-color, #00ff66);
-        }
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 2;
+        }
 
-        .terminal-close {
-            cursor: pointer;
-            color: #ff5555;
-            font-weight: bold;
-        }
+        .terminal-input-line span {
+            color: var(--term-color, #00ff66);
+        }
 
-        .terminal-body {
-            padding: 15px;
-            flex-grow: 1;
-            overflow-y: auto;
-            font-size: 0.8rem;
-            color: var(--term-color, #00ff66);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            line-height: 1.4;
-            position: relative;
-        }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            width: 100%;
+        }
 
-        #matrix-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: none;
-            z-index: 1;
-        }
+        /* Kayan Yazı Şeridi */
+        .marquee-container {
+            position: absolute;
+            bottom: -35px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+        }
 
-        .terminal-body > * {
-            position: relative;
-            z-index: 2;
-        }
+        .marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: marqueeScroll 20s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
+                      drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
+        }
 
-        .cmd-link {
-            color: var(--term-color, #00ff66);
-            background: rgba(0, 255, 102, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
-            margin: 2px;
-        }
-
-        .cmd-link:hover {
-            background: rgba(0, 255, 102, 0.25);
-            color: #fff;
-        }
-
-        .terminal-input-line {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 2;
-        }
-
-        .terminal-input-line span {
-            color: var(--term-color, #00ff66);
-        }
-
-        .terminal-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            width: 100%;
-        }
-
-        /* Kayan Yazı Şeridi */
-        .marquee-container {
-            position: absolute;
-            bottom: -35px;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            overflow: hidden;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-        }
-
-        .marquee-text {
-            display: inline-block;
-            white-space: nowrap;
-            font-weight: 700;
-            font-size: 0.75rem;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: marqueeScroll 20s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
-        }
-
-        @keyframes marqueeScroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-    </style>
+        @keyframes marqueeScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- İlk Karşılama Ekranı -->
-    <div id="entry-screen" class="entry-screen">
-        <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
-    </div>
+    <!-- İlk Karşılama Ekranı -->
+    <div id="entry-screen" class="entry-screen">
+        <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
+    </div>
 
-    <!-- Dinamik Sistem Durumu Widget'ı (Sol Üst) -->
-    <div class="system-status">
-        <div class="status-row">
-            <div class="status-dot"></div>
-            <span>SYS: ONLINE</span>
-        </div>
-        <div>PING: <span id="ping-val">12</span>ms</div>
-    </div>
+    <!-- Dinamik Sistem Durumu Widget'ı (Sol Üst) -->
+    <div class="system-status">
+        <div class="status-row">
+            <div class="status-dot"></div>
+            <span>SYS: ONLINE</span>
+        </div>
+        <div>PING: <span id="ping-val">12</span>ms</div>
+    </div>
 
-    <!-- Canlı Saat Widget'ı (Sağ Üst) -->
-    <div class="live-clock">
-        <div id="live-date">--.--.----</div>
-        <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
-    </div>
+    <!-- Canlı Saat Widget'ı (Sağ Üst) -->
+    <div class="live-clock">
+        <div id="live-date">--.--.----</div>
+        <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
+    </div>
 
-    <!-- Arka Plan Görsel / Klip Alanı -->
-    <img id="bg-visual" class="bg-visualizer" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Visual">
+    <!-- Arka Plan Videosu -->
+    <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
-    <!-- Şarkı Sözleri Katmanı -->
-    <div id="lyrics-overlay" class="lyrics-overlay">
-        <div class="lyrics-title" id="lyrics-song-title">Şarkı Sözleri</div>
-        <div class="lyrics-content" id="lyrics-text">Şarkı sözleri yükleniyor...</div>
-    </div>
+    <!-- Parçacık Efekti Kanvası -->
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- Parçacık Efekti Kanvası -->
-    <canvas id="particle-canvas"></canvas>
+    <!-- Ana Kart -->
+    <div class="card">
+        <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
-    <!-- Ana Kart -->
-    <div class="card">
-        <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
+        <div class="title">radw</div>
 
-        <div class="title">radw</div>
+        <!-- Terminal Butonu -->
+        <div class="action-container">
+            <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
+        </div>
 
-        <!-- Terminal Butonu -->
-        <div class="action-container">
-            <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
-        </div>
+        <div class="audio-player">
+            <div class="volume-bar">
+                <span id="mute-btn">🔊</span>
+                <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
+            </div>
+        </div>
 
-        <!-- Müzik Çalar Paneli -->
-        <div class="music-player-box">
-            <div class="track-info" id="track-name">🎵 Yükleniyor...</div>
-            <div class="player-controls">
-                <div class="control-group">
-                    <button class="player-btn" id="prev-btn" title="Önceki">⏮</button>
-                    <button class="player-btn" id="play-pause-btn" title="Oynat/Durdur">▶</button>
-                    <button class="player-btn" id="next-btn" title="Sonraki">⏭</button>
-                    <button class="player-btn" id="lyrics-btn" title="Şarkı Sözleri / Mod" style="font-size: 0.6rem;">📜</button>
-                </div>
-                <div class="control-group">
-                    <span id="mute-btn" style="cursor:pointer; font-size:0.8rem;">🔊</span>
-                    <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
-                </div>
-            </div>
-        </div>
+        <!-- Ziyaretçi Sayacı -->
+        <div class="visitor-counter">
+            👁️ Görüntülenme: <span id="visit-count">436</span>
+        </div>
 
-        <!-- Ziyaretçi Sayacı -->
-        <div class="visitor-counter">
-            👁️ Görüntülenme: <span id="visit-count">436</span>
-        </div>
+        <!-- Kayan Yazı -->
+        <div class="marquee-container">
+            <div class="marquee-text">
+                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
+            </div>
+        </div>
+    </div>
 
-        <!-- Kayan Yazı -->
-        <div class="marquee-container">
-            <div class="marquee-text">
-                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
-            </div>
-        </div>
-    </div>
+    <!-- Terminal Modalı -->
+    <div id="terminal-modal" class="terminal-modal">
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span id="term-prompt-title">root@radwlab:~</span>
+                <span id="close-terminal" class="terminal-close">[X]</span>
+            </div>
+            <div id="terminal-body" class="terminal-body">
+                <canvas id="matrix-canvas"></canvas>
+                <div>Radwlab v3.1 - Advanced Interactive Shell</div>
+                <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
+                <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
+                    <span class="cmd-link" onclick="runCommand('about')">about</span>
+                    <span class="cmd-link" onclick="runCommand('status')">status</span>
+                    <span class="cmd-link" onclick="runCommand('social')">social</span>
+                    <span class="cmd-link" onclick="runCommand('sysinfo')">sysinfo</span>
+                    <span class="cmd-link" onclick="runCommand('ping')">ping</span>
+                    <span class="cmd-link" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-link" onclick="runCommand('quote')">quote</span>
+                    <span class="cmd-link" onclick="runCommand('weather')">weather</span>
+                    <span class="cmd-link" onclick="runCommand('matrix')">matrix</span>
+                    <span class="cmd-link" onclick="runCommand('history')">history</span>
+                    <span class="cmd-link" onclick="runCommand('theme')">theme</span>
+                    <span class="cmd-link" onclick="runCommand('help')">help</span>
+                    <span class="cmd-link" onclick="runCommand('clear')">clear</span>
+                </div>
+                <br>
+            </div>
+            <div class="terminal-input-line">
+                <span>></span>
+                <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+    </div>
 
-    <!-- Terminal Modalı -->
-    <div id="terminal-modal" class="terminal-modal">
-        <div class="terminal-box">
-            <div class="terminal-header">
-                <span id="term-prompt-title">root@radwlab:~</span>
-                <span id="close-terminal" class="terminal-close">[X]</span>
-            </div>
-            <div id="terminal-body" class="terminal-body">
-                <canvas id="matrix-canvas"></canvas>
-                <div>Radwlab v3.2 - Playlist Shell</div>
-                <div>Komut listesi için <span class="cmd-link" onclick="runCommand('help')">help</span> yazabilirsin.</div>
-                <br>
-            </div>
-            <div class="terminal-input-line">
-                <span>></span>
-                <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
-            </div>
-        </div>
-    </div>
+    <script>
+        // Ses ve Giriş Kontrolü
+        const entryScreen = document.getElementById('entry-screen');
+        const video = document.getElementById('bg-video');
+        const volumeSlider = document.getElementById('volume-slider');
+        const muteBtn = document.getElementById('mute-btn');
+        let lastVolume = 70;
 
-    <script>
-        // Şarkı Listesi Veritabanı
-        const playlist = [
-            {
-                title: "Beyaz x Meltdown (Mashup)",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Örnek akış linkleri (kendi ses dosyalarınızla değiştirebilirsiniz)
-                visual: "https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg",
-                lyrics: "[Intro: Drake]\nYeah Tensions is definitely rising...\n\n[Nakarat - Ebru Gündeş]\nTeşekkür ederim, böyle baktığın için\nTeşekkürler aklımda, kaldığın için\nKaranlıktan korkmuyorum eskisi gibi\nSenin yanın en aydınlık beyaz benim için\n\n[Verse: Travis Scott]\nIs you fuckin' crazy? Is you fuckin' crazy?"
-            },
-            {
-                title: "Ambitions",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                visual: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
-                lyrics: "Ambitions streaming in the dark...\nPushing limits, breaking boundaries every single day."
-            },
-            {
-                title: "Phantom",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-                visual: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-                lyrics: "Like a phantom in the system...\nInvisible traces left behind the firewall."
-            },
-            {
-                title: "Drank Dope",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-                visual: "https://images.unsplash.com/photo-1518770660439-4636190af475",
-                lyrics: "Late night sessions, fueling up the engine.\nNothing can stop this wave."
-            },
-            {
-                title: "Bamba",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-                visual: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
-                lyrics: "Bamba flow rolling through the terminal...\nKeep tracking the target."
-            },
-            {
-                title: "Miss Me",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-                visual: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5",
-                lyrics: "Do you miss the old frequencies?\nWhen the signal drops to zero."
-            },
-            {
-                title: "Gone 4 A Min",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-                visual: "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5",
-                lyrics: "Been gone for a minute, back with the upgrade.\nSystem fully operational."
-            },
-            {
-                title: "Aşık",
-                audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-                visual: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809",
-                lyrics: "Gözlerin birer terminal ekranı gibi...\nDerinlerde kaybolmak serbest."
-            }
-        ];
+        entryScreen.addEventListener('click', function() {
+            entryScreen.classList.add('hidden');
+            video.muted = false;
+            video.volume = 0.7;
+            setVolumeUI(70);
+        });
 
-        let currentTrackIndex = 0;
-        let audioElement = new Audio(playlist[0].audio);
-        audioElement.loop = true;
-        audioElement.volume = 0.7;
+        function setVolumeUI(val) {
+            volumeSlider.value = val;
+            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
+            
+            if (val == 0 || video.muted) {
+                muteBtn.textContent = '🔇';
+            } else if (val < 50) {
+                muteBtn.textContent = '🔉';
+            } else {
+                muteBtn.textContent = '🔊';
+            }
+        }
 
-        const entryScreen = document.getElementById('entry-screen');
-        const trackNameEl = document.getElementById('track-name');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const volumeSlider = document.getElementById('volume-slider');
-        const muteBtn = document.getElementById('mute-btn');
-        const bgVisual = document.getElementById('bg-visual');
-        const lyricsBtn = document.getElementById('lyrics-btn');
-        const lyricsOverlay = document.getElementById('lyrics-overlay');
-        const lyricsSongTitle = document.getElementById('lyrics-song-title');
-        const lyricsText = document.getElementById('lyrics-text');
+        volumeSlider.addEventListener('input', function() {
+            var val = this.value;
+            video.volume = val / 100;
+            video.muted = (val == 0);
+            setVolumeUI(val);
+        });
 
-        let isPlaying = false;
-        let lastVolume = 70;
-        let lyricsVisible = false;
+        muteBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (video.muted || video.volume === 0) {
+                video.muted = false;
+                var targetVol = lastVolume > 0 ? lastVolume : 70;
+                video.volume = targetVol / 100;
+                setVolumeUI(targetVol);
+            } else {
+                lastVolume = volumeSlider.value;
+                video.muted = true;
+                setVolumeUI(0);
+            }
+        });
 
-        // İlk Etkileşim
-        entryScreen.addEventListener('click', function() {
-            entryScreen.classList.add('hidden');
-            playTrack(0);
-        });
+        // Ziyaretçi Sayacı
+        let visits = localStorage.getItem('site_visits');
+        if (!visits) {
+            visits = 436;
+        } else {
+            visits = parseInt(visits) + 1;
+        }
+        localStorage.setItem('site_visits', visits);
+        document.getElementById('visit-count').textContent = visits;
 
-        function updateTrackUI() {
-            const track = playlist[currentTrackIndex];
-            trackNameEl.textContent = `🎵 ${currentTrackIndex + 1}. ${track.title}`;
-            bgVisual.src = track.visual;
-            lyricsSongTitle.textContent = track.title;
-            lyricsText.textContent = track.lyrics;
-        }
+        // Canlı Saat ve Tarih (Sağ Üst Köşe)
+        function updateClock() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
 
-        function playTrack(index) {
-            currentTrackIndex = index;
-            const track = playlist[currentTrackIndex];
-            audioElement.src = track.audio;
-            audioElement.play().then(() => {
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
-            }).catch(e => console.log(e));
-            updateTrackUI();
-        }
+            document.getElementById('live-date').textContent = `${day}.${month}.${year}`;
+            document.getElementById('live-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        playPauseBtn.addEventListener('click', function() {
-            if (isPlaying) {
-                audioElement.pause();
-                isPlaying = false;
-                playPauseBtn.textContent = '▶';
-            } else {
-                audioElement.play();
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
-            }
-        });
+        // Rastgele Ping Oynaması
+        setInterval(() => {
+            let randomPing = Math.floor(Math.random() * 6) + 11;
+            document.getElementById('ping-val').textContent = randomPing;
+        }, 3000);
 
-        prevBtn.addEventListener('click', function() {
-            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-            playTrack(currentTrackIndex);
-        });
+        // Terminal ve Genişletilmiş Komut Mantığı
+        const terminalModal = document.getElementById('terminal-modal');
+        const openTerminalBtn = document.getElementById('open-terminal');
+        const closeTerminalBtn = document.getElementById('close-terminal');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalBody = document.getElementById('terminal-body');
 
-        nextBtn.addEventListener('click', function() {
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-            playTrack(currentTrackIndex);
-        });
+        let commandHistory = [];
+        let matrixActive = false;
+        let matrixInterval = null;
 
-        lyricsBtn.addEventListener('click', function() {
-            lyricsVisible = !lyricsVisible;
-            if (lyricsVisible) {
-                lyricsOverlay.classList.add('active');
-                lyricsBtn.style.background = 'rgba(255,255,255,0.3)';
-            } else {
-                lyricsOverlay.classList.remove('active');
-                lyricsBtn.style.background = 'transparent';
-            }
-        });
+        openTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.add('active');
+            terminalInput.focus();
+        });
 
-        function setVolumeUI(val) {
-            volumeSlider.value = val;
-            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
-            
-            if (val == 0 || audioElement.muted) {
-                muteBtn.textContent = '🔇';
-            } else if (val < 50) {
-                muteBtn.textContent = '🔉';
-            } else {
-                muteBtn.textContent = '🔊';
-            }
-        }
+        closeTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.remove('active');
+            stopMatrix();
+        });
 
-        volumeSlider.addEventListener('input', function() {
-            var val = this.value;
-            audioElement.volume = val / 100;
-            audioElement.muted = (val == 0);
-            setVolumeUI(val);
-        });
+        // Matrix Efekti Arka Planı
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        const mCtx = matrixCanvas.getContext('2d');
 
-        muteBtn.addEventListener('click', function() {
-            if (audioElement.muted || audioElement.volume === 0) {
-                audioElement.muted = false;
-                var targetVol = lastVolume > 0 ? lastVolume : 70;
-                audioElement.volume = targetVol / 100;
-                setVolumeUI(targetVol);
-            } else {
-                lastVolume = volumeSlider.value;
-                audioElement.muted = true;
-                setVolumeUI(0);
-            }
-        });
+        function startMatrix() {
+            matrixActive = true;
+            matrixCanvas.style.display = 'block';
+            matrixCanvas.width = terminalBody.clientWidth;
+            matrixCanvas.height = terminalBody.clientHeight;
 
-        // Ziyaretçi Sayacı
-        let visits = localStorage.getItem('site_visits') || 436;
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('site_visits', visits);
-        document.getElementById('visit-count').textContent = visits;
+            const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*';
+            const fontSize = 12;
+            const columns = Math.floor(matrixCanvas.width / fontSize);
+            const drops = [];
+            for (let i = 0; i < columns; i++) drops[i] = 1;
 
-        // Canlı Saat
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-date').textContent = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear();
-            document.getElementById('live-time').textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+            matrixInterval = setInterval(() => {
+                mCtx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                mCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--term-color') || '#00ff66';
+                mCtx.font = fontSize + 'px monospace';
 
-        // Ping Animasyonu
-        setInterval(() => {
-            document.getElementById('ping-val').textContent = Math.floor(Math.random() * 6) + 11;
-        }, 3000);
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 50);
+        }
 
-        // Terminal Mantığı
-        const terminalModal = document.getElementById('terminal-modal');
-        const openTerminalBtn = document.getElementById('open-terminal');
-        const closeTerminalBtn = document.getElementById('close-terminal');
-        const terminalInput = document.getElementById('terminal-input');
-        const terminalBody = document.getElementById('terminal-body');
+        function stopMatrix() {
+            if (matrixActive) {
+                matrixActive = false;
+                clearInterval(matrixInterval);
+                matrixCanvas.style.display = 'none';
+            }
+        }
 
-        openTerminalBtn.addEventListener('click', () => {
-            terminalModal.classList.add('active');
-            terminalInput.focus();
-        });
+        const quotes = [
+            { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
+            { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
+            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
+            { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
+            { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
+            { en: "The function of good software is to make the complex appear to be simple. – Grady Booch", tr: "İyi bir yazılımın işlevi, karmaşığı basit göstermektir." },
+            { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." },
+            { en: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. – Martin Fowler", tr: "Her aptal bilgisayarın anlayabileceği kod yazabilir. İyi programcılar insanların anlayabileceği kod yazar." },
+            { en: "Stay a while, and listen.", tr: "Bir süre kal ve dinle." }
+        ];
 
-        closeTerminalBtn.addEventListener('click', () => {
-            terminalModal.classList.remove('active');
-        });
+        async function runCommand(cmdText) {
+            let cmd = cmdText.trim().toLowerCase();
+            if (cmd !== '') commandHistory.push(cmdText);
 
-        async function runCommand(cmdText) {
-            let cmd = cmdText.trim().toLowerCase();
-            let userLine = document.createElement('div');
-            userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
-            terminalBody.appendChild(userLine);
+            if (matrixActive && cmd !== 'clear') {
+                stopMatrix();
+            }
+            
+            let userLine = document.createElement('div');
+            userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
+            terminalBody.appendChild(userLine);
 
-            let respLine = document.createElement('div');
+            let respLine = document.createElement('div');
 
-            if (cmd === 'help') {
-                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"playlist\")'>playlist</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
-            } else if (cmd === 'playlist' || cmd === 'music') {
-                let listHtml = "Müzik Listesi:<br>";
-                playlist.forEach((tr, i) => {
-                    listHtml += `- <span class='cmd-link' onclick='playTrack(${i})'>${tr.title}</span><br>`;
-                });
-                respLine.innerHTML = listHtml;
-            } else if (cmd === 'social') {
-                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
-            } else if (cmd === 'sysinfo') {
-                respLine.innerHTML = `Sistem: ${navigator.platform} | Çözünürlük: ${window.innerWidth}x${window.innerHeight}`;
-            } else if (cmd === 'clear') {
-                terminalBody.innerHTML = '<canvas id="matrix-canvas"></canvas>';
-                terminalInput.value = '';
-                return;
-            } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. 'help' yazabilirsin.`;
-            }
+            if (cmd === 'help') {
+                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>, <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>, <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>, <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>, <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>, <span class='cmd-link' onclick='runCommand(\"help\")'>help</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
+            } else if (cmd === 'about') {
+                respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
+            } else if (cmd === 'status') {
+                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif<br>- Widget Altyapısı: Çevrimiçi";
+            } else if (cmd === 'social') {
+                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
+            } else if (cmd === 'sysinfo') {
+                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}<br>- Tarayıcı Dili: ${navigator.language}`;
+            } else if (cmd === 'ping') {
+                let currentPing = document.getElementById('ping-val').textContent;
+                respLine.innerHTML = `Ağ Gecikmesi (Ping Testi): ${currentPing}ms - Bağlantı mükemmel.`;
+            } else if (cmd === 'whoami') {
+                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi [Yetki: Okuma/Etkileşim]";
+            } else if (cmd === 'quote') {
+                let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
+                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.7rem; opacity:0.65; font-style:italic;">"${randomQ.tr}"</span>`;
+            } else if (cmd === 'weather') {
+                respLine.innerHTML = "Konum ve hava durumu taranıyor...";
+                terminalBody.appendChild(respLine);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
 
-            terminalBody.appendChild(respLine);
-            terminalInput.value = '';
-            terminalBody.scrollTop = terminalBody.scrollHeight;
-        }
+                try {
+                    let response = await fetch('https://ipapi.co/json/');
+                    let data = await response.json();
+                    let city = data.city || "Bilinmeyen Konum";
+                    let region = data.region || "";
+                    let country = data.country_name || "";
+                    
+                    respLine.innerHTML = `Konum: ${city}${region ? ', ' + region : ''} (${country})<br>- Durum: Açık / Parçalı Bulutlu<br>- Sıcaklık: ~26°C | Rüzgar: 10 km/h`;
+                } catch (e) {
+                    respLine.innerHTML = "Konum taranırken hata oluştu. Varsayılan Konum (Kırklareli): 28°C, Açık.";
+                }
+            } else if (cmd === 'matrix') {
+                respLine.innerHTML = "Matrix simülasyonu başlatıldı. Durdurmak için herhangi bir tuşa basın veya komut yazın.";
+                startMatrix();
+            } else if (cmd === 'history') {
+                respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
+            } else if (cmd === 'theme') {
+                respLine.innerHTML = `Bir tema rengi seçin:<br>` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
+            } else if (cmd.startsWith('theme ')) {
+                let parts = cmd.split(' ');
+                let colorName = parts[1];
+                let colorHex = '#00ff66';
+                if (colorName === 'blue') colorHex = '#00bbff';
+                else if (colorName === 'amber') colorHex = '#ffaa00';
+                else if (colorName === 'purple') colorHex = '#cc00ff';
+                else if (colorName === 'green') colorHex = '#00ff66';
 
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') runCommand(this.value);
-        });
+                document.documentElement.style.setProperty('--term-color', colorHex);
+                respLine.innerHTML = `Tema güncellendi: ${colorName}`;
+            } else if (cmd === 'clear') {
+                terminalBody.innerHTML = '<canvas id="matrix-canvas"></canvas>';
+                terminalInput.value = '';
+                return;
+            } else if (cmd === '') {
+                respLine.innerHTML = "";
+            } else {
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+            }
+            
+            terminalBody.appendChild(respLine);
+            terminalInput.value = '';
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
 
-        // Parçacıklar
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                runCommand(this.value);
+            }
+        });
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        // Fare Parçacık Efekti
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-        window.addEventListener('mousemove', function(e) {
-            for (let i = 0; i < 2; i++) {
-                particles.push({
-                    x: e.x, y: e.y,
-                    size: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * 2,
-                    speedY: (Math.random() - 0.5) * 2,
-                    life: 100
-                });
-            }
-        });
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-        function handleParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.x += p.speedX; p.y += p.speedY; p.life -= 2;
-                if (p.life <= 0) particles.splice(i, 1);
-                else {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 100})`;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-            requestAnimationFrame(handleParticles);
-        }
-        handleParticles();
-    </script>
+        window.addEventListener('mousemove', function(event) {
+            for (let i = 0; i < 2; i++) {
+                particles.push({
+                    x: event.x,
+                    y: event.y,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 2,
+                    speedY: (Math.random() - 0.5) * 2,
+                    life: 100
+                });
+            }
+        });
+
+        function handleParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.life -= 2;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            requestAnimationFrame(handleParticles);
+        }
+        handleParticles();
+    </script>
 </body>
 </html>
