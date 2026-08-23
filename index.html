@@ -300,16 +300,17 @@
 
         .terminal-box {
             width: 90%;
-            max-width: 540px;
-            height: 380px;
-            background: rgba(10, 10, 10, 0.92);
-            border: 1px solid rgba(0, 255, 102, 0.4);
+            max-width: 560px;
+            height: 400px;
+            background: rgba(10, 10, 10, 0.94);
+            border: 1px solid var(--term-color, #00ff66);
             border-radius: 12px;
             box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
             display: flex;
             flex-direction: column;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            position: relative;
         }
 
         .terminal-header {
@@ -320,7 +321,7 @@
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.75rem;
-            color: #00ff66;
+            color: var(--term-color, #00ff66);
         }
 
         .terminal-close {
@@ -334,18 +335,36 @@
             flex-grow: 1;
             overflow-y: auto;
             font-size: 0.8rem;
-            color: #00ff66;
+            color: var(--term-color, #00ff66);
             display: flex;
             flex-direction: column;
             gap: 8px;
             line-height: 1.4;
+            position: relative;
+        }
+
+        /* Matrix Tuval Arka Planı (Terminal İçi) */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+            z-index: 1;
+        }
+
+        .terminal-body > * {
+            position: relative;
+            z-index: 2;
         }
 
         /* Tıklanabilir Komut Etiketleri */
         .cmd-link {
-            color: #00ff66;
+            color: var(--term-color, #00ff66);
             background: rgba(0, 255, 102, 0.1);
-            border: 1px dashed rgba(0, 255, 102, 0.4);
+            border: 1px dashed var(--term-color, #00ff66);
             padding: 1px 6px;
             border-radius: 4px;
             cursor: pointer;
@@ -366,10 +385,11 @@
             padding: 10px 15px;
             background: rgba(0, 0, 0, 0.5);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 2;
         }
 
         .terminal-input-line span {
-            color: #00ff66;
+            color: var(--term-color, #00ff66);
         }
 
         .terminal-input {
@@ -482,11 +502,12 @@
     <div id="terminal-modal" class="terminal-modal">
         <div class="terminal-box">
             <div class="terminal-header">
-                <span>root@radwlab:~</span>
+                <span id="term-prompt-title">root@radwlab:~</span>
                 <span id="close-terminal" class="terminal-close">[X]</span>
             </div>
             <div id="terminal-body" class="terminal-body">
-                <div>Radwlab v2.6 - Interactive Shell</div>
+                <canvas id="matrix-canvas"></canvas>
+                <div>Radwlab v3.0 - Advanced Interactive Shell</div>
                 <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
                 <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
                     <span class="cmd-link" onclick="runCommand('about')">about</span>
@@ -495,6 +516,11 @@
                     <span class="cmd-link" onclick="runCommand('sysinfo')">sysinfo</span>
                     <span class="cmd-link" onclick="runCommand('ping')">ping</span>
                     <span class="cmd-link" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-link" onclick="runCommand('quote')">quote</span>
+                    <span class="cmd-link" onclick="runCommand('weather')">weather</span>
+                    <span class="cmd-link" onclick="runCommand('matrix')">matrix</span>
+                    <span class="cmd-link" onclick="runCommand('history')">history</span>
+                    <span class="cmd-link" onclick="runCommand('theme green')">theme</span>
                     <span class="cmd-link" onclick="runCommand('help')">help</span>
                     <span class="cmd-link" onclick="runCommand('clear')">clear</span>
                 </div>
@@ -595,6 +621,10 @@
         const terminalInput = document.getElementById('terminal-input');
         const terminalBody = document.getElementById('terminal-body');
 
+        let commandHistory = [];
+        let matrixActive = false;
+        let matrixInterval = null;
+
         openTerminalBtn.addEventListener('click', () => {
             terminalModal.classList.add('active');
             terminalInput.focus();
@@ -602,24 +632,82 @@
 
         closeTerminalBtn.addEventListener('click', () => {
             terminalModal.classList.remove('active');
+            stopMatrix();
         });
+
+        // Matrix Efekti Arka Planı
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        const mCtx = matrixCanvas.getContext('2d');
+
+        function startMatrix() {
+            matrixActive = true;
+            matrixCanvas.style.display = 'block';
+            matrixCanvas.width = terminalBody.clientWidth;
+            matrixCanvas.height = terminalBody.clientHeight;
+
+            const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*';
+            const fontSize = 12;
+            const columns = Math.floor(matrixCanvas.width / fontSize);
+            const drops = [];
+            for (let i = 0; i < columns; i++) drops[i] = 1;
+
+            matrixInterval = setInterval(() => {
+                mCtx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                mCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--term-color') || '#00ff66';
+                mCtx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 50);
+        }
+
+        function stopMatrix() {
+            if (matrixActive) {
+                matrixActive = false;
+                clearInterval(matrixInterval);
+                matrixCanvas.style.display = 'none';
+            }
+        }
+
+        const quotes = [
+            { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
+            { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
+            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
+            { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
+            { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
+            { en: "The function of good software is to make the complex appear to be simple. – Grady Booch", tr: "İyi bir yazılımın işlevi, karmaşığı basit göstermektir." },
+            { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." },
+            { en: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. – Martin Fowler", tr: "Her aptal bilgisayarın anlayabileceği kod yazabilir. İyi programcılar insanların anlayabileceği kod yazar." },
+            { en: "Stay a while, and listen.", tr: "Bir süre kal ve dinle." }
+        ];
 
         function runCommand(cmdText) {
             let cmd = cmdText.trim().toLowerCase();
+            if (cmd !== '') commandHistory.push(cmdText);
+
+            if (matrixActive && cmd !== 'clear') {
+                stopMatrix();
+            }
             
             let userLine = document.createElement('div');
             userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
             terminalBody.appendChild(userLine);
 
             let respLine = document.createElement('div');
+
             if (cmd === 'help') {
-                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
+                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>, <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>, <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>, <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>, <span class='cmd-link' onclick='runCommand(\"theme green\")'>theme</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
             } else if (cmd === 'about') {
                 respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
             } else if (cmd === 'status') {
                 respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif<br>- Widget Altyapısı: Çevrimiçi";
             } else if (cmd === 'social') {
-                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:#00ff66; text-decoration:underline;'>Profilime Git</a>";
+                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
             } else if (cmd === 'sysinfo') {
                 respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}<br>- Tarayıcı Dili: ${navigator.language}`;
             } else if (cmd === 'ping') {
@@ -627,8 +715,29 @@
                 respLine.innerHTML = `Ağ Gecikmesi (Ping Testi): ${currentPing}ms - Bağlantı mükemmel.`;
             } else if (cmd === 'whoami') {
                 respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi [Yetki: Okuma/Etkileşim]";
+            } else if (cmd === 'quote') {
+                let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
+                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.7rem; opacity:0.65; font-style:italic;">"${randomQ.tr}"</span>`;
+            } else if (cmd === 'weather') {
+                respLine.innerHTML = "Konum: Kırklareli, TR<br>- Hava Durumu: Açık / Güneşli<br>- Sıcaklık: 28°C | Rüzgar: 12 km/h";
+            } else if (cmd === 'matrix') {
+                respLine.innerHTML = "Matrix simülasyonu başlatıldı. Durdurmak için herhangi bir tuşa basın veya komut yazın.";
+                startMatrix();
+            } else if (cmd === 'history') {
+                respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
+            } else if (cmd.startsWith('theme')) {
+                let parts = cmd.split(' ');
+                let colorName = parts[1];
+                let colorHex = '#00ff66';
+                if (colorName === 'blue') colorHex = '#00bbff';
+                else if (colorName === 'amber') colorHex = '#ffaa00';
+                else if (colorName === 'purple') colorHex = '#cc00ff';
+                else if (colorName === 'green' || !colorName) colorHex = '#00ff66';
+
+                document.documentElement.style.setProperty('--term-color', colorHex);
+                respLine.innerHTML = `Tema güncellendi: ${colorName || 'green'}`;
             } else if (cmd === 'clear') {
-                terminalBody.innerHTML = "";
+                terminalBody.innerHTML = '<canvas id="matrix-canvas"></canvas>';
                 terminalInput.value = '';
                 return;
             } else if (cmd === '') {
