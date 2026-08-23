@@ -200,42 +200,17 @@
             transform: scale(1.05);
         }
 
-        /* Playlist / Video Değiştirme Paneli Uyarı Alanı */
+        /* Playlist Bilgilendirme Alanı (İstediğin Gibi Düzenlendi) */
         .playlist-notice {
             background: rgba(0, 0, 0, 0.25);
             border: 1px dashed rgba(255, 255, 255, 0.25);
             border-radius: 12px;
             padding: 8px 12px;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-        }
-
-        .playlist-notice span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .next-video-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 4px 8px;
-            color: #fff;
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-
-        .next-video-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.5px;
         }
 
         .audio-player {
@@ -430,6 +405,7 @@
             width: 100%;
         }
 
+        /* Kayan Yazı Şeridi (Alttaki Glitch Efekti Alanı) */
         .marquee-container {
             position: absolute;
             bottom: -35px;
@@ -483,7 +459,7 @@
         <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
     </div>
 
-    <!-- Arka Plan Videosu (Discord CDN Linki Entegre Edildi) -->
+    <!-- Arka Plan Videosu -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
         <source src="https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&" type="video/mp4">
     </video>
@@ -502,10 +478,9 @@
             <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
         </div>
 
-        <!-- Playlist / Video Değiştirme Bilgilendirme Alanı -->
+        <!-- Bilgilendirme Notu -->
         <div class="playlist-notice">
-            <span id="current-video-title">🎥 Video 1 / 3</span>
-            <button class="next-video-btn" id="change-video-btn">Sonrakine Geç ⏭</button>
+            💡 Terminal playlist'ten videoyu değiştirebilirsiniz
         </div>
 
         <div class="audio-player">
@@ -520,10 +495,10 @@
             👁️ Görüntülenme: <span id="visit-count">436</span>
         </div>
 
-        <!-- Kayan Yazı -->
+        <!-- Kayan Yazı (Alttaki Glitch) -->
         <div class="marquee-container">
             <div class="marquee-text">
-                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
+                // 7/24 online // radar aktif // mert keskin // system ready // terminal playlistten videoyu değiştirebilirsin // 7/24 online //
             </div>
         </div>
     </div>
@@ -540,6 +515,7 @@
                 <div>Radwlab v3.1 - Advanced Interactive Shell</div>
                 <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
                 <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
+                    <span class="cmd-link" onclick="runCommand('playlist')">playlist</span>
                     <span class="cmd-link" onclick="runCommand('about')">about</span>
                     <span class="cmd-link" onclick="runCommand('status')">status</span>
                     <span class="cmd-link" onclick="runCommand('social')">social</span>
@@ -564,34 +540,19 @@
     </div>
 
     <script>
-        // Playlist Tanımlamaları (Buraya yeni video url'leri ekleyebilirsin)
+        // Video Playlist Tanımlamaları (Buraya yeni video linkleri ekleyebilirsin)
         const videoPlaylist = [
             {
                 url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&",
-                title: "🎥 Arka Plan Video 01"
+                title: "Video 1"
             },
             {
                 url: "BURAYA_İKİNCİ_VİDEONUN_URL_ADRESİNİ_YAZ.mp4",
-                title: "🎥 Arka Plan Video 02"
+                title: "Video 2"
             }
         ];
         let currentVideoIndex = 0;
-
         const video = document.getElementById('bg-video');
-        const changeVideoBtn = document.getElementById('change-video-btn');
-        const currentVideoTitle = document.getElementById('current-video-title');
-
-        // Video Değiştirme Fonksiyonu
-        changeVideoBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
-            const currentItem = videoPlaylist[currentVideoIndex];
-            
-            video.src = currentItem.url;
-            currentVideoTitle.textContent = currentItem.title;
-            video.load();
-            video.play().catch(err => console.log("Oynatma hatası veya eksik link:", err));
-        });
 
         // Ses ve Giriş Kontrolü
         const entryScreen = document.getElementById('entry-screen');
@@ -738,7 +699,6 @@
             { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
             { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
             { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
-            { en: "The function of good software is to make the complex appear to be simple. – Grady Booch", tr: "İyi bir yazılımın işlevi, karmaşığı basit göstermektir." },
             { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." }
         ];
 
@@ -756,8 +716,35 @@
 
             let respLine = document.createElement('div');
 
-            if (cmd === 'help') {
-                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>, <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>, <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>, <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>, <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>, <span class='cmd-link' onclick='runCommand(\"help\")'>help</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
+            if (cmd === 'help' || cmd === 'playlist') {
+                let listHtml = "Mevcut Video Playlist:<br>";
+                videoPlaylist.forEach((v, idx) => {
+                    let activeIndicator = (idx === currentVideoIndex) ? " [OYNATILIYOR]" : "";
+                    listHtml += `- <span class='cmd-link' onclick='runCommand(\"play ${idx}\")'>[Video ${idx + 1}]</span> ${v.title}${activeIndicator}<br>`;
+                });
+                listHtml += "<br>Veya sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
+                respLine.innerHTML = listHtml;
+            } else if (cmd.startsWith('play ')) {
+                let target = cmd.split(' ')[1];
+                if (target === 'next') {
+                    currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+                } else {
+                    let idx = parseInt(target);
+                    if (!isNaN(idx) && idx >= 0 && idx < videoPlaylist.length) {
+                        currentVideoIndex = idx;
+                    } else {
+                        respLine.innerHTML = "Geçersiz video indeksi.";
+                        terminalBody.appendChild(respLine);
+                        terminalInput.value = '';
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                        return;
+                    }
+                }
+                const selectedVideo = videoPlaylist[currentVideoIndex];
+                video.src = selectedVideo.url;
+                video.load();
+                video.play().catch(() => {});
+                respLine.innerHTML = `Video değiştirildi: ${selectedVideo.title} aktif edildi.`;
             } else if (cmd === 'about') {
                 respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
             } else if (cmd === 'status') {
@@ -798,7 +785,7 @@
             } else if (cmd === 'theme') {
                 respLine.innerHTML = `Bir tema rengi seçin:<br>` +
                     `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
-                    `<span class='cmd-link' onclick='runCommand('theme blue')' style='color:#00bbff;'>■ Mavi</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
             } else if (cmd.startsWith('theme ')) {
@@ -819,7 +806,7 @@
             } else if (cmd === '') {
                 respLine.innerHTML = "";
             } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Playlist komutları için 'playlist' yazabilirsin.`;
             }
             
             terminalBody.appendChild(respLine);
