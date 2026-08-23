@@ -19,7 +19,7 @@
             background: #000;
         }
 
-        /* Orijinal Arka Plan Görseli / Videosu (Başlangıçta Aktif) */
+        /* Orijinal Arka Plan Görseli (Başlangıçta Aktif) */
         #bg-visual {
             position: absolute;
             top: 0;
@@ -53,15 +53,15 @@
             visibility: visible;
         }
 
-        /* Tam Ekranı Kusursuz Kaplama Ayarı */
+        /* Tam Ekranı Kusursuz Kaplama Ayarı (En-boy oranını bozmadan) */
         .bg-video-container iframe {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 100vw;
-            height: 56.25vw; /* 16:9 Oranı (100 * 9 / 16) */
+            height: 56.25vw;
             min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 Oranı için minimum genişlik */
+            min-width: 177.77vh;
             transform: translate(-50%, -50%);
             border: none;
             pointer-events: none;
@@ -541,7 +541,7 @@
     <!-- 1. Başlangıçta Görünen Orijinal Arka Plan Görseli -->
     <img id="bg-visual" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Visual">
 
-    <!-- 2. Playlist'ten Şarkı Açılınca Aktifleşen YouTube Arka Planı -->
+    <!-- 2. Playlist'ten Şarkı Açılınca Aktifleşen Tam Ekran YouTube Arka Planı -->
     <div class="bg-video-container" id="bg-video-box">
         <div id="youtube-player"></div>
     </div>
