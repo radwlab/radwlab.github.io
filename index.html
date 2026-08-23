@@ -144,7 +144,7 @@
             z-index: 10;
             width: 90%;
             max-width: 380px;
-            padding: 35px 25px 25px 25px;
+            padding: 40px 25px 25px 25px;
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 28px;
@@ -158,7 +158,7 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
         }
 
@@ -167,7 +167,7 @@
             font-style: italic;
             font-weight: 800;
             letter-spacing: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
         }
@@ -175,7 +175,7 @@
         .action-container {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 12px;
         }
 
@@ -200,34 +200,77 @@
             transform: scale(1.05);
         }
 
-        /* Ses ve Video Kontrol Paneli */
-        .media-controls {
+        /* Playlist / Video Değiştirme Paneli Uyarı Alanı */
+        .playlist-notice {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .playlist-notice span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .next-video-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .next-video-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-player {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
-            padding: 10px 14px;
+            padding: 10px 16px;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 12px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
-        .control-row {
+        .volume-bar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 10px;
-            font-size: 0.75rem;
+        }
+
+        #mute-btn {
+            cursor: pointer;
+            font-size: 0.85rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
         }
 
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
-            width: 100%;
+            width: 80px;
             height: 4px;
             border-radius: 2px;
-            background: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(to right, #ffffff 70%, rgba(255, 255, 255, 0.3) 70%);
             outline: none;
             cursor: pointer;
         }
@@ -235,23 +278,12 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 6px rgba(0,0,0,0.9);
-        }
-
-        .volume-section {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #mute-btn {
-            cursor: pointer;
-            font-size: 0.85rem;
+            box-shadow: 0 0 8px rgba(0,0,0,0.9);
         }
 
         .visitor-counter {
@@ -266,7 +298,6 @@
             align-items: center;
             gap: 6px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-            margin-bottom: 5px;
         }
 
         .visitor-counter span {
@@ -401,7 +432,7 @@
 
         .marquee-container {
             position: absolute;
-            bottom: -32px;
+            bottom: -35px;
             left: 0;
             width: 100%;
             height: 30px;
@@ -421,7 +452,7 @@
             letter-spacing: 3px;
             animation: marqueeScroll 20s linear infinite;
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
-                      drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
+                    drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
         }
 
         @keyframes marqueeScroll {
@@ -452,8 +483,10 @@
         <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
     </div>
 
-    <!-- Arka Plan Videosu -->
-    <video id="bg-video" class="bg-video" autoplay loop muted playsinline></video>
+    <!-- Arka Plan Videosu (Discord CDN Linki Entegre Edildi) -->
+    <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
+        <source src="https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&" type="video/mp4">
+    </video>
 
     <!-- Parçacık Efekti Kanvası -->
     <canvas id="particle-canvas"></canvas>
@@ -469,19 +502,16 @@
             <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
         </div>
 
-        <!-- Medya Kontrolleri (Video Çubuğu ve Ses) -->
-        <div class="media-controls">
-            <!-- Video İlerleme Çubuğu (Seek Bar) -->
-            <div class="control-row">
-                <input type="range" id="video-seek" class="slider-input" min="0" max="100" value="0" step="0.1">
-            </div>
-            <!-- Ses Kontrolü -->
-            <div class="control-row">
-                <div class="volume-section">
-                    <span id="mute-btn">🔊</span>
-                    <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
-                </div>
-                <span id="video-current-name" style="font-size: 0.65rem; opacity: 0.8;">Video 1</span>
+        <!-- Playlist / Video Değiştirme Bilgilendirme Alanı -->
+        <div class="playlist-notice">
+            <span id="current-video-title">🎥 Video 1 / 3</span>
+            <button class="next-video-btn" id="change-video-btn">Sonrakine Geç ⏭</button>
+        </div>
+
+        <div class="audio-player">
+            <div class="volume-bar">
+                <span id="mute-btn">🔊</span>
+                <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
             </div>
         </div>
 
@@ -507,10 +537,9 @@
             </div>
             <div id="terminal-body" class="terminal-body">
                 <canvas id="matrix-canvas"></canvas>
-                <div>Radwlab v3.4 - Lokal Playlist Shell</div>
+                <div>Radwlab v3.1 - Advanced Interactive Shell</div>
                 <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
                 <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
-                    <span class="cmd-link" onclick="runCommand('playlist')">playlist</span>
                     <span class="cmd-link" onclick="runCommand('about')">about</span>
                     <span class="cmd-link" onclick="runCommand('status')">status</span>
                     <span class="cmd-link" onclick="runCommand('social')">social</span>
@@ -535,49 +564,49 @@
     </div>
 
     <script>
-        // Playlist ve Başlangıç Süreleri (Saniye cinsinden)
-        const playlist = [
-            { name: "Ebru Gündeş - Aşk", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541102847842582648/Ebru_Gundes_-_Ask_Video_Klip.mp4?ex=6a8c5f5f&is=6a8b0ddf&hm=5127907d7735144a7ff5afed6efc62c377181880154d194dcfa91ee50b63c5a5&", startTime: 73 },
-            { name: "Blockkids x Argent Sale", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541103071126618235/BLOCKKIDS_x_Argent_Sale.mp4?ex=6a8c5f94&is=6a8b0e14&hm=96da0e50b6494bb92da9865e426b42279a95fae11f549c61e609057e1423375e&", startTime: 0 },
-            { name: "Light - Ptasinski", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104249897750579/light_-_ptasinski_-_Topic_1080p.mp4?ex=6a8c60ad&is=6a8b0f2d&hm=f2a02ae3b4c0ef06e55c02ebe97ac3edbcc525695d7e23f15984013c531450c0&", startTime: 7 },
-            { name: "Beyaz x Meltdown", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104320081043596/beyaz_x_meltdown_-_z3_480p.mp4?ex=6a8c60be&is=6a8b0f3e&hm=9ac919abfbb672b47b03f776d252d8bd557222d929a281a7c4763f2a0f68d269&", startTime: 236 },
-            { name: "Conan x Xenia", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541104385499594813/Conan_x_Xenia_-_HotBoy17_360p.mp4?ex=6a8c60cd&is=6a8b0f4d&hm=a71356a6897a969579bfc48fd3da0415d5e8caf6b1b9320946d0f7e4036f3a28&", startTime: 119 },
-            { name: "Yeat - Gone 4 a Min", file: "https://cdn.discordapp.com/attachments/1489178465692422157/1541105325535526922/GONE_4_A_MIN_OFFICIAL_AUDIO_-_Yeat_1080p.mp4?ex=6a8c61ad&is=6a8b102d&hm=a51dc0fd41aef85642c54913599e560231dd7082828cf998d8a3315e42ebd8af&", startTime: 59 }
+        // Playlist Tanımlamaları (Buraya yeni video url'leri ekleyebilirsin)
+        const videoPlaylist = [
+            {
+                url: "https://cdn.discordapp.com/attachments/1489178465692422157/1541106509461717112/video.mp4?ex=6a8c62c8&is=6a8b1148&hm=528cb4e55fb82d65175eeae13dca2cedb9ee5c6009987ecaf2386c1b91bea432&",
+                title: "🎥 Arka Plan Video 01"
+            },
+            {
+                url: "BURAYA_İKİNCİ_VİDEONUN_URL_ADRESİNİ_YAZ.mp4",
+                title: "🎥 Arka Plan Video 02"
+            }
         ];
-
         let currentVideoIndex = 0;
-        const entryScreen = document.getElementById('entry-screen');
+
         const video = document.getElementById('bg-video');
+        const changeVideoBtn = document.getElementById('change-video-btn');
+        const currentVideoTitle = document.getElementById('current-video-title');
+
+        // Video Değiştirme Fonksiyonu
+        changeVideoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+            const currentItem = videoPlaylist[currentVideoIndex];
+            
+            video.src = currentItem.url;
+            currentVideoTitle.textContent = currentItem.title;
+            video.load();
+            video.play().catch(err => console.log("Oynatma hatası veya eksik link:", err));
+        });
+
+        // Ses ve Giriş Kontrolü
+        const entryScreen = document.getElementById('entry-screen');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
-        const videoSeek = document.getElementById('video-seek');
-        const videoCurrentName = document.getElementById('video-current-name');
         let lastVolume = 70;
-        let isSeeking = false;
 
-        // İlk Videoyu Yükle
-        function loadVideo(index) {
-            currentVideoIndex = index;
-            const item = playlist[index];
-            video.src = item.file;
-            video.currentTime = item.startTime;
-            video.load();
-            videoCurrentName.textContent = `[${index + 1}] ${item.name.substring(0, 15)}...`;
-            video.play().catch(err => console.log("Oynatma hatası:", err));
-        }
-
-        loadVideo(0);
-
-        // Giriş Ekranı Tıklama Olayı
         entryScreen.addEventListener('click', function() {
             entryScreen.classList.add('hidden');
             video.muted = false;
             video.volume = 0.7;
             setVolumeUI(70);
-            video.play().catch(err => console.log("Oynatma hatası:", err));
+            video.play().catch(() => {});
         });
 
-        // Ses Kontrolleri
         function setVolumeUI(val) {
             volumeSlider.value = val;
             volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
@@ -612,29 +641,6 @@
             }
         });
 
-        // Video İlerleme (Seek Bar) Güncelleme
-        video.addEventListener('timeupdate', function() {
-            if (!isSeeking && video.duration) {
-                const percent = (video.currentTime / video.duration) * 100;
-                videoSeek.value = percent;
-                videoSeek.style.background = `linear-gradient(to right, #ffffff ${percent}%, rgba(255, 255, 255, 0.3) ${percent}%)`;
-            }
-        });
-
-        videoSeek.addEventListener('input', function() {
-            isSeeking = true;
-            const percent = this.value;
-            this.style.background = `linear-gradient(to right, #ffffff ${percent}%, rgba(255, 255, 255, 0.3) ${percent}%)`;
-        });
-
-        videoSeek.addEventListener('change', function() {
-            if (video.duration) {
-                const targetTime = (this.value / 100) * video.duration;
-                video.currentTime = targetTime;
-            }
-            isSeeking = false;
-        });
-
         // Ziyaretçi Sayacı
         let visits = localStorage.getItem('site_visits');
         if (!visits) {
@@ -667,7 +673,7 @@
             document.getElementById('ping-val').textContent = randomPing;
         }, 3000);
 
-        // Terminal ve Komut Mantığı
+        // Terminal Modalı
         const terminalModal = document.getElementById('terminal-modal');
         const openTerminalBtn = document.getElementById('open-terminal');
         const closeTerminalBtn = document.getElementById('close-terminal');
@@ -688,7 +694,6 @@
             stopMatrix();
         });
 
-        // Matrix Efekti Arka Planı
         const matrixCanvas = document.getElementById('matrix-canvas');
         const mCtx = matrixCanvas.getContext('2d');
 
@@ -730,7 +735,11 @@
         const quotes = [
             { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
             { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
-            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." }
+            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
+            { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
+            { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
+            { en: "The function of good software is to make the complex appear to be simple. – Grady Booch", tr: "İyi bir yazılımın işlevi, karmaşığı basit göstermektir." },
+            { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." }
         ];
 
         async function runCommand(cmdText) {
@@ -748,25 +757,11 @@
             let respLine = document.createElement('div');
 
             if (cmd === 'help') {
-                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"playlist\")'>playlist</span>, <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>, <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>, <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>, <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>, <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>, <span class='cmd-link' onclick='runCommand(\"help\")'>help</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
-            } else if (cmd === 'playlist') {
-                let listHtml = "Lokal Video Playlist:<br>";
-                playlist.forEach((vid, i) => {
-                    listHtml += `- <span class='cmd-link' onclick='playVideoIndex(${i})'>${vid.name}</span><br>`;
-                });
-                respLine.innerHTML = listHtml;
-            } else if (cmd.startsWith('play ')) {
-                let index = parseInt(cmd.split(' ')[1]);
-                if (playlist[index]) {
-                    loadVideo(index);
-                    respLine.innerHTML = `Oynatılıyor: ${playlist[index].name}`;
-                } else {
-                    respLine.innerHTML = `Geçersiz video indeksi.`;
-                }
+                respLine.innerHTML = "Komutlar: <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>, <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>, <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>, <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>, <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>, <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>, <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>, <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>, <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>, <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>, <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>, <span class='cmd-link' onclick='runCommand(\"help\")'>help</span>, <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
             } else if (cmd === 'about') {
-                respLine.innerHTML = "radwlab aktif ve çevrimiçi. Lokal video akış altyapısı devrede.";
+                respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli ve kararlı çalışıyor.";
             } else if (cmd === 'status') {
-                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif (Lokal Playlist)<br>- Ses Modülü: Aktif<br>- Çubuk/Kontroller: Aktif";
+                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif (Discord CDN)<br>- Ses Modülü: Aktif<br>- Widget Altyapısı: Çevrimiçi";
             } else if (cmd === 'social') {
                 respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
             } else if (cmd === 'sysinfo') {
@@ -791,7 +786,7 @@
                     let region = data.region || "";
                     let country = data.country_name || "";
                     
-                    respLine.innerHTML = `Konum: ${city}${region ? ', ' + region : ''} (${country})<br>- Durum: Açık / Parçalı Bulutlu<br>- Sıcaklık: ~26°C`;
+                    respLine.innerHTML = `Konum: ${city}${region ? ', ' + region : ''} (${country})<br>- Durum: Açık / Parçalı Bulutlu<br>- Sıcaklık: ~26°C | Rüzgar: 10 km/h`;
                 } catch (e) {
                     respLine.innerHTML = "Konum taranırken hata oluştu. Varsayılan Konum (Kırklareli): 28°C, Açık.";
                 }
@@ -803,7 +798,7 @@
             } else if (cmd === 'theme') {
                 respLine.innerHTML = `Bir tema rengi seçin:<br>` +
                     `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
+                    `<span class='cmd-link' onclick='runCommand('theme blue')' style='color:#00bbff;'>■ Mavi</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
             } else if (cmd.startsWith('theme ')) {
@@ -829,15 +824,6 @@
             
             terminalBody.appendChild(respLine);
             terminalInput.value = '';
-            terminalBody.scrollTop = terminalBody.scrollHeight;
-        }
-
-        // Tıklandığında direkt video değiştiren yardımcı fonksiyon
-        function playVideoIndex(index) {
-            loadVideo(index);
-            let respLine = document.createElement('div');
-            respLine.innerHTML = `<span style="color:#00ff66;">Oynatılıyor: ${playlist[index].name}</span>`;
-            terminalBody.appendChild(respLine);
             terminalBody.scrollTop = terminalBody.scrollHeight;
         }
 
