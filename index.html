@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>radwlab :: Interactive</title>
     <style>
+        :root {
+            --term-color: #00ff66;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -68,7 +72,7 @@
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan Videosu */
+        /* Arka Plan Videosı */
         .bg-video {
             position: absolute;
             top: 0;
@@ -127,10 +131,11 @@
         .status-dot {
             width: 6px;
             height: 6px;
-            background-color: #00ff66;
+            background-color: var(--term-color, #00ff66);
             border-radius: 50%;
-            box-shadow: 0 0 6px #00ff66;
+            box-shadow: 0 0 6px var(--term-color, #00ff66);
             animation: blink 1.5s infinite;
+            transition: background-color 0.5s, box-shadow 0.5s;
         }
 
         @keyframes blink {
@@ -304,6 +309,7 @@
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             position: relative;
+            transition: border-color 0.5s, box-shadow 0.5s;
         }
 
         .terminal-header {
@@ -315,6 +321,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.75rem;
             color: var(--term-color, #00ff66);
+            transition: color 0.5s;
         }
 
         .terminal-close {
@@ -334,6 +341,7 @@
             gap: 8px;
             line-height: 1.4;
             position: relative;
+            transition: color 0.5s;
         }
 
         #matrix-canvas {
@@ -364,7 +372,7 @@
         }
 
         .cmd-link:hover {
-            background: rgba(0, 255, 102, 0.25);
+            background: rgba(255, 255, 255, 0.2);
             color: #fff;
         }
 
@@ -380,6 +388,7 @@
 
         .terminal-input-line span {
             color: var(--term-color, #00ff66);
+            transition: color 0.5s;
         }
 
         .terminal-input {
@@ -443,13 +452,16 @@
     <!-- Canlı Saat Widget'ı (Sağ Üst) -->
     <div class="live-clock">
         <div id="live-date">--.--.----</div>
-        <div id="live-time" style="color: #00ff66; font-weight: bold;">--:--:--</div>
+        <div id="live-time" style="color: var(--term-color, #00ff66); font-weight: bold; transition: color 0.5s;">--:--:--</div>
     </div>
 
     <!-- Arka Plan Videosu -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
         <source src="video.mp4" type="video/mp4">
     </video>
+
+    <!-- Gizli Renk Analiz Kanvası -->
+    <canvas id="color-canvas" style="display:none;"></canvas>
 
     <!-- Parçacık Efekti Kanvası -->
     <canvas id="particle-canvas"></canvas>
@@ -480,7 +492,7 @@
         <!-- Kayan Yazı -->
         <div class="marquee-container">
             <div class="marquee-text">
-                // 7/24 online // radar aktif // mert keskin // system ready // 7/24 online // radar aktif // mert keskin // system ready //
+                // 7/24 MERT KESKİN ONLİNE // RADAR AKTİF // SYSTEM READY // 7/24 MERT KESKİN ONLİNE // RADAR AKTİF // SYSTEM READY //
             </div>
         </div>
     </div>
@@ -582,15 +594,65 @@
                 url: "Porsche 911.mp4",
                 title: "Porsche 911",
                 startTime: 0
+            },
+            {
+                key: "dehaaskim",
+                url: "Deha Aşkım.mp4",
+                title: "Deha Aşkım",
+                startTime: 0
+            },
+            {
+                key: "deha777",
+                url: "Deha 777.mp4",
+                title: "Deha 777",
+                startTime: 0
             }
         ];
         let currentVideoIndex = 0;
         const video = document.getElementById('bg-video');
+        const colorCanvas = document.getElementById('color-canvas');
+        const ccCtx = colorCanvas.getContext('2d');
 
         const entryScreen = document.getElementById('entry-screen');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
         let lastVolume = 70;
+
+        // Video arkasındaki renk tonuna göre tema güncelleme
+        function extractVideoColor() {
+            if (video.readyState < 2) return;
+            colorCanvas.width = 50;
+            colorCanvas.height = 50;
+            try {
+                ccCtx.drawImage(video, 0, 0, 50, 50);
+                const frameData = ccCtx.getImageData(0, 0, 50, 50).data;
+                let r = 0, g = 0, b = 0, count = 0;
+                
+                for (let i = 0; i < frameData.length; i += 16) {
+                    r += frameData[i];
+                    g += frameData[i+1];
+                    b += frameData[i+2];
+                    count++;
+                }
+                
+                r = Math.floor(r / count);
+                g = Math.floor(g / count);
+                b = Math.floor(b / count);
+
+                // Çok karanlık veya çok açık renkleri engelle, okunabilirliği koru
+                let maxVal = Math.max(r, g, b);
+                if (maxVal < 60) {
+                    r = Math.min(255, r + 80);
+                    g = Math.min(255, g + 80);
+                    b = Math.min(255, b + 80);
+                }
+
+                let hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+                document.documentElement.style.setProperty('--term-color', hexColor);
+            } catch (e) {
+                // Güvenli varsayılan renk
+            }
+        }
 
         function loadAndPlayVideo(index) {
             currentVideoIndex = index;
@@ -598,8 +660,16 @@
             video.src = selectedVideo.url;
             video.currentTime = selectedVideo.startTime || 0;
             video.load();
-            video.play().catch(() => {});
+            video.play().then(() => {
+                setTimeout(extractVideoColor, 500);
+            }).catch(() => {});
         }
+
+        video.addEventListener('timeupdate', function() {
+            if (Math.floor(video.currentTime) === 2) {
+                extractVideoColor();
+            }
+        });
 
         video.addEventListener('ended', function() {
             let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
@@ -771,7 +841,7 @@
                     "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu kontrol eder.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix yağmur efekti başlatır.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>: Girilen komut geçmişini listeler.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını değiştirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını manuel değiştirir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.";
             } else if (cmd === 'playlist') {
                 let listHtml = "Mevcut Video Playlist:<br>";
@@ -838,7 +908,7 @@
             } else if (cmd === 'history') {
                 respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
             } else if (cmd === 'theme') {
-                respLine.innerHTML = `Tema seçin:<br>` +
+                respLine.innerHTML = `Manuel tema seçin:<br>` +
                     `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
                     `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
