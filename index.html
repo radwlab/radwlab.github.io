@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>radw :: Interactive</title>
+    <title>radwlab :: Interactive</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -68,7 +68,7 @@
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan Videosu (Tamamen berrak) */
+        /* Arka Plan Videosu */
         .bg-video {
             position: absolute;
             top: 0;
@@ -80,19 +80,59 @@
             filter: brightness(1);
         }
 
-        /* Ortadaki Kart (Bulanıklık sıfırlandı, kristal berraklığında şeffaf çerçeve) */
+        /* Dinamik Sistem Durumu (Sol Üst Köşe) */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #00ff66;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00ff66;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Ortadaki Kart */
         .card {
             position: relative;
             z-index: 10;
             width: 90%;
             max-width: 380px;
             padding: 40px 25px 25px 25px;
-            background: rgba(0, 0, 0, 0.01);
+            background: transparent;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 28px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
@@ -101,9 +141,9 @@
             height: 90px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             margin-bottom: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
         }
 
         .title {
@@ -113,44 +153,57 @@
             letter-spacing: 4px;
             margin-bottom: 15px;
             text-transform: uppercase;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        /* Sosyal Medya İkonu */
-        .social-icons {
+        /* Aksiyon Butonları */
+        .action-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 15px;
         }
 
-        .social-icon {
-            display: inline-block;
-            opacity: 0.9;
-            transition: transform 0.3s, opacity 0.3s;
+        .social-icon, .terminal-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 8px 14px;
+            font-size: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
-        .social-icon:hover {
-            opacity: 1;
-            transform: scale(1.1);
+
+        .social-icon:hover, .terminal-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
         }
+
         .social-icon svg {
-            width: 26px;
-            height: 26px;
+            width: 18px;
+            height: 18px;
             fill: #ffffff;
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
         }
 
         .audio-player {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
             padding: 10px 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         .volume-bar {
@@ -162,7 +215,7 @@
         #mute-btn {
             cursor: pointer;
             font-size: 0.85rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
         }
 
         .slider-input {
@@ -184,27 +237,22 @@
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 5px rgba(0,0,0,0.8);
-            transition: transform 0.1s;
+            box-shadow: 0 0 8px rgba(0,0,0,0.9);
         }
 
-        .slider-input::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        /* Ziyaretçi Sayacı Tasarımı */
+        /* Ziyaretçi Sayacı */
         .visitor-counter {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 10px;
             padding: 6px 12px;
             font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         .visitor-counter span {
@@ -212,7 +260,97 @@
             font-weight: 700;
         }
 
-        /* Geliştirilmiş Kayan Yazı Şeridi */
+        /* Terminal Modalı */
+        .terminal-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .terminal-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .terminal-box {
+            width: 90%;
+            max-width: 520px;
+            height: 350px;
+            background: rgba(10, 10, 10, 0.92);
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: #00ff66;
+        }
+
+        .terminal-close {
+            cursor: pointer;
+            color: #ff5555;
+            font-weight: bold;
+        }
+
+        .terminal-body {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            color: #00ff66;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terminal-input-line span {
+            color: #00ff66;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        /* Kayan Yazı Şeridi */
         .marquee-container {
             position: absolute;
             bottom: -35px;
@@ -228,14 +366,13 @@
         .marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-weight: 700;
             font-size: 0.75rem;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 3px;
             animation: marqueeScroll 20s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
                       drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
         }
 
@@ -252,6 +389,15 @@
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
+    <!-- Dinamik Sistem Durumu Widget'ı -->
+    <div class="system-status">
+        <div class="status-row">
+            <div class="status-dot"></div>
+            <span>SYS: ONLINE</span>
+        </div>
+        <div>PING: <span id="ping-val">12</span>ms</div>
+    </div>
+
     <!-- Arka Plan Videosu -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
         <source src="video.mp4" type="video/mp4">
@@ -260,16 +406,18 @@
     <!-- Parçacık Efekti Kanvası -->
     <canvas id="particle-canvas"></canvas>
 
+    <!-- Ana Kart -->
     <div class="card">
         <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
         <div class="title">radw</div>
 
-        <!-- Sosyal Medya İkonu (Sadece Spotify) -->
-        <div class="social-icons">
+        <!-- Sosyal Medya ve Terminal Butonları -->
+        <div class="action-container">
             <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-icon" title="Spotify">
                 <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141 C13.62 9.9 19.08 10.56 22.8 12.84c.36.24.48.84.161 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
             </a>
+            <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
         </div>
 
         <div class="audio-player">
@@ -292,8 +440,33 @@
         </div>
     </div>
 
+    <!-- Terminal Penceresi (Modal) -->
+    <div id="terminal-modal" class="terminal-modal">
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span>root@radwlab:~</span>
+                <span id="close-terminal" class="terminal-close">[X]</span>
+            </div>
+            <div id="terminal-body" class="terminal-body">
+                <div>Radwlab v2.4 - Interactive Shell</div>
+                <div>Sistem aktif. Kullanılabilir komutlar:</div>
+                <div style="color: #fff; margin-top: 4px;">
+                    - <span style="color: #00ff66;">about</span> : Sistem sahibi hakkında bilgi al<br>
+                    - <span style="color: #00ff66;">status</span> : Sunucu ve bağlantı durumunu göster<br>
+                    - <span style="color: #00ff66;">help</span> : Komut listesini tekrar göster<br>
+                    - <span style="color: #00ff66;">clear</span> : Terminal ekranını temizle
+                </div>
+                <br>
+            </div>
+            <div class="terminal-input-line">
+                <span>></span>
+                <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Ses Kontrol Scripti
+        // Ses ve Giriş Kontrolü
         const entryScreen = document.getElementById('entry-screen');
         const video = document.getElementById('bg-video');
         const volumeSlider = document.getElementById('volume-slider');
@@ -341,7 +514,7 @@
             }
         });
 
-        // Ziyaretçi Sayacı Mantığı
+        // Ziyaretçi Sayacı
         let visits = localStorage.getItem('site_visits');
         if (!visits) {
             visits = 436;
@@ -351,7 +524,60 @@
         localStorage.setItem('site_visits', visits);
         document.getElementById('visit-count').textContent = visits;
 
-        // Fare Parçacık Efekti Scripti
+        // Rastgele Ping Oynaması (Sistem Durumu)
+        setInterval(() => {
+            let randomPing = Math.floor(Math.random() * 6) + 11;
+            document.getElementById('ping-val').textContent = randomPing;
+        }, 3000);
+
+        // Terminal Mantığı
+        const terminalModal = document.getElementById('terminal-modal');
+        const openTerminalBtn = document.getElementById('open-terminal');
+        const closeTerminalBtn = document.getElementById('close-terminal');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalBody = document.getElementById('terminal-body');
+
+        openTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.add('active');
+            terminalInput.focus();
+        });
+
+        closeTerminalBtn.addEventListener('click', () => {
+            terminalModal.classList.remove('active');
+        });
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                let cmd = this.value.trim().toLowerCase();
+                
+                let userLine = document.createElement('div');
+                userLine.innerHTML = `<span style="color:#fff;">> ${this.value}</span>`;
+                terminalBody.appendChild(userLine);
+
+                let respLine = document.createElement('div');
+                if (cmd === 'help') {
+                    respLine.innerHTML = "Komut listesi:<br>- <span style='color:#fff;'>about</span>: Sistem sahibi hakkında<br>- <span style='color:#fff;'>status</span>: Sunucu durumu<br>- <span style='color:#fff;'>clear</span>: Ekranı temizle";
+                } else if (cmd === 'about') {
+                    respLine.innerHTML = "radwlab aktif ve çevrimiçi. Sistem güvenli.";
+                } else if (cmd === 'status') {
+                    respLine.innerHTML = "Tüm modüller kararlı çalışıyor. Video ve ses akışı aktif.";
+                } else if (cmd === 'clear') {
+                    terminalBody.innerHTML = "";
+                    this.value = '';
+                    return;
+                } else if (cmd === '') {
+                    respLine.innerHTML = "";
+                } else {
+                    respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+                }
+                
+                terminalBody.appendChild(respLine);
+                this.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+
+        // Parçacık Efekti
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
