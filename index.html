@@ -495,8 +495,9 @@
             <div id="terminal-body" class="terminal-body">
                 <canvas id="matrix-canvas"></canvas>
                 <div>Radwlab v3.1 - Advanced Interactive Shell</div>
-                <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi:</div>
+                <div>Komutlara tıklayabilir veya yazabilirsin. Komut listesi için <span class="cmd-link" onclick="runCommand('help')">help</span> yazabilirsin.</div>
                 <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px;">
+                    <span class="cmd-link" onclick="runCommand('help')">help</span>
                     <span class="cmd-link" onclick="runCommand('playlist')">playlist</span>
                     <span class="cmd-link" onclick="runCommand('about')">about</span>
                     <span class="cmd-link" onclick="runCommand('status')">status</span>
@@ -509,7 +510,6 @@
                     <span class="cmd-link" onclick="runCommand('matrix')">matrix</span>
                     <span class="cmd-link" onclick="runCommand('history')">history</span>
                     <span class="cmd-link" onclick="runCommand('theme')">theme</span>
-                    <span class="cmd-link" onclick="runCommand('help')">help</span>
                     <span class="cmd-link" onclick="runCommand('clear')">clear</span>
                 </div>
                 <br>
@@ -752,11 +752,26 @@
 
             let respLine = document.createElement('div');
 
-            if (cmd === 'help' || cmd === 'playlist') {
+            if (cmd === 'help') {
+                respLine.innerHTML = "Kullanılabilir Komutlar:<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"playlist\")'>playlist</span>: Video listesini görüntüler ve video değiştirmenizi sağlar.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>: Sistem hakkında bilgi verir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sunucu ve akış durumunu gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>: Sosyal medya bağlantılarını gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>: Tarayıcı ve sistem bilgilerini gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Anlık ağ gecikmesini ölçer.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>: Oturum kimliğini gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\>quote\")'>quote</span>: Rastgele yazılımcı/hacker sözü getirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu kontrol eder.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix yağmur efekti başlatır.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>: Girilen komut geçmişini listeler.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını değiştirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.";
+            } else if (cmd === 'playlist') {
                 let listHtml = "Mevcut Video Playlist:<br>";
                 videoPlaylist.forEach((v) => {
                     let activeIndicator = (v.url === video.src) ? " [OYNATILIYOR]" : "";
-                    listHtml += `- <span class='cmd-link' onclick='runCommand("play ${v.key}")'>play ${v.key}</span> -> ${v.title} (${v.startTime}s)${activeIndicator}<br>`;
+                    listHtml += `- <span class='cmd-link' onclick='runCommand("play ${v.key}")'>play ${v.key}</span> -> ${v.title}${activeIndicator}<br>`;
                 });
                 listHtml += "<br>Sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
                 respLine.innerHTML = listHtml;
@@ -780,7 +795,7 @@
                 }
                 loadAndPlayVideo(targetIdx);
                 const selectedVideo = videoPlaylist[currentVideoIndex];
-                respLine.innerHTML = `Oynatılıyor: ${selectedVideo.title} (Başlangıç: ${selectedVideo.startTime}. saniye).`;
+                respLine.innerHTML = `Oynatılıyor: ${selectedVideo.title}.`;
             } else if (cmd === 'about') {
                 respLine.innerHTML = "radwlab aktif ve çevrimiçi.";
             } else if (cmd === 'status') {
@@ -838,7 +853,7 @@
             } else if (cmd === '') {
                 respLine.innerHTML = "";
             } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Playlist için 'playlist' yazabilirsin.`;
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
             }
             
             terminalBody.appendChild(respLine);
