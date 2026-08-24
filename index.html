@@ -86,11 +86,11 @@
             image-rendering: -webkit-optimize-contrast;
         }
 
+        /* Soldan sağa hareketli Mert Keskin yazısı */
         .top-center-title {
             position: fixed;
             top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: -300px;
             z-index: 20;
             font-size: 1.1rem;
             font-weight: 800;
@@ -98,14 +98,15 @@
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
-            animation: titleGlow 3s ease-in-out infinite alternate;
+            animation: slideRight 12s linear infinite;
             pointer-events: none;
             font-family: 'Courier New', Courier, monospace;
+            white-space: nowrap;
         }
 
-        @keyframes titleGlow {
-            0% { opacity: 0.7; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
-            100% { opacity: 1; text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4); }
+        @keyframes slideRight {
+            0% { left: -300px; }
+            100% { left: 105vw; }
         }
 
         .top-left-group {
@@ -228,19 +229,9 @@
             font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: 6px;
-            margin-bottom: 2px;
+            margin-bottom: 14px;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.95);
-        }
-
-        .current-track-info {
-            font-size: 0.62rem;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 1px;
-            margin-bottom: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .action-container {
@@ -278,25 +269,26 @@
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
         }
 
-        /* Küçültülmüş ve yanına 𖣂 eklenmiş ses/müzik paneli */
+        /* Ses ayarı, orta sembol ve oynat/durdur paneli */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 5px 8px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.8);
-            gap: 6px;
+            gap: 10px;
         }
 
         .volume-bar {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             flex-grow: 1;
+            max-width: 100px;
         }
 
         #mute-btn {
@@ -308,7 +300,7 @@
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 2.5px;
+            height: 2px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
             outline: none;
@@ -318,40 +310,37 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
         }
 
+        .player-symbol {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0;
+            user-select: none;
+        }
+
         .player-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
         }
 
         .ctrl-video-btn {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             transition: transform 0.2s, color 0.2s;
         }
 
         .ctrl-video-btn:hover {
             color: #fff;
             transform: scale(1.1);
-        }
-
-        /* İstediğin 𖣂 işareti için stil */
-        .player-symbol {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-left: 2px;
-            letter-spacing: 0;
-            user-select: none;
         }
 
         .mini-playlist-panel {
@@ -612,24 +601,21 @@
             <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
             <div class="title">radw</div>
-            <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
             <div class="action-container">
                 <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
             </div>
 
-            <!-- Küçültülmüş ve yanına 𖣂 işareti eklenmiş ses/müzik paneli -->
+            <!-- Ses ayarı, ortada 𖣂 ve sağda oynat/durdur paneli -->
             <div class="audio-player">
                 <div class="volume-bar">
                     <span id="mute-btn">🔊</span>
                     <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
                 </div>
-                <div class="player-controls">
-                    <button id="prev-track-btn" class="ctrl-video-btn" title="Önceki Video">⏮</button>
-                    <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
-                    <button id="next-track-btn" class="ctrl-video-btn" title="Sonraki Video">⏭</button>
-                </div>
                 <span class="player-symbol">𖣂</span>
+                <div class="player-controls">
+                    <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
+                </div>
             </div>
         </div>
 
@@ -673,13 +659,10 @@
         const video = document.getElementById('bg-video');
         const colorCanvas = document.getElementById('color-canvas');
         const ccCtx = colorCanvas.getContext('2d');
-        const trackTitleDisplay = document.getElementById('track-title-display');
 
         const entryScreen = document.getElementById('entry-screen');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
-        const nextTrackBtn = document.getElementById('next-track-btn');
-        const prevTrackBtn = document.getElementById('prev-track-btn');
         const playPauseBtn = document.getElementById('play-pause-btn');
         
         const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
@@ -746,7 +729,6 @@
             const selectedVideo = videoPlaylist[currentVideoIndex];
             video.src = selectedVideo.url;
             video.currentTime = selectedVideo.startTime || 0;
-            trackTitleDisplay.textContent = `// ${selectedVideo.title}`;
             
             const items = playlistItemsContainer.querySelectorAll('.playlist-item');
             items.forEach((item, idx) => {
@@ -763,18 +745,6 @@
                 setTimeout(extractVideoColor, 500);
             }).catch(() => {});
         }
-
-        nextTrackBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
-            loadAndPlayVideo(nextIndex);
-        });
-
-        prevTrackBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            let prevIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
-            loadAndPlayVideo(prevIndex);
-        });
 
         playPauseBtn.addEventListener('click', function(e) {
             e.stopPropagation();
