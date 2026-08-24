@@ -179,7 +179,6 @@
             max-width: 380px;
         }
 
-        /* Arka plan videosunun net görünmesi için koyuluk minimuma indirildi, cam efekti korundu */
         .card {
             width: 100%;
             padding: 35px 25px 25px 25px;
@@ -206,9 +205,20 @@
             font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Mert Keskin Yazısı: Net, arka plana göre dinamik renk alan yapıda */
+        .subtitle-mert {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--term-color);
+            margin-bottom: 6px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .current-track-info {
@@ -611,6 +621,7 @@
             <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
             <div class="title">radw</div>
+            <div class="subtitle-mert">Mert Keskin</div>
             <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
             <div class="action-container">
