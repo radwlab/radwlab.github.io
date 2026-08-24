@@ -83,13 +83,13 @@
 
         .top-center-title {
             position: fixed;
-            top: 30px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: #ffffff;
             animation: smallSlide 4s ease-in-out infinite alternate;
@@ -100,18 +100,18 @@
         }
 
         @keyframes smallSlide {
-            0% { transform: translateX(-50%) translateX(-40px); }
-            100% { transform: translateX(-50%) translateX(40px); }
+            0% { transform: translateX(-50%) translateX(-20px); }
+            100% { transform: translateX(-50%) translateX(20px); }
         }
 
         .top-left-group {
             position: fixed;
-            top: 25px;
-            left: 25px;
+            top: 20px;
+            left: 15px;
             z-index: 20;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .system-status, .visitor-counter, .live-clock, .terminal-btn, .mini-playlist-panel, .volume-panel {
@@ -123,25 +123,25 @@
         }
 
         .system-status {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 0.65rem;
-            letter-spacing: 1.5px;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.85);
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .visitor-counter {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.85);
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .visitor-counter span {
@@ -152,16 +152,15 @@
         .live-clock {
             position: fixed;
             bottom: 20px;
-            right: 30px;
+            right: 15px;
             z-index: 20;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 0.65rem;
-            letter-spacing: 1.5px;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.9);
             text-align: right;
             font-family: 'Courier New', Courier, monospace;
-            width: 280px;
             background: rgba(12, 12, 12, 0.95);
             border: var(--card-border);
             backdrop-filter: blur(12px);
@@ -170,7 +169,7 @@
         .status-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .status-dot {
@@ -193,17 +192,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            width: 90%;
-            max-width: 380px;
+            width: 88%;
+            max-width: 360px;
         }
 
         .card {
             width: 100%;
-            padding: 40px 30px;
+            padding: 30px 20px;
             background: rgba(10, 10, 10, 0.5);
             border: var(--card-border);
-            border-radius: 30px;
+            border-radius: 25px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             text-align: center;
             display: flex;
@@ -212,20 +210,19 @@
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .title {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 800;
-            letter-spacing: 6px;
-            margin-bottom: 0;
+            letter-spacing: 5px;
             text-transform: uppercase;
             color: #ffffff;
             text-shadow: 0 2px 10px rgba(0,0,0,0.8);
@@ -233,13 +230,13 @@
 
         .terminal-btn {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
+            bottom: 20px;
+            left: 15px;
             z-index: 20;
-            border-radius: 20px;
-            padding: 15px 25px;
-            font-size: 14px;
-            letter-spacing: 2px;
+            border-radius: 16px;
+            padding: 10px 18px;
+            font-size: 12px;
+            letter-spacing: 1.5px;
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             cursor: pointer;
@@ -248,7 +245,7 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-transform: uppercase;
         }
 
@@ -259,24 +256,25 @@
             color: #fff;
         }
 
+        /* Mobilde ses paneli çalışmadığı için gizleniyor, masaüstünde görünüyor */
         .volume-panel {
             position: fixed;
-            bottom: 73px;
-            right: 30px;
+            bottom: 70px;
+            right: 15px;
             z-index: 20;
-            width: 280px;
-            padding: 10px 15px;
-            border-radius: 12px;
+            width: 240px;
+            padding: 8px 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: rgba(12, 12, 12, 0.95);
             border: var(--card-border);
             backdrop-filter: blur(12px);
         }
 
         .volume-icon {
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             user-select: none;
         }
@@ -304,19 +302,19 @@
 
         .volume-text {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.85);
-            width: 30px;
+            width: 28px;
             text-align: right;
         }
 
         .mini-playlist-panel {
             position: fixed;
-            top: 25px;
-            right: 30px;
+            top: 20px;
+            right: 15px;
             z-index: 25;
-            width: 280px;
-            border-radius: 14px;
+            width: 220px;
+            border-radius: 12px;
             background: rgba(12, 12, 12, 0.98);
             border: var(--card-border);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
@@ -325,9 +323,9 @@
         }
 
         .playlist-toggle-header {
-            padding: 12px 16px;
-            font-size: 12px;
-            letter-spacing: 2px;
+            padding: 10px 12px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
             color: #ffffff;
             cursor: pointer;
             display: flex;
@@ -337,19 +335,14 @@
             user-select: none;
             font-weight: 700;
             text-transform: uppercase;
-            border-radius: 14px;
+            border-radius: 12px;
             position: relative;
             z-index: 2;
         }
 
-        /* Çizgiyi kaldıran ve köşeleri koruyan güncel kısım */
         .mini-playlist-panel.expanded .playlist-toggle-header {
-            border-radius: 14px;
+            border-radius: 12px;
             border-bottom: none;
-        }
-
-        .playlist-toggle-header:hover {
-            background: rgba(255, 255, 255, 0.08);
         }
 
         .playlist-items-container {
@@ -364,23 +357,20 @@
             background: rgba(12, 12, 12, 0.98);
             border: var(--card-border);
             border-top: none;
-            border-radius: 0 0 14px 14px;
+            border-radius: 0 0 12px 12px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
             transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
             z-index: 1;
         }
 
         .mini-playlist-panel.expanded .playlist-items-container {
-            max-height: calc(100vh - 120px);
-            padding: 8px;
+            max-height: calc(100vh - 100px);
+            padding: 6px;
             margin-top: 2px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .playlist-items-container::-webkit-scrollbar-track {
-            background: transparent;
+            width: 3px;
         }
         .playlist-items-container::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.4);
@@ -388,9 +378,9 @@
         }
 
         .playlist-item {
-            padding: 9px 12px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-size: 10px;
             color: #ffffff;
             background: rgba(25, 25, 25, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -401,13 +391,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .playlist-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.25);
+            margin-bottom: 3px;
         }
 
         .playlist-item.active {
@@ -447,12 +431,12 @@
         }
 
         .terminal-box {
-            width: 90%;
-            max-width: 540px;
-            height: 380px;
+            width: 92%;
+            max-width: 500px;
+            height: 350px;
             background: rgba(10, 10, 10, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 14px;
+            border-radius: 12px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
@@ -463,40 +447,33 @@
 
         .terminal-header {
             background: rgba(25, 25, 25, 0.8);
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.8);
-            letter-spacing: 1px;
         }
 
         .terminal-close {
             cursor: pointer;
             color: rgba(255, 255, 255, 0.7);
             font-weight: bold;
-            transition: color 0.2s;
-        }
-
-        .terminal-close:hover {
-            color: #ff5555;
         }
 
         .terminal-body {
-            padding: 15px;
+            padding: 12px;
             flex-grow: 1;
             overflow-y: auto;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--term-color, #ffffff);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            line-height: 1.5;
+            gap: 8px;
+            line-height: 1.4;
             position: relative;
-            text-shadow: 0 0 2px rgba(0,0,0,0.5);
         }
 
         #matrix-canvas {
@@ -518,32 +495,21 @@
         .cmd-link {
             color: #60a5fa;
             background: rgba(96, 165, 250, 0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 2px 5px;
+            border-radius: 3px;
             cursor: pointer;
-            transition: background 0.2s;
             display: inline-block;
             margin: 2px;
-            font-weight: 700;
-        }
-
-        .cmd-link:hover {
-            background: rgba(96, 165, 250, 0.3);
         }
 
         .terminal-input-line {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 10px 15px;
+            gap: 5px;
+            padding: 8px 12px;
             background: rgba(0, 0, 0, 0.4);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 2;
-        }
-
-        .terminal-input-line span {
-            color: #ffffff;
-            font-weight: bold;
         }
 
         .terminal-input {
@@ -552,9 +518,39 @@
             outline: none;
             color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             width: 100%;
+        }
+
+        /* Mobil Ekranlar İçin Özel Düzenlemeler (Medya Sorgusu) */
+        @media screen and (max-width: 768px) {
+            .volume-panel {
+                display: none !important; /* Mobilde çalışmadığı için gizlendi */
+            }
+            .top-center-title {
+                display: none; /* Mobilde yer kazanmak için üst başlık gizlendi */
+            }
+            .top-left-group {
+                top: 12px;
+                left: 12px;
+            }
+            .mini-playlist-panel {
+                top: 12px;
+                right: 12px;
+                width: 170px;
+            }
+            .live-clock {
+                bottom: 12px;
+                right: 12px;
+                font-size: 0.55rem;
+            }
+            .terminal-btn {
+                bottom: 12px;
+                left: 12px;
+                padding: 8px 12px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -575,7 +571,7 @@
             <div>PING: <span id="ping-val">12</span>ms</div>
         </div>
         <div class="visitor-counter">
-            👁️ Görüntülenme: <span id="visit-count">Yükleniyor...</span>
+            👁️ <span id="visit-count">...</span>
         </div>
     </div>
 
@@ -667,34 +663,32 @@
         const volumeIcon = document.getElementById('volume-icon');
         let lastVolume = 0.7;
 
-        volumeSlider.addEventListener('input', (e) => {
-            let val = e.target.value;
-            video.volume = val / 100;
-            volumeText.textContent = `${val}%`;
-            if (val == 0) {
-                volumeIcon.textContent = "🔇";
-            } else if (val < 40) {
-                volumeIcon.textContent = "🔈";
-            } else {
-                volumeIcon.textContent = "🔊";
-            }
-        });
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', (e) => {
+                let val = e.target.value;
+                video.volume = val / 100;
+                volumeText.textContent = `${val}%`;
+                if (val == 0) volumeIcon.textContent = "🔇";
+                else if (val < 40) volumeIcon.textContent = "🔈";
+                else volumeIcon.textContent = "🔊";
+            });
 
-        volumeIcon.addEventListener('click', () => {
-            if (video.volume > 0) {
-                lastVolume = video.volume;
-                video.volume = 0;
-                volumeSlider.value = 0;
-                volumeText.textContent = "0%";
-                volumeIcon.textContent = "🔇";
-            } else {
-                video.volume = lastVolume;
-                let percent = Math.round(lastVolume * 100);
-                volumeSlider.value = percent;
-                volumeText.textContent = `${percent}%`;
-                volumeIcon.textContent = percent < 40 ? "🔈" : "🔊";
-            }
-        });
+            volumeIcon.addEventListener('click', () => {
+                if (video.volume > 0) {
+                    lastVolume = video.volume;
+                    video.volume = 0;
+                    volumeSlider.value = 0;
+                    volumeText.textContent = "0%";
+                    volumeIcon.textContent = "🔇";
+                } else {
+                    video.volume = lastVolume;
+                    let percent = Math.round(lastVolume * 100);
+                    volumeSlider.value = percent;
+                    volumeText.textContent = `${percent}%`;
+                    volumeIcon.textContent = percent < 40 ? "🔈" : "🔊";
+                }
+            });
+        }
 
         function buildPlaylistUI() {
             playlistItemsContainer.innerHTML = '';
@@ -723,11 +717,8 @@
             
             const items = playlistItemsContainer.querySelectorAll('.playlist-item');
             items.forEach((item, idx) => {
-                if (idx === currentVideoIndex) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+                if (idx === currentVideoIndex) item.classList.add('active');
+                else item.classList.remove('active');
             });
 
             video.load();
@@ -840,9 +831,7 @@
             let cmd = cmdText.trim().toLowerCase();
             if (cmd !== '') commandHistory.push(cmdText);
 
-            if (matrixActive && cmd !== 'clear') {
-                stopMatrix();
-            }
+            if (matrixActive && cmd !== 'clear') stopMatrix();
             
             let userLine = document.createElement('div');
             userLine.innerHTML = `<span style="color:rgba(255,255,255,0.85);">> ${cmdText}</span>`;
@@ -852,77 +841,52 @@
 
             if (cmd === 'help') {
                 respLine.innerHTML = "Komut Listesi:<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sistem durumunu gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Ağ gecikmesini ölçer.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: IP ve konuma göre hava durumunu gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix efekti başlatır.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal temasını değiştirir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Ekranı temizler.";
+                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span><br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span><br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span><br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span><br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span><br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>";
             } else if (cmd === 'status') {
-                respLine.innerHTML = "Durum: [OK] <br>- Video Akışı: Aktif <br>- Ses Modülü: Aktif";
+                respLine.innerHTML = "Durum: [OK] <br>- Video Akışı: Aktif";
             } else if (cmd === 'ping') {
                 let currentPing = document.getElementById('ping-val').textContent;
                 respLine.innerHTML = `Gecikme: ${currentPing}ms`;
             } else if (cmd === 'weather') {
-                respLine.innerHTML = "IP adresi ve konum bilgileri alınıyor...";
+                respLine.innerHTML = "Konum bilgileri alınıyor...";
                 terminalBody.appendChild(respLine);
                 terminalBody.scrollTop = terminalBody.scrollHeight;
 
                 try {
                     let ipRes = await fetch('https://ipapi.co/json/');
                     let ipData = await ipRes.json();
-                    
-                    let ip = ipData.ip || "Bilinmiyor";
-                    let city = ipData.city || "Bilinmiyor";
-                    let region = ipData.region || "Bilinmiyor";
                     let lat = ipData.latitude;
                     let lon = ipData.longitude;
-
-                    if (!lat || !lon) {
-                        respLine.innerHTML = `IP Adresi: ${ip}<br>Konum bilgisi alınamadı.`;
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                        return;
-                    }
 
                     let weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
                     let weatherData = await weatherRes.json();
                     let temp = weatherData.current_weather.temperature;
                     let wind = weatherData.current_weather.windspeed;
-                    let code = weatherData.current_weather.weathercode;
-                    
-                    let condition = "Normal";
-                    if (code === 0) condition = "Açık / Güneşli";
-                    else if (code >= 1 && code <= 3) condition = "Parçalı / Çok Bulutlu";
-                    else if (code >= 51 && code <= 67) condition = "Yağmurlu";
-                    else if (code >= 71 && code <= 77) condition = "Karlı";
-                    else if (code >= 95) condition = "Fırtınalı";
 
-                    respLine.innerHTML = `IP Adresi: ${ip}<br>` +
-                                         `Konum: ${city} / ${region}<br>` +
+                    respLine.innerHTML = `Konum: ${ipData.city || 'Bilinmiyor'}<br>` +
                                          `- Sıcaklık: ${temp}°C<br>` +
-                                         `- Durum: ${condition}<br>` +
-                                         `- Rüzgar Hızı: ${wind} km/s`;
+                                         `- Rüzgar: ${wind} km/s`;
                 } catch (err) {
-                    respLine.innerHTML = "Veriler alınırken bir hata oluştu.";
+                    respLine.innerHTML = "Hava durumu alınamadı.";
                 }
                 terminalBody.scrollTop = terminalBody.scrollHeight;
                 terminalInput.value = '';
                 return;
             } else if (cmd === 'matrix') {
-                respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
+                respLine.innerHTML = "Matrix başlatıldı.";
                 startMatrix();
             } else if (cmd === 'theme') {
-                respLine.innerHTML = `Tema seçin:<br>` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme white\")' style='color:#ffffff;'>■ Beyaz</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#60a5fa;'>■ Mavi</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#c084fc;'>■ Mor</span>`;
+                respLine.innerHTML = `Renk seç: <span class='cmd-link' onclick='runCommand(\"theme white\")'>Beyaz</span> <span class='cmd-link' onclick='runCommand(\"theme blue\")'>Mavi</span>`;
             } else if (cmd.startsWith('theme ')) {
                 let colorName = cmd.split(' ')[1];
-                let colorHex = '#ffffff';
-                if (colorName === 'blue') colorHex = '#60a5fa';
-                else if (colorName === 'purple') colorHex = '#c084fc';
+                let colorHex = colorName === 'blue' ? '#60a5fa' : '#ffffff';
                 document.documentElement.style.setProperty('--term-color', colorHex);
-                respLine.innerHTML = `Tema güncellendi: ${colorName}`;
+                respLine.innerHTML = `Tema: ${colorName}`;
             } else if (cmd === 'clear') {
                 terminalBody.innerHTML = '<canvas id="matrix-canvas"></canvas>';
                 terminalInput.value = '';
@@ -930,7 +894,7 @@
             } else if (cmd === '') {
                 respLine.innerHTML = "";
             } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. 'help' yazabilirsin.`;
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'.`;
             }
             
             terminalBody.appendChild(respLine);
@@ -939,9 +903,7 @@
         }
 
         terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                runCommand(this.value);
-            }
+            if (e.key === 'Enter') runCommand(this.value);
         });
 
         const canvas = document.getElementById('particle-canvas');
