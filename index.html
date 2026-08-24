@@ -175,7 +175,7 @@
             50% { opacity: 1; }
         }
 
-        /* Ana Kapsayıcı (Kart ve Mini Playlist Panosu İçin) */
+        /* Ana Kapsayıcı */
         .main-wrapper {
             position: relative;
             z-index: 10;
@@ -259,9 +259,10 @@
             transform: translateY(-1px);
         }
 
-        /* Sosyal Medya Butonları */
+        /* Sosyal Medya Butonları (Spotify, Kılıç, Instagram) */
         .social-container {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 8px;
             margin-bottom: 12px;
@@ -286,7 +287,13 @@
             color: #fff;
         }
 
-        /* Ses ve Medya Kontrol Kutusu */
+        .social-divider {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 4px;
+        }
+
+        /* Ses, Köpek Balığı ve Medya Kontrol Kutusu */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -314,7 +321,7 @@
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
-            width: 60px;
+            width: 55px;
             height: 3px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
@@ -332,6 +339,18 @@
             cursor: pointer;
         }
 
+        /* Aradaki Yatay Köpek Balığı */
+        .shark-divider {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            filter: grayscale(100%) brightness(0.7);
+            opacity: 0.75;
+            transition: opacity 0.2s;
+        }
+        .shark-divider:hover {
+            opacity: 1;
+        }
+
         .next-video-btn {
             background: transparent;
             border: none;
@@ -346,7 +365,7 @@
             transform: scale(1.1);
         }
 
-        /* --- Yatay Açılır Mini Playlist Panosu --- */
+        /* Mini Playlist Panosu */
         .mini-playlist-panel {
             width: 100%;
             background: rgba(12, 12, 12, 0.35);
@@ -356,13 +375,13 @@
             border-radius: 12px;
             overflow: hidden;
             transition: max-height 0.4s ease, padding 0.4s ease;
-            max-height: 42px; /* Kapalıyken sadece başlık çubuğu görünür */
+            max-height: 42px;
             display: flex;
             flex-direction: column;
         }
 
         .mini-playlist-panel.expanded {
-            max-height: 220px; /* Açıldığında içeriğin sığacağı yükseklik */
+            max-height: 220px;
         }
 
         .playlist-toggle-header {
@@ -392,7 +411,6 @@
             gap: 4px;
         }
 
-        /* Kaydırma çubuğu tasarımı */
         .playlist-items-container::-webkit-scrollbar {
             width: 4px;
         }
@@ -401,12 +419,13 @@
             border-radius: 2px;
         }
 
+        /* Playlist İsimleri Artık Net Görünüyor */
         .playlist-item {
             padding: 6px 10px;
             font-size: 0.68rem;
-            color: rgba(255, 255, 255, 0.65);
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -417,15 +436,15 @@
         }
 
         .playlist-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
         .playlist-item.active {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.18);
             color: #fff;
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
 
@@ -596,7 +615,7 @@
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
-    <!-- Sol Üst Bilgi Grubu (Sistem Durumu + Ziyaretçi Sayacı) -->
+    <!-- Sol Üst Bilgi Grubu -->
     <div class="top-left-group">
         <div class="system-status">
             <div class="status-row">
@@ -641,19 +660,20 @@
                 <button id="open-terminal" class="terminal-btn" style="width: 100%;">>_ Terminal</button>
             </div>
 
-            <!-- Sosyal Medya Butonları -->
+            <!-- Sosyal Medya Butonları (GitHub kaldırıldı, araya kılıç eklendi) -->
             <div class="social-container">
                 <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-btn">Spotify</a>
+                <span class="social-divider" title="Kılıç">🗡️</span>
                 <a href="https://www.instagram.com/radwoxie/" target="_blank" class="social-btn">Instagram</a>
-                <a href="https://github.com" target="_blank" class="social-btn">GitHub</a>
             </div>
 
-            <!-- Müzik/Video Kontrol Kutusu -->
+            <!-- Ses, Köpek Balığı ve Medya Kontrol Kutusu -->
             <div class="audio-player">
                 <div class="volume-bar">
                     <span id="mute-btn">🔊</span>
                     <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
                 </div>
+                <span class="shark-divider" title="Köpek Balığı">🦈</span>
                 <button id="next-track-btn" class="next-video-btn" title="Sonraki Video">⏭</button>
             </div>
 
@@ -665,7 +685,7 @@
             </div>
         </div>
 
-        <!-- Mini Playlist Panosu (Cam Panonun Altında) -->
+        <!-- Mini Playlist Panosu -->
         <div id="mini-playlist-panel" class="mini-playlist-panel">
             <div id="playlist-toggle-header" class="playlist-toggle-header">
                 <span>🎵 Playlist / Müzik Listesi</span>
@@ -734,7 +754,6 @@
 
         let lastVolume = 70;
 
-        // Mini Playlist Listesini Oluştur
         function buildPlaylistUI() {
             playlistItemsContainer.innerHTML = '';
             videoPlaylist.forEach((v, index) => {
@@ -750,7 +769,6 @@
         }
         buildPlaylistUI();
 
-        // Panoyu Aç/Kapat
         playlistToggleHeader.addEventListener('click', () => {
             miniPlaylistPanel.classList.toggle('expanded');
             playlistArrow.style.transform = miniPlaylistPanel.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -795,7 +813,6 @@
             video.currentTime = selectedVideo.startTime || 0;
             trackTitleDisplay.textContent = `// ${selectedVideo.title}`;
             
-            // Aktif sınıfını güncelle
             const items = playlistItemsContainer.querySelectorAll('.playlist-item');
             items.forEach((item, idx) => {
                 if (idx === currentVideoIndex) {
