@@ -149,7 +149,6 @@
             font-weight: 600;
         }
 
-        /* SAAT: Sağ Altta */
         .live-clock {
             position: fixed;
             bottom: 20px;
@@ -260,7 +259,6 @@
             color: #fff;
         }
 
-        /* SES PANELİ: Sağ Altta */
         .volume-panel {
             position: fixed;
             bottom: 73px;
@@ -312,7 +310,6 @@
             text-align: right;
         }
 
-        /* PLAYLIST: Kesilmeyi Önlemek İçin Akıllı Boyutlandırma ve Dikey Kaydırma */
         .mini-playlist-panel {
             position: fixed;
             top: 25px;
@@ -345,9 +342,10 @@
             z-index: 2;
         }
 
+        /* Çizgiyi kaldıran ve köşeleri koruyan güncel kısım */
         .mini-playlist-panel.expanded .playlist-toggle-header {
-            border-radius: 14px 14px 0 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            border-bottom: none;
         }
 
         .playlist-toggle-header:hover {
@@ -373,7 +371,7 @@
         }
 
         .mini-playlist-panel.expanded .playlist-items-container {
-            max-height: calc(100vh - 120px); /* Ekran boyuna göre dinamik sınır, asla dışarı taşmaz */
+            max-height: calc(100vh - 120px);
             padding: 8px;
             margin-top: 2px;
         }
@@ -581,7 +579,6 @@
         </div>
     </div>
 
-    <!-- SAĞ ÜST PLAYLIST -->
     <div id="mini-playlist-panel" class="mini-playlist-panel">
         <div id="playlist-toggle-header" class="playlist-toggle-header">
             <span>Playlist</span>
@@ -590,14 +587,12 @@
         <div id="playlist-items-container" class="playlist-items-container"></div>
     </div>
 
-    <!-- SAĞ ALT SES PANELİ -->
     <div class="volume-panel">
         <div id="volume-icon" class="volume-icon">🔊</div>
         <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="70">
         <div id="volume-text" class="volume-text">70%</div>
     </div>
 
-    <!-- SAĞ ALT SAAT -->
     <div class="live-clock">
         <div id="live-date">--.--.----</div>
         <div id="live-time" style="color: #fff; font-weight: 600;">--:--:--</div>
@@ -859,7 +854,7 @@
                 respLine.innerHTML = "Komut Listesi:<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sistem durumunu gösterir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Ağ gecikmesini ölçer.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Cihaz konumuna göre hava durumunu gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: IP ve konuma göre hava durumunu gösterir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix efekti başlatır.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal temasını değiştirir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Ekranı temizler.";
@@ -869,42 +864,48 @@
                 let currentPing = document.getElementById('ping-val').textContent;
                 respLine.innerHTML = `Gecikme: ${currentPing}ms`;
             } else if (cmd === 'weather') {
-                respLine.innerHTML = "Konum alınıyor ve hava durumu sorgulanıyor...";
+                respLine.innerHTML = "IP adresi ve konum bilgileri alınıyor...";
                 terminalBody.appendChild(respLine);
                 terminalBody.scrollTop = terminalBody.scrollHeight;
 
-                if (!navigator.geolocation) {
-                    respLine.innerHTML = "Hata: Tarayıcınız konum servislerini desteklemiyor.";
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                    return;
-                }
+                try {
+                    let ipRes = await fetch('https://ipapi.co/json/');
+                    let ipData = await ipRes.json();
+                    
+                    let ip = ipData.ip || "Bilinmiyor";
+                    let city = ipData.city || "Bilinmiyor";
+                    let region = ipData.region || "Bilinmiyor";
+                    let lat = ipData.latitude;
+                    let lon = ipData.longitude;
 
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    try {
-                        let res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-                        let data = await res.json();
-                        let temp = data.current_weather.temperature;
-                        let wind = data.current_weather.windspeed;
-                        let code = data.current_weather.weathercode;
-                        
-                        let condition = "Normal";
-                        if (code === 0) condition = "Açık / Güneşli";
-                        else if (code >= 1 && code <= 3) condition = "Parçalı / Çok Bulutlu";
-                        else if (code >= 51 && code <= 67) condition = "Yağmurlu";
-                        else if (code >= 71 && code <= 77) condition = "Karlı";
-                        else if (code >= 95) condition = "Fırtınalı";
-
-                        respLine.innerHTML = `Konum Hava Durumu:<br>- Sıcaklık: ${temp}°C<br>- Durum: ${condition}<br>- Rüzgar Hızı: ${wind} km/s`;
-                    } catch (err) {
-                        respLine.innerHTML = "Hava durumu verisi alınamadı.";
+                    if (!lat || !lon) {
+                        respLine.innerHTML = `IP Adresi: ${ip}<br>Konum bilgisi alınamadı.`;
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                        return;
                     }
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                }, () => {
-                    respLine.innerHTML = "Hata: Konum izni reddedildi.";
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                });
+
+                    let weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    let weatherData = await weatherRes.json();
+                    let temp = weatherData.current_weather.temperature;
+                    let wind = weatherData.current_weather.windspeed;
+                    let code = weatherData.current_weather.weathercode;
+                    
+                    let condition = "Normal";
+                    if (code === 0) condition = "Açık / Güneşli";
+                    else if (code >= 1 && code <= 3) condition = "Parçalı / Çok Bulutlu";
+                    else if (code >= 51 && code <= 67) condition = "Yağmurlu";
+                    else if (code >= 71 && code <= 77) condition = "Karlı";
+                    else if (code >= 95) condition = "Fırtınalı";
+
+                    respLine.innerHTML = `IP Adresi: ${ip}<br>` +
+                                         `Konum: ${city} / ${region}<br>` +
+                                         `- Sıcaklık: ${temp}°C<br>` +
+                                         `- Durum: ${condition}<br>` +
+                                         `- Rüzgar Hızı: ${wind} km/s`;
+                } catch (err) {
+                    respLine.innerHTML = "Veriler alınırken bir hata oluştu.";
+                }
+                terminalBody.scrollTop = terminalBody.scrollHeight;
                 terminalInput.value = '';
                 return;
             } else if (cmd === 'matrix') {
