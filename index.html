@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>radwlab :: Interactive</title>
-    <!-- Favicon Kesin Çözüm -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
+    <!-- Kesin Favicon Tanımı -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         :root {
             --term-color: #ffffff;
@@ -304,7 +304,7 @@
             text-align: right;
         }
 
-        /* MÜZİK LİSTESİ - AŞAĞI AÇILIR HATASIZ YAPI */
+        /* MÜZİK LİSTESİ - YUKARI DOĞRU AÇILAN YAPIT */
         .mini-playlist-panel {
             position: fixed;
             bottom: 30px;
@@ -338,8 +338,8 @@
         }
 
         .mini-playlist-panel.expanded .playlist-toggle-header {
-            border-radius: 14px 14px 0 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 14px 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .playlist-toggle-header:hover {
@@ -348,7 +348,7 @@
 
         .playlist-items-container {
             position: absolute;
-            top: 100%;
+            bottom: 100%;
             left: 0;
             width: 100%;
             max-height: 0;
@@ -357,9 +357,9 @@
             flex-direction: column;
             background: rgba(12, 12, 12, 0.95);
             border: var(--card-border);
-            border-top: none;
-            border-radius: 0 0 14px 14px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: none;
+            border-radius: 14px 14px 0 0;
+            box-shadow: 0 -15px 30px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
@@ -369,7 +369,7 @@
         .mini-playlist-panel.expanded .playlist-items-container {
             max-height: 240px;
             padding: 10px;
-            margin-top: 2px;
+            margin-bottom: 2px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
@@ -603,11 +603,11 @@
     </div>
 
     <div id="mini-playlist-panel" class="mini-playlist-panel">
+        <div id="playlist-items-container" class="playlist-items-container"></div>
         <div id="playlist-toggle-header" class="playlist-toggle-header">
             <span>Müzik Listesi</span>
-            <span id="playlist-arrow">▼</span>
+            <span id="playlist-arrow">▲</span>
         </div>
-        <div id="playlist-items-container" class="playlist-items-container"></div>
     </div>
 
     <div id="terminal-modal" class="terminal-modal">
