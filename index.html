@@ -24,7 +24,6 @@
             background: #050505;
         }
 
-        /* Parçacık Efekti Kanvası */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -35,7 +34,6 @@
             z-index: 1;
         }
 
-        /* İlk Giriş Ekranı */
         .entry-screen {
             position: fixed;
             top: 0;
@@ -73,7 +71,6 @@
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan Videosu */
         .bg-video {
             position: absolute;
             top: 0;
@@ -88,7 +85,6 @@
             perspective: 1000px;
         }
 
-        /* Sol Üst Bilgi Grubu */
         .top-left-group {
             position: fixed;
             top: 25px;
@@ -134,7 +130,6 @@
             font-weight: 600;
         }
 
-        /* Canlı Saat Widget'ı (Sağ Üst) */
         .live-clock {
             position: fixed;
             top: 25px;
@@ -173,7 +168,6 @@
             50% { opacity: 1; }
         }
 
-        /* Ana Kapsayıcı */
         .main-wrapper {
             position: relative;
             z-index: 10;
@@ -185,7 +179,6 @@
             max-width: 380px;
         }
 
-        /* Ana Kart */
         .card {
             width: 100%;
             padding: 35px 25px 25px 25px;
@@ -257,60 +250,11 @@
             transform: translateY(-1px);
         }
 
-        /* Sosyal Medya İkonları ve Kılıç Ayırıcı */
-        .social-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .social-icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .social-icon-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        .social-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        /* Ortadaki Kılıç Görseli */
-        .sword-divider {
-            width: 75px;
-            height: 18px;
-            object-fit: contain;
-            filter: grayscale(100%) brightness(0.85);
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-        .sword-divider:hover {
-            opacity: 1;
-        }
-
-        /* Ses, Köpek Balığı Görseli ve Medya Kontrolü */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
-            padding: 8px 14px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -322,19 +266,21 @@
         .volume-bar {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            flex-grow: 1;
+            margin-right: 12px;
         }
 
         #mute-btn {
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
-            width: 50px;
-            height: 3px;
+            width: 100%;
+            height: 4px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
             outline: none;
@@ -344,24 +290,11 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
-        }
-
-        /* Köpek Balığı Görseli Ayırıcı */
-        .shark-divider {
-            width: 48px;
-            height: 22px;
-            object-fit: contain;
-            filter: grayscale(100%) brightness(0.8);
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-        .shark-divider:hover {
-            opacity: 1;
         }
 
         .next-video-btn {
@@ -369,7 +302,7 @@
             border: none;
             color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             transition: transform 0.2s, color 0.2s;
         }
 
@@ -378,7 +311,6 @@
             transform: scale(1.1);
         }
 
-        /* Mini Playlist Panosu (İsimlerin kesilmesi düzeltildi) */
         .mini-playlist-panel {
             width: 100%;
             background: rgba(12, 12, 12, 0.35);
@@ -387,14 +319,14 @@
             -webkit-backdrop-filter: blur(14px);
             border-radius: 12px;
             overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
+            transition: max-height 0.4s ease;
             max-height: 44px;
             display: flex;
             flex-direction: column;
         }
 
         .mini-playlist-panel.expanded {
-            max-height: 240px;
+            max-height: 260px;
         }
 
         .playlist-toggle-header {
@@ -418,7 +350,7 @@
         .playlist-items-container {
             padding: 8px 10px 12px 10px;
             overflow-y: auto;
-            max-height: 180px;
+            max-height: 200px;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -433,8 +365,8 @@
         }
 
         .playlist-item {
-            padding: 8px 12px;
-            font-size: 0.7rem;
+            padding: 9px 12px;
+            font-size: 0.72rem;
             color: rgba(255, 255, 255, 0.9);
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -445,7 +377,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.2;
+            line-height: 1.4;
+            height: 34px;
+            display: flex;
+            align-items: center;
         }
 
         .playlist-item:hover {
@@ -461,7 +396,6 @@
             font-weight: 600;
         }
 
-        /* Terminal Modalı */
         .terminal-modal {
             position: fixed;
             top: 0;
@@ -527,13 +461,15 @@
             padding: 15px;
             flex-grow: 1;
             overflow-y: auto;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: var(--term-color, #ffffff);
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            line-height: 1.4;
+            gap: 10px;
+            line-height: 1.5;
             position: relative;
+            text-shadow: 0 0 1px rgba(255,255,255,0.3);
         }
 
         #matrix-canvas {
@@ -554,17 +490,18 @@
 
         .cmd-link {
             color: #fff;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.12);
             padding: 2px 6px;
             border-radius: 4px;
             cursor: pointer;
             transition: background 0.2s;
             display: inline-block;
             margin: 2px;
+            font-weight: 700;
         }
 
         .cmd-link:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .terminal-input-line {
@@ -578,7 +515,8 @@
         }
 
         .terminal-input-line span {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
         }
 
         .terminal-input {
@@ -587,11 +525,19 @@
             outline: none;
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
             width: 100%;
         }
 
-        /* Kayan Yazı Şeridi */
+        .quote-tr {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
         .marquee-container {
             position: absolute;
             bottom: -30px;
@@ -623,12 +569,10 @@
 </head>
 <body>
 
-    <!-- İlk Karşılama Ekranı -->
     <div id="entry-screen" class="entry-screen">
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
-    <!-- Sol Üst Bilgi Grubu -->
     <div class="top-left-group">
         <div class="system-status">
             <div class="status-row">
@@ -642,61 +586,37 @@
         </div>
     </div>
 
-    <!-- Canlı Saat Widget'ı (Sağ Üst) -->
     <div class="live-clock">
         <div id="live-date">--.--.----</div>
         <div id="live-time" style="color: #fff; font-weight: 600;">--:--:--</div>
     </div>
 
-    <!-- Arka Plan Videosu -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline crossorigin="anonymous">
         <source src="video.mp4" type="video/mp4">
     </video>
 
-    <!-- Gizli Renk Analiz Kanvası -->
     <canvas id="color-canvas" style="display:none;"></canvas>
-
-    <!-- Parçacık Efekti Kanvası -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Ana Kapsayıcı -->
     <div class="main-wrapper">
-        <!-- Ana Kart -->
         <div class="card">
             <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
             <div class="title">radw</div>
             <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
-            <!-- Terminal Butonu -->
             <div class="action-container">
                 <button id="open-terminal" class="terminal-btn" style="width: 100%;">>_ Terminal</button>
             </div>
 
-            <!-- Sosyal Medya İkonları ve Ortada Kılıç -->
-            <div class="social-container">
-                <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-icon-btn" title="Spotify">
-                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.76 1.44.36.24.48.72.221 1.06zm1.44-3.84c-.301.42-.84.54-1.26.24-3.24-1.98-8.16-2.58-11.94-1.41-.48.15-.99-.12-1.14-.6-.15-.48.12-.99.6-1.14 4.2-1.26 9.66-.6 13.56 1.8 ival: .42.3.54.84.18 1.11zm.12-4.02C14.88 7.44 8.64 7.2 5.04 8.31c-.6.18-1.23-.15-1.41-.75-.18-.6.15-1.23.75-1.41 4.2-1.26 11.16-0.96 15.42 1.56.54.3.72 1.02.42 1.56-.3.54-1.02.72-1.56.42z"/></svg>
-                </a>
-                
-                <img src="sword.png" alt="Kılıç" class="sword-divider" title="Dark Sword">
-
-                <a href="https://www.instagram.com/radwoxie/" target="_blank" class="social-icon-btn" title="Instagram">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </a>
-            </div>
-
-            <!-- Ses, Köpek Balığı ve Medya Kontrolü -->
             <div class="audio-player">
                 <div class="volume-bar">
                     <span id="mute-btn">🔊</span>
                     <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
                 </div>
-                <img src="shark.jpg" alt="Köpek Balığı" class="shark-divider" title="Dark Shark">
                 <button id="next-track-btn" class="next-video-btn" title="Sonraki Video">⏭</button>
             </div>
 
-            <!-- Kayan Yazı -->
             <div class="marquee-container">
                 <div class="marquee-text">
                     // MERT KESKİN // RADAR AKTİF // SYSTEM READY // MERT KESKİN // RADAR AKTİF // SYSTEM READY //
@@ -704,19 +624,15 @@
             </div>
         </div>
 
-        <!-- Mini Playlist Panosu -->
         <div id="mini-playlist-panel" class="mini-playlist-panel">
             <div id="playlist-toggle-header" class="playlist-toggle-header">
                 <span>🎵 Playlist / Müzik Listesi</span>
                 <span id="playlist-arrow">▼</span>
             </div>
-            <div id="playlist-items-container" class="playlist-items-container">
-                <!-- Javascript ile dinamik dolacak -->
-            </div>
+            <div id="playlist-items-container" class="playlist-items-container"></div>
         </div>
     </div>
 
-    <!-- Terminal Modalı -->
     <div id="terminal-modal" class="terminal-modal">
         <div class="terminal-box">
             <div class="terminal-header">
@@ -725,7 +641,7 @@
             </div>
             <div id="terminal-body" class="terminal-body">
                 <canvas id="matrix-canvas"></canvas>
-                <div>RADWLAB Interactive Terminal v2.8</div>
+                <div>RADWLAB Interactive Terminal v2.9</div>
                 <div>Yardım için 'help' yazabilirsin.</div>
             </div>
             <div class="terminal-input-line">
@@ -1006,6 +922,51 @@
             { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." }
         ];
 
+        async function fetchWeather(respLine) {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    try {
+                        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                        const data = await res.json();
+                        if (data && data.current_weather) {
+                            const temp = data.current_weather.temperature;
+                            const wind = data.current_weather.windspeed;
+                            respLine.innerHTML = `Konum Hava Durumu:<br>- Sıcaklık: ${temp}°C<br>- Rüzgar Hızı: ${wind} km/s`;
+                        } else {
+                            respLine.innerHTML = "Hava durumu verisi alınamadı.";
+                        }
+                    } catch (err) {
+                        respLine.innerHTML = "Hava durumu servisine bağlanılamadı.";
+                    }
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                }, async (error) => {
+                    try {
+                        const ipRes = await fetch('https://ipapi.co/json/');
+                        const ipData = await ipRes.json();
+                        const lat = ipData.latitude;
+                        const lon = ipData.longitude;
+                        const city = ipData.city || "Bilinmiyor";
+                        
+                        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                        const data = await res.json();
+                        if (data && data.current_weather) {
+                            const temp = data.current_weather.temperature;
+                            respLine.innerHTML = `Konum (${city}):<br>- Sıcaklık: ${temp}°C`;
+                        } else {
+                            respLine.innerHTML = "Konum alınamadı.";
+                        }
+                    } catch (e) {
+                        respLine.innerHTML = "Konum izni reddedildi ve IP tespiti başarısız oldu.";
+                    }
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                });
+            } else {
+                respLine.innerHTML = "Tarayıcınız konum özelliğini desteklemiyor.";
+            }
+        }
+
         async function runCommand(cmdText) {
             let cmd = cmdText.trim().toLowerCase();
             if (cmd !== '') commandHistory.push(cmdText);
@@ -1015,7 +976,7 @@
             }
             
             let userLine = document.createElement('div');
-            userLine.innerHTML = `<span style="color:rgba(255,255,255,0.7);">> ${cmdText}</span>`;
+            userLine.innerHTML = `<span style="color:rgba(255,255,255,0.85);">> ${cmdText}</span>`;
             terminalBody.appendChild(userLine);
 
             let respLine = document.createElement('div');
@@ -1024,6 +985,7 @@
                 respLine.innerHTML = "Komut Listesi:<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sistem durumunu gösterir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Ağ gecikmesini ölçer.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu gösterir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>: Rastgele söz getirir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix efekti başlatır.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal temasını değiştirir.<br>" +
@@ -1033,9 +995,16 @@
             } else if (cmd === 'ping') {
                 let currentPing = document.getElementById('ping-val').textContent;
                 respLine.innerHTML = `Gecikme: ${currentPing}ms`;
+            } else if (cmd === 'weather') {
+                respLine.innerHTML = "Konum alınıyor ve hava durumu sorgulanıyor...";
+                terminalBody.appendChild(respLine);
+                terminalInput.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                fetchWeather(respLine);
+                return;
             } else if (cmd === 'quote') {
                 let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
-                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.65rem; opacity:0.6; font-style:italic;">"${randomQ.tr}"</span>`;
+                respLine.innerHTML = `"${randomQ.en}"<div class="quote-tr">"${randomQ.tr}"</div>`;
             } else if (cmd === 'matrix') {
                 respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
                 startMatrix();
