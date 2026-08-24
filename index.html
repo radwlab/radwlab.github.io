@@ -149,7 +149,7 @@
             font-weight: 600;
         }
 
-        /* SAAT: Sağ Altta (Ses Panelinin Altında ve Aralarında Net Boşluk Var) */
+        /* SAAT: Sağ Altta */
         .live-clock {
             position: fixed;
             bottom: 20px;
@@ -260,7 +260,7 @@
             color: #fff;
         }
 
-        /* SES PANELİ: Sağ Altta, Saatin Üstünde */
+        /* SES PANELİ: Sağ Altta */
         .volume-panel {
             position: fixed;
             bottom: 73px;
@@ -312,7 +312,7 @@
             text-align: right;
         }
 
-        /* PLAYLIST: Sağ Üstte, Yazıların Kesilmemesi İçin Yükseklik Düzenlendi */
+        /* PLAYLIST: Kesilmeyi Önlemek İçin Akıllı Boyutlandırma ve Dikey Kaydırma */
         .mini-playlist-panel {
             position: fixed;
             top: 25px;
@@ -373,7 +373,7 @@
         }
 
         .mini-playlist-panel.expanded .playlist-items-container {
-            max-height: 340px; /* Yazıların tam görünmesi için kutu yüksekliği artırıldı */
+            max-height: calc(100vh - 120px); /* Ekran boyuna göre dinamik sınır, asla dışarı taşmaz */
             padding: 8px;
             margin-top: 2px;
         }
