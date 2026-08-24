@@ -210,17 +210,6 @@
             color: rgba(255, 255, 255, 0.95);
         }
 
-        /* Mert Keskin Yazısı: Net, arka plana göre dinamik renk alan yapıda */
-        .subtitle-mert {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--term-color);
-            margin-bottom: 6px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
         .current-track-info {
             font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.6);
@@ -280,7 +269,6 @@
             justify-content: space-between;
             font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 6px;
         }
 
         .volume-bar {
@@ -555,34 +543,6 @@
             font-weight: 600;
             width: 100%;
         }
-
-        .marquee-container {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
-            width: 100%;
-            height: 25px;
-            overflow: hidden;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-        }
-
-        .marquee-text {
-            display: inline-block;
-            white-space: nowrap;
-            font-weight: 500;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            animation: marqueeScroll 25s linear infinite;
-        }
-
-        @keyframes marqueeScroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
     </style>
 </head>
 <body>
@@ -621,7 +581,6 @@
             <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
             <div class="title">radw</div>
-            <div class="subtitle-mert">Mert Keskin</div>
             <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
             <div class="action-container">
@@ -637,12 +596,6 @@
                     <button id="prev-track-btn" class="ctrl-video-btn" title="Önceki Video">⏮</button>
                     <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
                     <button id="next-track-btn" class="ctrl-video-btn" title="Sonraki Video">⏭</button>
-                </div>
-            </div>
-
-            <div class="marquee-container">
-                <div class="marquee-text">
-                    // MERT KESKİN // RADAR AKTİF // SYSTEM READY // MERT KESKİN // RADAR AKTİF // SYSTEM READY //
                 </div>
             </div>
         </div>
