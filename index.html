@@ -96,10 +96,10 @@
         }
 
         .system-status {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
@@ -111,10 +111,10 @@
         }
 
         .visitor-counter {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
@@ -135,10 +135,10 @@
             top: 25px;
             right: 25px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
@@ -179,15 +179,16 @@
             max-width: 380px;
         }
 
+        /* Cam efekti güçlendirildi, arka plan çok daha net görünmesi için koyuluk azaltıldı */
         .card {
             width: 100%;
             padding: 35px 25px 25px 25px;
-            background: rgba(12, 12, 12, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: rgba(20, 20, 20, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
@@ -196,9 +197,9 @@
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             margin-bottom: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .title {
@@ -212,7 +213,7 @@
 
         .current-track-info {
             font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
             letter-spacing: 1px;
             margin-bottom: 16px;
             white-space: nowrap;
@@ -231,34 +232,43 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 10px;
-            padding: 8px 14px;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.95);
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
         }
 
         .terminal-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+            border-color: rgba(255, 255, 255, 0.45);
             color: #fff;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .terminal-btn:active {
+            transform: translateY(0);
         }
 
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 10px 14px;
+            border-radius: 8px;
+            padding: 6px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 6px;
         }
@@ -266,21 +276,21 @@
         .volume-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             flex-grow: 1;
-            margin-right: 12px;
+            margin-right: 10px;
         }
 
         #mute-btn {
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 4px;
+            height: 3px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
             outline: none;
@@ -290,8 +300,8 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
@@ -300,7 +310,7 @@
         .player-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .ctrl-video-btn {
@@ -308,7 +318,7 @@
             border: none;
             color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: transform 0.2s, color 0.2s;
         }
 
@@ -319,10 +329,10 @@
 
         .mini-playlist-panel {
             width: 100%;
-            background: rgba(12, 12, 12, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: rgba(20, 20, 20, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 12px;
             overflow: hidden;
             transition: max-height 0.4s ease;
@@ -344,12 +354,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             transition: background 0.2s;
         }
 
         .playlist-toggle-header:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             color: #fff;
         }
 
@@ -366,7 +376,7 @@
             width: 4px;
         }
         .playlist-items-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 2px;
         }
 
@@ -396,7 +406,7 @@
         }
 
         .playlist-item.active {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.2);
             color: #fff;
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
@@ -408,9 +418,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -429,10 +439,10 @@
             width: 90%;
             max-width: 540px;
             height: 380px;
-            background: rgba(10, 10, 10, 0.88);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(12, 12, 12, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             font-family: 'Courier New', Courier, monospace;
@@ -441,20 +451,20 @@
         }
 
         .terminal-header {
-            background: rgba(20, 20, 20, 0.6);
+            background: rgba(20, 20, 20, 0.5);
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             letter-spacing: 1px;
         }
 
         .terminal-close {
             cursor: pointer;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             font-weight: bold;
             transition: color 0.2s;
         }
@@ -515,8 +525,8 @@
             align-items: center;
             gap: 6px;
             padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 2;
         }
 
@@ -536,14 +546,6 @@
             width: 100%;
         }
 
-        .quote-tr {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 2px;
-            letter-spacing: 0.5px;
-        }
-
         .marquee-container {
             position: absolute;
             bottom: -30px;
@@ -561,7 +563,7 @@
             white-space: nowrap;
             font-weight: 500;
             font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
             text-transform: uppercase;
             letter-spacing: 4px;
             animation: marqueeScroll 25s linear infinite;
@@ -612,7 +614,7 @@
             <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
             <div class="action-container">
-                <button id="open-terminal" class="terminal-btn" style="width: 100%;">>_ Terminal</button>
+                <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
             </div>
 
             <div class="audio-player">
@@ -622,6 +624,7 @@
                 </div>
                 <div class="player-controls">
                     <button id="prev-track-btn" class="ctrl-video-btn" title="Önceki Video">⏮</button>
+                    <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
                     <button id="next-track-btn" class="ctrl-video-btn" title="Sonraki Video">⏭</button>
                 </div>
             </div>
@@ -691,6 +694,7 @@
         const muteBtn = document.getElementById('mute-btn');
         const nextTrackBtn = document.getElementById('next-track-btn');
         const prevTrackBtn = document.getElementById('prev-track-btn');
+        const playPauseBtn = document.getElementById('play-pause-btn');
         
         const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
         const playlistToggleHeader = document.getElementById('playlist-toggle-header');
@@ -769,6 +773,7 @@
 
             video.load();
             video.play().then(() => {
+                playPauseBtn.textContent = '⏸';
                 setTimeout(extractVideoColor, 500);
             }).catch(() => {});
         }
@@ -783,6 +788,18 @@
             e.stopPropagation();
             let prevIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
             loadAndPlayVideo(prevIndex);
+        });
+
+        playPauseBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (video.paused) {
+                video.play().then(() => {
+                    playPauseBtn.textContent = '⏸';
+                }).catch(() => {});
+            } else {
+                video.pause();
+                playPauseBtn.textContent = '▶';
+            }
         });
 
         video.addEventListener('timeupdate', function() {
@@ -838,7 +855,6 @@
             }
         });
 
-        // Gerçek global (ortak) görüntülenme sayacı (CountAPI servisi üzerinden)
         function updateVisitorCounter() {
             fetch('https://api.countapi.xyz/hit/radwlab-interactive/visits')
                 .then(response => response.json())
@@ -846,7 +862,6 @@
                     document.getElementById('visit-count').textContent = data.value;
                 })
                 .catch(error => {
-                    // Alternatif yedek sayaç servisi veya hata durumu
                     document.getElementById('visit-count').textContent = "1425";
                 });
         }
@@ -930,12 +945,6 @@
             }
         }
 
-        const quotes = [
-            { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
-            { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
-            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." }
-        ];
-
         async function fetchWeather(respLine) {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
@@ -1000,7 +1009,6 @@
                     "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sistem durumunu gösterir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Ağ gecikmesini ölçer.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>: Rastgele söz getirir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix efekti başlatır.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal temasını değiştirir.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Ekranı temizler.";
@@ -1016,9 +1024,6 @@
                 terminalBody.scrollTop = terminalBody.scrollHeight;
                 fetchWeather(respLine);
                 return;
-            } else if (cmd === 'quote') {
-                let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
-                respLine.innerHTML = `"${randomQ.en}"<div class="quote-tr">"${randomQ.tr}"</div>`;
             } else if (cmd === 'matrix') {
                 respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
                 startMatrix();
