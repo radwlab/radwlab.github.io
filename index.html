@@ -79,10 +79,33 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            filter: brightness(1);
+            filter: contrast(1.02) saturate(1.05);
             transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .top-center-title {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @keyframes titleGlow {
+            0% { opacity: 0.7; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            100% { opacity: 1; text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4); }
         }
 
         .top-left-group {
@@ -181,7 +204,7 @@
 
         .card {
             width: 100%;
-            padding: 35px 25px 25px 25px;
+            padding: 30px 20px 20px 20px;
             background: rgba(10, 10, 10, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(6px);
@@ -192,17 +215,17 @@
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: 6px;
             margin-bottom: 2px;
@@ -211,10 +234,10 @@
         }
 
         .current-track-info {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             color: rgba(255, 255, 255, 0.6);
             letter-spacing: 1px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -224,7 +247,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .terminal-btn {
@@ -235,8 +258,8 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 12px;
-            padding: 10px 16px;
-            font-size: 0.72rem;
+            padding: 9px 16px;
+            font-size: 0.7rem;
             letter-spacing: 1.5px;
             color: rgba(255, 255, 255, 0.95);
             text-decoration: none;
@@ -255,40 +278,37 @@
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
         }
 
-        .terminal-btn:active {
-            transform: translateY(0);
-        }
-
+        /* Küçültülmüş ve yanına 𖣂 eklenmiş ses/müzik paneli */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 5px 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.8);
+            gap: 6px;
         }
 
         .volume-bar {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-grow: 1;
-            margin-right: 10px;
         }
 
         #mute-btn {
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 3px;
+            height: 2.5px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
             outline: none;
@@ -298,8 +318,8 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
@@ -308,7 +328,7 @@
         .player-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .ctrl-video-btn {
@@ -316,13 +336,22 @@
             border: none;
             color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             transition: transform 0.2s, color 0.2s;
         }
 
         .ctrl-video-btn:hover {
             color: #fff;
             transform: scale(1.1);
+        }
+
+        /* İstediğin 𖣂 işareti için stil */
+        .player-symbol {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-left: 2px;
+            letter-spacing: 0;
+            user-select: none;
         }
 
         .mini-playlist-panel {
@@ -334,18 +363,18 @@
             border-radius: 12px;
             overflow: hidden;
             transition: max-height 0.4s ease;
-            max-height: 44px;
+            max-height: 42px;
             display: flex;
             flex-direction: column;
         }
 
         .mini-playlist-panel.expanded {
-            max-height: 260px;
+            max-height: 250px;
         }
 
         .playlist-toggle-header {
-            padding: 11px 14px;
-            font-size: 0.7rem;
+            padding: 10px 14px;
+            font-size: 0.68rem;
             letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.85);
             cursor: pointer;
@@ -362,12 +391,12 @@
         }
 
         .playlist-items-container {
-            padding: 8px 10px 12px 10px;
+            padding: 8px 10px 10px 10px;
             overflow-y: auto;
-            max-height: 200px;
+            max-height: 190px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
@@ -379,8 +408,8 @@
         }
 
         .playlist-item {
-            padding: 9px 12px;
-            font-size: 0.72rem;
+            padding: 8px 10px;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.9);
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -392,7 +421,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.4;
-            height: 34px;
+            height: 32px;
             display: flex;
             align-items: center;
         }
@@ -551,6 +580,8 @@
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
+    <div class="top-center-title">Mert Keskin</div>
+
     <div class="top-left-group">
         <div class="system-status">
             <div class="status-row">
@@ -587,6 +618,7 @@
                 <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
             </div>
 
+            <!-- Küçültülmüş ve yanına 𖣂 işareti eklenmiş ses/müzik paneli -->
             <div class="audio-player">
                 <div class="volume-bar">
                     <span id="mute-btn">🔊</span>
@@ -597,6 +629,7 @@
                     <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
                     <button id="next-track-btn" class="ctrl-video-btn" title="Sonraki Video">⏭</button>
                 </div>
+                <span class="player-symbol">𖣂</span>
             </div>
         </div>
 
@@ -632,19 +665,8 @@
             { key: "loosescrew", url: "video.mp4", title: "LooseScrew", startTime: 0 },
             { key: "aventador", url: "Aventador.mp4", title: "Aventador", startTime: 0 },
             { key: "why", url: "why.mp4", title: "Why", startTime: 0 },
-            { key: "senonaasiksin", url: "sen ona asiksin.mp4", title: "Sen Ona Aşıksın", startTime: 0 },
-            { key: "senordayoksun", url: "sen orda yoksun.mp4", title: "Sen Orda Yoksun", startTime: 0 },
-            { key: "askkirintilari", url: "ask kirintilari.mp4", title: "Aşk Kırıntıları", startTime: 0 },
-            { key: "prime", url: "prime.mp4", title: "Prime", startTime: 0 },
-            { key: "veneno", url: "Veneno.mp4", title: "Veneno", startTime: 0 },
-            { key: "conan", url: "Conan x Xenia.mp4", title: "CONAN x Xenia", startTime: 0 },
-            { key: "gone4amin", url: "Gone 4 a min.mp4", title: "Gone 4 a min", startTime: 0 },
             { key: "badboy", url: "BADBOY FETİSH.mp4", title: "Badboy Fetish", startTime: 0 },
-            { key: "argentsale", url: "argent sale.mp4", title: "Argent Sale", startTime: 0 },
-            { key: "porsche911", url: "Porsche 911.mp4", title: "Porsche 911", startTime: 0 },
-            { key: "dehaaskim", url: "deha askim.mp4", title: "Deha Aşkım", startTime: 0 },
-            { key: "deha777", url: "777.mp4", title: "Deha 777", startTime: 0 },
-            { key: "prensesim", url: "prensesim.mp4", title: "Prensesim", startTime: 0 }
+            { key: "deha777", url: "777.mp4", title: "Deha 777", startTime: 0 }
         ];
         
         let currentVideoIndex = 0;
