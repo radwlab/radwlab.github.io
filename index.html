@@ -72,7 +72,7 @@
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan Videosu */
+        /* Arka Plan Videosu - Maksimum Netlik Optimizasyonu */
         .bg-video {
             position: absolute;
             top: 0;
@@ -81,6 +81,10 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            image-rendering: -webkit-optimize-contrast;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
         }
 
         /* Dinamik Sistem Durumu (Sol Üst) */
@@ -775,7 +779,8 @@
                     "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix yağmur efekti başlatır.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>: Girilen komut geçmişini listeler.<br>" +
                     "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını manuel değiştirir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.";
+                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.<br><br>" +
+                    "Komut listesi yukarıda listelenmiştir.";
             } else if (cmd === 'playlist') {
                 let listHtml = "Mevcut Video Playlist:<br>";
                 videoPlaylist.forEach((v) => {
