@@ -7,6 +7,7 @@
     <style>
         :root {
             --term-color: #ffffff;
+            --dynamic-text: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,7 +22,7 @@
             color: #ffffff;
             user-select: none;
             overflow: hidden;
-            background: #050505;
+            background: #000000;
         }
 
         #particle-canvas {
@@ -40,9 +41,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             z-index: 999;
             display: flex;
             justify-content: center;
@@ -62,7 +63,7 @@
             letter-spacing: 6px;
             text-transform: uppercase;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             animation: pulse 2s infinite;
         }
 
@@ -79,34 +80,34 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            filter: contrast(1.02) saturate(1.05);
             transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
-            image-rendering: -webkit-optimize-contrast;
         }
 
-        /* Soldan sağa hareketli Mert Keskin yazısı */
+        /* Ufak mesafede hareket eden ve arka plana göre zıt renk alan Mert Keskin yazısı */
         .top-center-title {
             position: fixed;
             top: 30px;
-            left: -300px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 20;
             font-size: 1.1rem;
             font-weight: 800;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
-            animation: slideRight 12s linear infinite;
+            color: var(--dynamic-text, #ffffff);
+            animation: smallSlide 4s ease-in-out infinite alternate;
             pointer-events: none;
             font-family: 'Courier New', Courier, monospace;
             white-space: nowrap;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+            transition: color 0.5s ease;
         }
 
-        @keyframes slideRight {
-            0% { left: -300px; }
-            100% { left: 105vw; }
+        @keyframes smallSlide {
+            0% { transform: translateX(-50%) translateX(-40px); }
+            100% { transform: translateX(-50%) translateX(40px); }
         }
 
         .top-left-group {
@@ -120,29 +121,29 @@
         }
 
         .system-status {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
             letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.85);
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
 
         .visitor-counter {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.85);
             letter-spacing: 1.5px;
             display: inline-flex;
             align-items: center;
@@ -159,15 +160,15 @@
             top: 25px;
             right: 25px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 0.65rem;
             letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             text-align: right;
             font-family: 'Courier New', Courier, monospace;
         }
@@ -203,15 +204,16 @@
             max-width: 380px;
         }
 
+        /* Cam Şeffaflığı ve Hafif Tasarım */
         .card {
             width: 100%;
-            padding: 30px 20px 20px 20px;
-            background: rgba(10, 10, 10, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            padding: 25px 20px 20px 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
@@ -247,7 +249,7 @@
             justify-content: center;
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             padding: 9px 16px;
             font-size: 0.7rem;
@@ -269,86 +271,25 @@
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
         }
 
-        /* Ses ayarı, orta sembol ve oynat/durdur paneli */
+        /* Ses barı ve buton kaldırıldı, sadece ortada 𖣂 sembolü kaldı */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 6px 12px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.8);
-            gap: 10px;
-        }
-
-        .volume-bar {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-grow: 1;
-            max-width: 100px;
-        }
-
-        #mute-btn {
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
-
-        .slider-input {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 2px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .slider-input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-        }
-
-        .player-symbol {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.85);
-            letter-spacing: 0;
-            user-select: none;
-        }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .ctrl-video-btn {
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.85);
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: transform 0.2s, color 0.2s;
-        }
-
-        .ctrl-video-btn:hover {
-            color: #fff;
-            transform: scale(1.1);
+            justify-content: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .mini-playlist-panel {
             width: 100%;
-            background: rgba(10, 10, 10, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 12px;
             overflow: hidden;
             transition: max-height 0.4s ease;
@@ -370,7 +311,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             transition: background 0.2s;
         }
 
@@ -434,9 +375,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -455,10 +396,10 @@
             width: 90%;
             max-width: 540px;
             height: 380px;
-            background: rgba(10, 10, 10, 0.65);
+            background: rgba(10, 10, 10, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 14px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             font-family: 'Courier New', Courier, monospace;
@@ -467,7 +408,7 @@
         }
 
         .terminal-header {
-            background: rgba(20, 20, 20, 0.4);
+            background: rgba(20, 20, 20, 0.5);
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
@@ -541,7 +482,7 @@
             align-items: center;
             gap: 6px;
             padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             z-index: 2;
         }
@@ -606,16 +547,9 @@
                 <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
             </div>
 
-            <!-- Ses ayarı, ortada 𖣂 ve sağda oynat/durdur paneli -->
+            <!-- Sadece 𖣂 sembolü -->
             <div class="audio-player">
-                <div class="volume-bar">
-                    <span id="mute-btn">🔊</span>
-                    <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
-                </div>
-                <span class="player-symbol">𖣂</span>
-                <div class="player-controls">
-                    <button id="play-pause-btn" class="ctrl-video-btn" title="Oynat / Durdur">⏸</button>
-                </div>
+                <span>𖣂</span>
             </div>
         </div>
 
@@ -647,12 +581,24 @@
     </div>
 
     <script>
+        // Yeni eklenenler dahil, öncekiler başta kalacak şekilde liste güncellendi
         const videoPlaylist = [
             { key: "loosescrew", url: "video.mp4", title: "LooseScrew", startTime: 0 },
             { key: "aventador", url: "Aventador.mp4", title: "Aventador", startTime: 0 },
             { key: "why", url: "why.mp4", title: "Why", startTime: 0 },
             { key: "badboy", url: "BADBOY FETİSH.mp4", title: "Badboy Fetish", startTime: 0 },
-            { key: "deha777", url: "777.mp4", title: "Deha 777", startTime: 0 }
+            { key: "deha777", url: "777.mp4", title: "Deha 777", startTime: 0 },
+            { key: "conan", url: "Conan x Xenia.mp4", title: "Conan x Xenia", startTime: 0 },
+            { key: "gone", url: "Gone 4 a min.mp4", title: "Gone 4 a min", startTime: 0 },
+            { key: "porsche", url: "Porsche 911.mp4", title: "Porsche 911", startTime: 0 },
+            { key: "veneno", url: "Veneno.mp4", title: "Veneno", startTime: 0 },
+            { key: "argentsale", url: "argent sale.mp4", title: "Argent Sale", startTime: 0 },
+            { key: "askkirintilari", url: "ask kirintilari.mp4", title: "Ask Kirintilari", startTime: 0 },
+            { key: "dehaaskim", url: "deha askim.mp4", title: "Deha Askim", startTime: 0 },
+            { key: "prensesim", url: "prensesim.mp4", title: "Prensesim", startTime: 0 },
+            { key: "prime", url: "prime.mp4", title: "Prime", startTime: 0 },
+            { key: "senonaasiksin", url: "sen ona asiksin.mp4", title: "Sen Ona Asiksin", startTime: 0 },
+            { key: "senordayoksun", url: "sen orda yoksun.mp4", title: "Sen Orda Yoksun", startTime: 0 }
         ];
         
         let currentVideoIndex = 0;
@@ -661,16 +607,10 @@
         const ccCtx = colorCanvas.getContext('2d');
 
         const entryScreen = document.getElementById('entry-screen');
-        const volumeSlider = document.getElementById('volume-slider');
-        const muteBtn = document.getElementById('mute-btn');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        
         const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
         const playlistToggleHeader = document.getElementById('playlist-toggle-header');
         const playlistArrow = document.getElementById('playlist-arrow');
         const playlistItemsContainer = document.getElementById('playlist-items-container');
-
-        let lastVolume = 70;
 
         function buildPlaylistUI() {
             playlistItemsContainer.innerHTML = '';
@@ -712,15 +652,14 @@
                 g = Math.floor(g / count);
                 b = Math.floor(b / count);
 
-                let maxVal = Math.max(r, g, b);
-                if (maxVal < 60) {
-                    r = Math.min(255, r + 80);
-                    g = Math.min(255, g + 80);
-                    b = Math.min(255, b + 80);
-                }
-
                 let hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
                 document.documentElement.style.setProperty('--term-color', hexColor);
+
+                // Zıt renk hesaplama (Arka plan tonuna göre okunabilir kontrast renk)
+                let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+                let contrastColor = (yiq >= 128) ? '#000000' : '#ffffff';
+                document.documentElement.style.setProperty('--dynamic-text', contrastColor);
+
             } catch (e) {}
         }
 
@@ -741,22 +680,9 @@
 
             video.load();
             video.play().then(() => {
-                playPauseBtn.textContent = '⏸';
                 setTimeout(extractVideoColor, 500);
             }).catch(() => {});
         }
-
-        playPauseBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (video.paused) {
-                video.play().then(() => {
-                    playPauseBtn.textContent = '⏸';
-                }).catch(() => {});
-            } else {
-                video.pause();
-                playPauseBtn.textContent = '▶';
-            }
-        });
 
         video.addEventListener('timeupdate', function() {
             if (Math.floor(video.currentTime) === 2) {
@@ -773,42 +699,7 @@
             entryScreen.classList.add('hidden');
             video.muted = false;
             video.volume = 0.7;
-            setVolumeUI(70);
             loadAndPlayVideo(currentVideoIndex);
-        });
-
-        function setVolumeUI(val) {
-            volumeSlider.value = val;
-            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.2) ${val}%)`;
-            
-            if (val == 0 || video.muted) {
-                muteBtn.textContent = '🔇';
-            } else if (val < 50) {
-                muteBtn.textContent = '🔉';
-            } else {
-                muteBtn.textContent = '🔊';
-            }
-        }
-
-        volumeSlider.addEventListener('input', function() {
-            var val = this.value;
-            video.volume = val / 100;
-            video.muted = (val == 0);
-            setVolumeUI(val);
-        });
-
-        muteBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (video.muted || video.volume === 0) {
-                video.muted = false;
-                var targetVol = lastVolume > 0 ? lastVolume : 70;
-                video.volume = targetVol / 100;
-                setVolumeUI(targetVol);
-            } else {
-                lastVolume = volumeSlider.value;
-                video.muted = true;
-                setVolumeUI(0);
-            }
         });
 
         function updateVisitorCounter() {
