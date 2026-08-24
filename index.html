@@ -7,7 +7,6 @@
     <style>
         :root {
             --term-color: #ffffff;
-            --card-bg: rgba(0, 0, 0, 0.65);
             --card-border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
@@ -42,7 +41,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 999;
             display: flex;
             justify-content: center;
@@ -79,10 +78,6 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000px;
-            filter: none;
         }
 
         .top-center-title {
@@ -119,11 +114,11 @@
         }
 
         .system-status, .visitor-counter, .live-clock, .terminal-btn, .mini-playlist-panel, .volume-panel {
-            background: rgba(10, 10, 10, 0.75);
+            background: rgba(12, 12, 12, 0.85);
             border: var(--card-border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
         .system-status {
@@ -201,7 +196,7 @@
         .card {
             width: 100%;
             padding: 40px 30px;
-            background: rgba(10, 10, 10, 0.45);
+            background: rgba(10, 10, 10, 0.5);
             border: var(--card-border);
             border-radius: 30px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
@@ -263,19 +258,19 @@
         /* SAĞ ALT: Ufak Ses Paneli */
         .volume-panel {
             position: fixed;
-            bottom: 105px;
+            bottom: 100px;
             right: 30px;
             z-index: 20;
-            width: 300px;
-            padding: 12px 18px;
-            border-radius: 15px;
+            width: 280px;
+            padding: 10px 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .volume-icon {
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             user-select: none;
         }
@@ -284,7 +279,7 @@
             flex-grow: 1;
             -webkit-appearance: none;
             appearance: none;
-            height: 4px;
+            height: 3px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.3);
             outline: none;
@@ -293,57 +288,50 @@
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 6px rgba(255,255,255,0.8);
+            box-shadow: 0 0 5px rgba(255,255,255,0.8);
         }
 
         .volume-text {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.85);
-            width: 35px;
+            width: 30px;
             text-align: right;
         }
 
-        /* SAĞ ALT: Yukarı doğru açılan Playlist (Çakışma önlendi) */
+        /* SAĞ ALT: Yukarı doğru açılan Playlist */
         .mini-playlist-panel {
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 20;
-            width: 300px;
-            border-radius: 20px;
+            width: 280px;
+            border-radius: 14px;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 55px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mini-playlist-panel.expanded {
-            max-height: 340px;
+            background: rgba(12, 12, 12, 0.95);
+            border: var(--card-border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
 
         .playlist-toggle-header {
-            padding: 16px 20px;
-            font-size: 13px;
+            padding: 12px 16px;
+            font-size: 12px;
             letter-spacing: 2px;
             color: #ffffff;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(20, 20, 20, 0.5);
-            transition: background 0.3s;
+            background: rgba(20, 20, 20, 0.95);
             user-select: none;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            order: 2; /* Başlığı her zaman en alta sabitler */
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .playlist-toggle-header:hover {
@@ -351,31 +339,35 @@
         }
 
         .playlist-items-container {
-            padding: 15px 20px;
+            max-height: 0;
             overflow-y: auto;
-            max-height: 270px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            order: 1; /* Şarkı listesini üst kısma alır, yukarı doğru açılmasını sağlar */
+            background: #0a0a0a;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mini-playlist-panel.expanded .playlist-items-container {
+            max-height: 240px;
+            padding: 10px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         .playlist-items-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
+            background: transparent;
         }
         .playlist-items-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
         }
 
         .playlist-item {
-            padding: 6px 8px;
+            padding: 8px 10px;
             border-radius: 6px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.75);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
             background: transparent;
             border: none;
             cursor: pointer;
@@ -385,22 +377,22 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 500;
+            margin-bottom: 2px;
         }
 
         .playlist-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
 
         .playlist-item.active {
-            background: rgba(96, 165, 250, 0.2);
+            background: rgba(96, 165, 250, 0.25);
             color: #60a5fa;
             font-weight: 700;
         }
 
         #playlist-arrow {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: rotate(0deg);
+            transition: transform 0.3s ease;
         }
 
         .mini-playlist-panel.expanded #playlist-arrow {
@@ -572,7 +564,6 @@
 
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Sol Alt Terminal Butonu -->
     <button id="open-terminal" class="terminal-btn">
         <span style="font-family:'Courier New', monospace; font-weight:bold;">&gt;_</span>
         <span>Terminal</span>
@@ -594,11 +585,11 @@
 
     <!-- Sağ Alt Yukarı Açılır Playlist Modülü -->
     <div id="mini-playlist-panel" class="mini-playlist-panel">
+        <div id="playlist-items-container" class="playlist-items-container"></div>
         <div id="playlist-toggle-header" class="playlist-toggle-header">
             <span>Müzik Listesi</span>
-            <span id="playlist-arrow">▼</span>
+            <span id="playlist-arrow">▲</span>
         </div>
-        <div id="playlist-items-container" class="playlist-items-container"></div>
     </div>
 
     <div id="terminal-modal" class="terminal-modal">
@@ -646,7 +637,6 @@
         const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
         const playlistToggleHeader = document.getElementById('playlist-toggle-header');
         const playlistItemsContainer = document.getElementById('playlist-items-container');
-        const playlistArrow = document.getElementById('playlist-arrow');
 
         const volumeSlider = document.getElementById('volume-slider');
         const volumeText = document.getElementById('volume-text');
@@ -658,7 +648,7 @@
             video.volume = val / 100;
             volumeText.textContent = `${val}%`;
             if (val == 0) {
-                volumeIcon.textContent = "muted" === "muted" && video.volume === 0 ? "🔇" : "🔈";
+                volumeIcon.textContent = "🔇";
             } else if (val < 40) {
                 volumeIcon.textContent = "🔈";
             } else {
@@ -699,11 +689,6 @@
 
         playlistToggleHeader.addEventListener('click', () => {
             miniPlaylistPanel.classList.toggle('expanded');
-            if(miniPlaylistPanel.classList.contains('expanded')) {
-                playlistArrow.style.transform = "rotate(180deg)";
-            } else {
-                playlistArrow.style.transform = "rotate(0deg)";
-            }
         });
 
         function loadAndPlayVideo(index) {
