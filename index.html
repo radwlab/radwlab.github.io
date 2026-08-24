@@ -88,7 +88,7 @@
             perspective: 1000px;
         }
 
-        /* Sol Üst Bilgi Grubu (Sistem Durumu + Ziyaretçi) */
+        /* Sol Üst Bilgi Grubu */
         .top-left-group {
             position: fixed;
             top: 25px;
@@ -99,7 +99,6 @@
             gap: 8px;
         }
 
-        /* Dinamik Sistem Durumu */
         .system-status {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -115,7 +114,6 @@
             gap: 4px;
         }
 
-        /* Ziyaretçi Sayacı (Sol Üst) */
         .visitor-counter {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -259,41 +257,55 @@
             transform: translateY(-1px);
         }
 
-        /* Sosyal Medya Butonları (Spotify, Kılıç, Instagram) */
+        /* Sosyal Medya İkonları ve Kılıç Ayırıcı */
         .social-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
             margin-bottom: 12px;
         }
 
-        .social-btn {
-            flex: 1;
+        .social-icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 36px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 6px 0;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .social-btn:hover {
+        .social-icon-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .social-icon-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
-        .social-divider {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-            padding: 0 4px;
+        /* Ortadaki Kılıç Görseli */
+        .sword-divider {
+            width: 75px;
+            height: 18px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.85);
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .sword-divider:hover {
+            opacity: 1;
         }
 
-        /* Ses, Köpek Balığı ve Medya Kontrol Kutusu */
+        /* Ses, Köpek Balığı Görseli ve Medya Kontrolü */
         .audio-player {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -321,7 +333,7 @@
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
-            width: 55px;
+            width: 50px;
             height: 3px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.2);
@@ -339,12 +351,13 @@
             cursor: pointer;
         }
 
-        /* Aradaki Yatay Köpek Balığı */
+        /* Köpek Balığı Görseli Ayırıcı */
         .shark-divider {
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            filter: grayscale(100%) brightness(0.7);
-            opacity: 0.75;
+            width: 48px;
+            height: 22px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.8);
+            opacity: 0.8;
             transition: opacity 0.2s;
         }
         .shark-divider:hover {
@@ -365,7 +378,7 @@
             transform: scale(1.1);
         }
 
-        /* Mini Playlist Panosu */
+        /* Mini Playlist Panosu (İsimlerin kesilmesi düzeltildi) */
         .mini-playlist-panel {
             width: 100%;
             background: rgba(12, 12, 12, 0.35);
@@ -375,20 +388,20 @@
             border-radius: 12px;
             overflow: hidden;
             transition: max-height 0.4s ease, padding 0.4s ease;
-            max-height: 42px;
+            max-height: 44px;
             display: flex;
             flex-direction: column;
         }
 
         .mini-playlist-panel.expanded {
-            max-height: 220px;
+            max-height: 240px;
         }
 
         .playlist-toggle-header {
-            padding: 10px 14px;
+            padding: 11px 14px;
             font-size: 0.7rem;
             letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -403,12 +416,12 @@
         }
 
         .playlist-items-container {
-            padding: 8px 10px;
+            padding: 8px 10px 12px 10px;
             overflow-y: auto;
-            max-height: 160px;
+            max-height: 180px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
@@ -419,10 +432,9 @@
             border-radius: 2px;
         }
 
-        /* Playlist İsimleri Artık Net Görünüyor */
         .playlist-item {
-            padding: 6px 10px;
-            font-size: 0.68rem;
+            padding: 8px 12px;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.9);
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -433,6 +445,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1.2;
         }
 
         .playlist-item:hover {
@@ -660,20 +673,26 @@
                 <button id="open-terminal" class="terminal-btn" style="width: 100%;">>_ Terminal</button>
             </div>
 
-            <!-- Sosyal Medya Butonları (GitHub kaldırıldı, araya kılıç eklendi) -->
+            <!-- Sosyal Medya İkonları ve Ortada Kılıç -->
             <div class="social-container">
-                <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-btn">Spotify</a>
-                <span class="social-divider" title="Kılıç">🗡️</span>
-                <a href="https://www.instagram.com/radwoxie/" target="_blank" class="social-btn">Instagram</a>
+                <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-icon-btn" title="Spotify">
+                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.76 1.44.36.24.48.72.221 1.06zm1.44-3.84c-.301.42-.84.54-1.26.24-3.24-1.98-8.16-2.58-11.94-1.41-.48.15-.99-.12-1.14-.6-.15-.48.12-.99.6-1.14 4.2-1.26 9.66-.6 13.56 1.8 ival: .42.3.54.84.18 1.11zm.12-4.02C14.88 7.44 8.64 7.2 5.04 8.31c-.6.18-1.23-.15-1.41-.75-.18-.6.15-1.23.75-1.41 4.2-1.26 11.16-0.96 15.42 1.56.54.3.72 1.02.42 1.56-.3.54-1.02.72-1.56.42z"/></svg>
+                </a>
+                
+                <img src="sword.png" alt="Kılıç" class="sword-divider" title="Dark Sword">
+
+                <a href="https://www.instagram.com/radwoxie/" target="_blank" class="social-icon-btn" title="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
             </div>
 
-            <!-- Ses, Köpek Balığı ve Medya Kontrol Kutusu -->
+            <!-- Ses, Köpek Balığı ve Medya Kontrolü -->
             <div class="audio-player">
                 <div class="volume-bar">
                     <span id="mute-btn">🔊</span>
                     <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
                 </div>
-                <span class="shark-divider" title="Köpek Balığı">🦈</span>
+                <img src="shark.jpg" alt="Köpek Balığı" class="shark-divider" title="Dark Shark">
                 <button id="next-track-btn" class="next-video-btn" title="Sonraki Video">⏭</button>
             </div>
 
