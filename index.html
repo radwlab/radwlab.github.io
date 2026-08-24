@@ -6,7 +6,7 @@
     <title>radwlab :: Interactive</title>
     <style>
         :root {
-            --term-color: #00ff66;
+            --term-color: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,13 +14,14 @@
         body {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #ffffff;
             user-select: none;
             overflow: hidden;
-            background: #000;
+            background: #050505;
         }
 
         /* Parçacık Efekti Kanvası */
@@ -41,9 +42,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 999;
             display: flex;
             justify-content: center;
@@ -59,20 +60,20 @@
         }
 
         .entry-text {
-            font-size: 1.1rem;
-            letter-spacing: 4px;
+            font-size: 0.9rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            0%, 100% { opacity: 0.4; transform: scale(0.98); }
             50% { opacity: 1; transform: scale(1); }
         }
 
-        /* Arka Plan Videosu - Maksimum Netlik Optimizasyonu */
+        /* Arka Plan Videosu */
         .bg-video {
             position: absolute;
             top: 0;
@@ -81,47 +82,75 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            image-rendering: -webkit-optimize-contrast;
+            filter: brightness(0.95);
             transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
         }
 
-        /* Dinamik Sistem Durumu (Sol Üst) */
-        .system-status {
+        /* Sol Üst Bilgi Grubu (Sistem Durumu + Ziyaretçi) */
+        .top-left-group {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 25px;
+            left: 25px;
             z-index: 20;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 8px 14px;
-            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Dinamik Sistem Durumu */
+        .system-status {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
 
+        /* Ziyaretçi Sayacı (Sol Üst) */
+        .visitor-counter {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .visitor-counter span {
+            color: #fff;
+            font-weight: 600;
+        }
+
         /* Canlı Saat Widget'ı (Sağ Üst) */
         .live-clock {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             z-index: 20;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 8px 14px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.8);
             text-align: right;
             font-family: 'Courier New', Courier, monospace;
         }
@@ -133,13 +162,12 @@
         }
 
         .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--term-color, #00ff66);
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 6px var(--term-color, #00ff66);
-            animation: blink 1.5s infinite;
-            transition: background-color 0.5s, box-shadow 0.5s;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+            animation: blink 2s infinite;
         }
 
         @keyframes blink {
@@ -147,44 +175,64 @@
             50% { opacity: 1; }
         }
 
-        /* Ortadaki Kart */
-        .card {
+        /* Ana Kapsayıcı (Kart ve Mini Playlist Panosu İçin) */
+        .main-wrapper {
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
             width: 90%;
             max-width: 380px;
-            padding: 40px 25px 25px 25px;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 28px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Ana Kart */
+        .card {
+            width: 100%;
+            padding: 35px 25px 25px 25px;
+            background: rgba(12, 12, 12, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
         .avatar {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            margin-bottom: 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .title {
-            font-size: 2rem;
-            font-style: italic;
-            font-weight: 800;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .current-track-info {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .action-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 12px;
         }
 
@@ -192,56 +240,84 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 8px 16px;
-            font-size: 0.75rem;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            transition: all 0.3s ease;
         }
 
         .terminal-btn:hover {
             background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transform: translateY(-1px);
         }
 
+        /* Sosyal Medya Butonları */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 6px 0;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        /* Ses ve Medya Kontrol Kutusu */
         .audio-player {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 8px 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 12px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 6px;
         }
 
         .volume-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         #mute-btn {
             cursor: pointer;
-            font-size: 0.85rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+            font-size: 0.8rem;
         }
 
         .slider-input {
             -webkit-appearance: none;
             appearance: none;
-            width: 80px;
-            height: 4px;
+            width: 60px;
+            height: 3px;
             border-radius: 2px;
-            background: linear-gradient(to right, #ffffff 70%, rgba(255, 255, 255, 0.3) 70%);
+            background: rgba(255, 255, 255, 0.2);
             outline: none;
             cursor: pointer;
         }
@@ -249,31 +325,108 @@
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 8px rgba(0,0,0,0.9);
         }
 
-        .visitor-counter {
+        .next-video-btn {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.9);
-            letter-spacing: 1px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: transform 0.2s, color 0.2s;
         }
 
-        .visitor-counter span {
+        .next-video-btn:hover {
             color: #fff;
-            font-weight: 700;
+            transform: scale(1.1);
+        }
+
+        /* --- Yatay Açılır Mini Playlist Panosu --- */
+        .mini-playlist-panel {
+            width: 100%;
+            background: rgba(12, 12, 12, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            max-height: 42px; /* Kapalıyken sadece başlık çubuğu görünür */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mini-playlist-panel.expanded {
+            max-height: 220px; /* Açıldığında içeriğin sığacağı yükseklik */
+        }
+
+        .playlist-toggle-header {
+            padding: 10px 14px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            transition: background 0.2s;
+        }
+
+        .playlist-toggle-header:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .playlist-items-container {
+            padding: 8px 10px;
+            overflow-y: auto;
+            max-height: 160px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Kaydırma çubuğu tasarımı */
+        .playlist-items-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .playlist-items-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .playlist-item {
+            padding: 6px 10px;
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .playlist-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
         }
 
         /* Terminal Modalı */
@@ -283,9 +436,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -302,50 +455,53 @@
 
         .terminal-box {
             width: 90%;
-            max-width: 560px;
-            height: 400px;
-            background: rgba(10, 10, 10, 0.94);
-            border: 1px solid var(--term-color, #00ff66);
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            max-width: 540px;
+            height: 380px;
+            background: rgba(10, 10, 10, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             position: relative;
-            transition: border-color 0.5s, box-shadow 0.5s;
         }
 
         .terminal-header {
-            background: rgba(20, 20, 20, 0.95);
+            background: rgba(20, 20, 20, 0.6);
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.75rem;
-            color: var(--term-color, #00ff66);
-            transition: color 0.5s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
         }
 
         .terminal-close {
             cursor: pointer;
-            color: #ff5555;
+            color: rgba(255, 255, 255, 0.4);
             font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .terminal-close:hover {
+            color: #ff5555;
         }
 
         .terminal-body {
             padding: 15px;
             flex-grow: 1;
             overflow-y: auto;
-            font-size: 0.8rem;
-            color: var(--term-color, #00ff66);
+            font-size: 0.75rem;
+            color: var(--term-color, #ffffff);
             display: flex;
             flex-direction: column;
             gap: 8px;
             line-height: 1.4;
             position: relative;
-            transition: color 0.5s;
         }
 
         #matrix-canvas {
@@ -365,19 +521,18 @@
         }
 
         .cmd-link {
-            color: var(--term-color, #00ff66);
-            background: rgba(0, 255, 102, 0.1);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
             padding: 2px 6px;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
             display: inline-block;
             margin: 2px;
         }
 
         .cmd-link:hover {
             background: rgba(255, 255, 255, 0.2);
-            color: #fff;
         }
 
         .terminal-input-line {
@@ -385,14 +540,13 @@
             align-items: center;
             gap: 6px;
             padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 2;
         }
 
         .terminal-input-line span {
-            color: var(--term-color, #00ff66);
-            transition: color 0.5s;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .terminal-input {
@@ -401,17 +555,17 @@
             outline: none;
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             width: 100%;
         }
 
         /* Kayan Yazı Şeridi */
         .marquee-container {
             position: absolute;
-            bottom: -35px;
+            bottom: -30px;
             left: 0;
             width: 100%;
-            height: 30px;
+            height: 25px;
             overflow: hidden;
             z-index: 20;
             display: flex;
@@ -421,14 +575,12 @@
         .marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-weight: 700;
-            font-size: 0.75rem;
-            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: marqueeScroll 20s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))
-                    drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.9));
+            letter-spacing: 4px;
+            animation: marqueeScroll 25s linear infinite;
         }
 
         @keyframes marqueeScroll {
@@ -444,19 +596,24 @@
         <div class="entry-text">[ Giriş İçin Tıklayın ]</div>
     </div>
 
-    <!-- Dinamik Sistem Durumu Widget'ı (Sol Üst) -->
-    <div class="system-status">
-        <div class="status-row">
-            <div class="status-dot"></div>
-            <span>SYS: ONLINE</span>
+    <!-- Sol Üst Bilgi Grubu (Sistem Durumu + Ziyaretçi Sayacı) -->
+    <div class="top-left-group">
+        <div class="system-status">
+            <div class="status-row">
+                <div class="status-dot"></div>
+                <span>SYS: ONLINE</span>
+            </div>
+            <div>PING: <span id="ping-val">12</span>ms</div>
         </div>
-        <div>PING: <span id="ping-val">12</span>ms</div>
+        <div class="visitor-counter">
+            👁️ Görüntülenme: <span id="visit-count">500</span>
+        </div>
     </div>
 
     <!-- Canlı Saat Widget'ı (Sağ Üst) -->
     <div class="live-clock">
         <div id="live-date">--.--.----</div>
-        <div id="live-time" style="color: var(--term-color, #00ff66); font-weight: bold; transition: color 0.5s;">--:--:--</div>
+        <div id="live-time" style="color: #fff; font-weight: 600;">--:--:--</div>
     </div>
 
     <!-- Arka Plan Videosu -->
@@ -470,33 +627,52 @@
     <!-- Parçacık Efekti Kanvası -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Ana Kart -->
-    <div class="card">
-        <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
+    <!-- Ana Kapsayıcı -->
+    <div class="main-wrapper">
+        <!-- Ana Kart -->
+        <div class="card">
+            <img class="avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
 
-        <div class="title">radw</div>
+            <div class="title">radw</div>
+            <div id="track-title-display" class="current-track-info">// LooseScrew</div>
 
-        <!-- Terminal Butonu -->
-        <div class="action-container">
-            <button id="open-terminal" class="terminal-btn">>_ Terminal</button>
-        </div>
+            <!-- Terminal Butonu -->
+            <div class="action-container">
+                <button id="open-terminal" class="terminal-btn" style="width: 100%;">>_ Terminal</button>
+            </div>
 
-        <div class="audio-player">
-            <div class="volume-bar">
-                <span id="mute-btn">🔊</span>
-                <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
+            <!-- Sosyal Medya Butonları -->
+            <div class="social-container">
+                <a href="https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde" target="_blank" class="social-btn">Spotify</a>
+                <a href="https://www.instagram.com/radwoxie/" target="_blank" class="social-btn">Instagram</a>
+                <a href="https://github.com" target="_blank" class="social-btn">GitHub</a>
+            </div>
+
+            <!-- Müzik/Video Kontrol Kutusu -->
+            <div class="audio-player">
+                <div class="volume-bar">
+                    <span id="mute-btn">🔊</span>
+                    <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
+                </div>
+                <button id="next-track-btn" class="next-video-btn" title="Sonraki Video">⏭</button>
+            </div>
+
+            <!-- Kayan Yazı -->
+            <div class="marquee-container">
+                <div class="marquee-text">
+                    // MERT KESKİN // RADAR AKTİF // SYSTEM READY // MERT KESKİN // RADAR AKTİF // SYSTEM READY //
+                </div>
             </div>
         </div>
 
-        <!-- Ziyaretçi Sayacı -->
-        <div class="visitor-counter">
-            👁️ Görüntülenme: <span id="visit-count">500</span>
-        </div>
-
-        <!-- Kayan Yazı -->
-        <div class="marquee-container">
-            <div class="marquee-text">
-                // MERT KESKİN // RADAR AKTİF // SYSTEM READY // MERT KESKİN // RADAR AKTİF // SYSTEM READY //
+        <!-- Mini Playlist Panosu (Cam Panonun Altında) -->
+        <div id="mini-playlist-panel" class="mini-playlist-panel">
+            <div id="playlist-toggle-header" class="playlist-toggle-header">
+                <span>🎵 Playlist / Müzik Listesi</span>
+                <span id="playlist-arrow">▼</span>
+            </div>
+            <div id="playlist-items-container" class="playlist-items-container">
+                <!-- Javascript ile dinamik dolacak -->
             </div>
         </div>
     </div>
@@ -510,7 +686,7 @@
             </div>
             <div id="terminal-body" class="terminal-body">
                 <canvas id="matrix-canvas"></canvas>
-                <div>RADWLAB Interactive Terminal v2.6</div>
+                <div>RADWLAB Interactive Terminal v2.8</div>
                 <div>Yardım için 'help' yazabilirsin.</div>
             </div>
             <div class="terminal-input-line">
@@ -544,11 +720,41 @@
         const video = document.getElementById('bg-video');
         const colorCanvas = document.getElementById('color-canvas');
         const ccCtx = colorCanvas.getContext('2d');
+        const trackTitleDisplay = document.getElementById('track-title-display');
 
         const entryScreen = document.getElementById('entry-screen');
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
+        const nextTrackBtn = document.getElementById('next-track-btn');
+        
+        const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
+        const playlistToggleHeader = document.getElementById('playlist-toggle-header');
+        const playlistArrow = document.getElementById('playlist-arrow');
+        const playlistItemsContainer = document.getElementById('playlist-items-container');
+
         let lastVolume = 70;
+
+        // Mini Playlist Listesini Oluştur
+        function buildPlaylistUI() {
+            playlistItemsContainer.innerHTML = '';
+            videoPlaylist.forEach((v, index) => {
+                let item = document.createElement('div');
+                item.className = `playlist-item ${index === currentVideoIndex ? 'active' : ''}`;
+                item.textContent = `${index + 1}. ${v.title}`;
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    loadAndPlayVideo(index);
+                });
+                playlistItemsContainer.appendChild(item);
+            });
+        }
+        buildPlaylistUI();
+
+        // Panoyu Aç/Kapat
+        playlistToggleHeader.addEventListener('click', () => {
+            miniPlaylistPanel.classList.toggle('expanded');
+            playlistArrow.style.transform = miniPlaylistPanel.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
 
         function extractVideoColor() {
             if (video.readyState < 2) return;
@@ -587,11 +793,29 @@
             const selectedVideo = videoPlaylist[currentVideoIndex];
             video.src = selectedVideo.url;
             video.currentTime = selectedVideo.startTime || 0;
+            trackTitleDisplay.textContent = `// ${selectedVideo.title}`;
+            
+            // Aktif sınıfını güncelle
+            const items = playlistItemsContainer.querySelectorAll('.playlist-item');
+            items.forEach((item, idx) => {
+                if (idx === currentVideoIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
             video.load();
             video.play().then(() => {
                 setTimeout(extractVideoColor, 500);
             }).catch(() => {});
         }
+
+        nextTrackBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            let nextIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+            loadAndPlayVideo(nextIndex);
+        });
 
         video.addEventListener('timeupdate', function() {
             if (Math.floor(video.currentTime) === 2) {
@@ -614,7 +838,7 @@
 
         function setVolumeUI(val) {
             volumeSlider.value = val;
-            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
+            volumeSlider.style.background = `linear-gradient(to right, #ffffff ${val}%, rgba(255, 255, 255, 0.2) ${val}%)`;
             
             if (val == 0 || video.muted) {
                 muteBtn.textContent = '🔇';
@@ -720,7 +944,7 @@
             matrixInterval = setInterval(() => {
                 mCtx.fillStyle = 'rgba(10, 10, 10, 0.1)';
                 mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                mCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--term-color') || '#00ff66';
+                mCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--term-color') || '#ffffff';
                 mCtx.font = fontSize + 'px monospace';
 
                 for (let i = 0; i < drops.length; i++) {
@@ -743,10 +967,7 @@
         const quotes = [
             { en: "There are two hard things in computer science: cache invalidation and naming things. – Martin Fowler", tr: "Bilgisayar bilimindeki en zor iki şey: önbellek geçersiz kılma ve isim verme." },
             { en: "It’s not a bug – it’s an undocumented feature.", tr: "Bu bir hata değil – belgelenmemiş bir özellik." },
-            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." },
-            { en: "Simplicity is prerequisite for reliability. – Edsger W. Dijkstra", tr: "Basitlik, güvenilirliğin ön koşuludur." },
-            { en: "Code is like humor. When you have to explain it, it’s bad. – Cory House", tr: "Kod mizah gibidir. Açıklamak zorunda kalıyorsanız, kötüdür." },
-            { en: "Hacking is not about just breaking systems, it's about understanding how things work.", tr: "Hacking sadece sistemleri kırmakla ilgili değildir, işlerin nasıl çalıştığını anlamaktır." }
+            { en: "Talk is cheap. Show me the code. – Linus Torvalds", tr: "Laf lafı açar, bana kodu göster." }
         ];
 
         async function runCommand(cmdText) {
@@ -758,104 +979,40 @@
             }
             
             let userLine = document.createElement('div');
-            userLine.innerHTML = `<span style="color:#fff;">> ${cmdText}</span>`;
+            userLine.innerHTML = `<span style="color:rgba(255,255,255,0.7);">> ${cmdText}</span>`;
             terminalBody.appendChild(userLine);
 
             let respLine = document.createElement('div');
 
             if (cmd === 'help') {
-                respLine.innerHTML = "Kullanılabilir Komutlar:<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"playlist\")'>playlist</span>: Video listesini görüntüler ve video değiştirmenizi sağlar.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"about\")'>about</span>: Sistem hakkında bilgi verir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sunucu ve akış durumunu gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"social\")'>social</span>: Sosyal medya bağlantılarını gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"sysinfo\")'>sysinfo</span>: Tarayıcı ve sistem bilgilerini gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Anlık ağ gecikmesini ölçer.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"whoami\")'>whoami</span>: Oturum kimliğini gösterir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>: Rastgele yazılımcı/hacker sözü getirir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"weather\")'>weather</span>: Konum hava durumunu kontrol eder.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix yağmur efekti başlatır.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"history\")'>history</span>: Girilen komut geçmişini listeler.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal renk temasını manuel değiştirir.<br>" +
-                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Terminal ekranını temizler.<br><br>" +
-                    "Komut listesi yukarıda listelenmiştir.";
-            } else if (cmd === 'playlist') {
-                let listHtml = "Mevcut Video Playlist:<br>";
-                videoPlaylist.forEach((v) => {
-                    let activeIndicator = (v.url === video.src) ? " [OYNATILIYOR]" : "";
-                    listHtml += `- <span class='cmd-link' onclick='runCommand("play ${v.key}")'>play ${v.key}</span> -> ${v.title}${activeIndicator}<br>`;
-                });
-                listHtml += "<br>Sonraki video için: <span class='cmd-link' onclick='runCommand(\"play next\")'>play next</span>";
-                respLine.innerHTML = listHtml;
-            } else if (cmd.startsWith('play ')) {
-                let target = cmd.split(' ')[1];
-                let targetIdx = currentVideoIndex;
-                
-                if (target === 'next') {
-                    targetIdx = (currentVideoIndex + 1) % videoPlaylist.length;
-                } else {
-                    let foundIdx = videoPlaylist.findIndex(v => v.key === target);
-                    if (foundIdx !== -1) {
-                        targetIdx = foundIdx;
-                    } else {
-                        respLine.innerHTML = `Böyle bir video bulunamadı: '${target}'.`;
-                        terminalBody.appendChild(respLine);
-                        terminalInput.value = '';
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                        return;
-                    }
-                }
-                loadAndPlayVideo(targetIdx);
-                const selectedVideo = videoPlaylist[currentVideoIndex];
-                respLine.innerHTML = `Oynatılıyor: ${selectedVideo.title}.`;
-            } else if (cmd === 'about') {
-                respLine.innerHTML = "radwlab aktif ve çevrimiçi.";
+                respLine.innerHTML = "Komut Listesi:<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"status\")'>status</span>: Sistem durumunu gösterir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"ping\")'>ping</span>: Ağ gecikmesini ölçer.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"quote\")'>quote</span>: Rastgele söz getirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"matrix\")'>matrix</span>: Matrix efekti başlatır.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"theme\")'>theme</span>: Terminal temasını değiştirir.<br>" +
+                    "- <span class='cmd-link' onclick='runCommand(\"clear\")'>clear</span>: Ekranı temizler.";
             } else if (cmd === 'status') {
-                respLine.innerHTML = "Sunucu Durumu: [OK]<br>- Video Akışı: Aktif<br>- Ses Modülü: Aktif";
-            } else if (cmd === 'social') {
-                respLine.innerHTML = "Bağlantılar:<br>- Spotify: <a href='https://open.spotify.com/user/31ikp7uox6cpwxr2ikuy6z7gpfym?si=e932a7bd28154bde' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a><br>- Instagram: <a href='https://www.instagram.com/radwoxie/' target='_blank' style='color:inherit; text-decoration:underline;'>Profilime Git</a>";
-            } else if (cmd === 'sysinfo') {
-                respLine.innerHTML = `Sistem Bilgileri:<br>- Platform: ${navigator.platform}<br>- Çözünürlük: ${window.innerWidth}x${window.innerHeight}`;
+                respLine.innerHTML = "Durum: [OK] <br>- Video Akışı: Aktif <br>- Ses Modülü: Aktif";
             } else if (cmd === 'ping') {
                 let currentPing = document.getElementById('ping-val').textContent;
-                respLine.innerHTML = `Ağ Gecikmesi: ${currentPing}ms`;
-            } else if (cmd === 'whoami') {
-                respLine.innerHTML = "Oturum Kimliği: Misafir Ziyaretçi";
+                respLine.innerHTML = `Gecikme: ${currentPing}ms`;
             } else if (cmd === 'quote') {
                 let randomQ = quotes[Math.floor(Math.random() * quotes.length)];
-                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.7rem; opacity:0.65; font-style:italic;">"${randomQ.tr}"</span>`;
-            } else if (cmd === 'weather') {
-                respLine.innerHTML = "Konum taranıyor...";
-                terminalBody.appendChild(respLine);
-                terminalBody.scrollTop = terminalBody.scrollHeight;
-
-                try {
-                    let response = await fetch('https://ipapi.co/json/');
-                    let data = await response.json();
-                    let city = data.city || "Bilinmeyen Konum";
-                    let country = data.country_name || "";
-                    respLine.innerHTML = `Konum: ${city} (${country})<br>- Sıcaklık: ~26°C`;
-                } catch (e) {
-                    respLine.innerHTML = "Konum taranırken hata oluştu. Varsayılan Konum (Kırklareli): 28°C, Açık.";
-                }
+                respLine.innerHTML = `"${randomQ.en}"<br><span style="font-size:0.65rem; opacity:0.6; font-style:italic;">"${randomQ.tr}"</span>`;
             } else if (cmd === 'matrix') {
                 respLine.innerHTML = "Matrix simülasyonu başlatıldı.";
                 startMatrix();
-            } else if (cmd === 'history') {
-                respLine.innerHTML = "Komut Geçmişi:<br>" + (commandHistory.length > 0 ? commandHistory.join('<br>') : "Henüz komut girilmedi.");
             } else if (cmd === 'theme') {
-                respLine.innerHTML = `Manuel tema seçin:<br>` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme green\")' style='color:#00ff66;'>■ Yeşil</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#00bbff;'>■ Mavi</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme amber\")' style='color:#ffaa00;'>■ Kehribar</span> ` +
-                    `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#cc00ff;'>■ Mor</span>`;
+                respLine.innerHTML = `Tema seçin:<br>` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme white\")' style='color:#ffffff;'>■ Beyaz</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme blue\")' style='color:#60a5fa;'>■ Mavi</span> ` +
+                    `<span class='cmd-link' onclick='runCommand(\"theme purple\")' style='color:#c084fc;'>■ Mor</span>`;
             } else if (cmd.startsWith('theme ')) {
                 let colorName = cmd.split(' ')[1];
-                let colorHex = '#00ff66';
-                if (colorName === 'blue') colorHex = '#00bbff';
-                else if (colorName === 'amber') colorHex = '#ffaa00';
-                else if (colorName === 'purple') colorHex = '#cc00ff';
-
+                let colorHex = '#ffffff';
+                if (colorName === 'blue') colorHex = '#60a5fa';
+                else if (colorName === 'purple') colorHex = '#c084fc';
                 document.documentElement.style.setProperty('--term-color', colorHex);
                 respLine.innerHTML = `Tema güncellendi: ${colorName}`;
             } else if (cmd === 'clear') {
@@ -865,7 +1022,7 @@
             } else if (cmd === '') {
                 respLine.innerHTML = "";
             } else {
-                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. Komut listesi için 'help' yazabilirsin.`;
+                respLine.innerHTML = `Bilinmeyen komut: '${cmd}'. 'help' yazabilirsin.`;
             }
             
             terminalBody.appendChild(respLine);
@@ -895,10 +1052,10 @@
                 particles.push({
                     x: event.x,
                     y: event.y,
-                    size: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * 2,
-                    speedY: (Math.random() - 0.5) * 2,
-                    life: 100
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 1.5,
+                    speedY: (Math.random() - 0.5) * 1.5,
+                    life: 80
                 });
             }
         });
@@ -909,12 +1066,12 @@
                 let p = particles[i];
                 p.x += p.speedX;
                 p.y += p.speedY;
-                p.life -= 2;
+                p.life -= 1.5;
                 
                 if (p.life <= 0) {
                     particles.splice(i, 1);
                 } else {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 100})`;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 150})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
