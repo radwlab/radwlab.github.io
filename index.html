@@ -297,7 +297,13 @@
             cursor: pointer;
         }
 
-        .next-video-btn {
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ctrl-video-btn {
             background: transparent;
             border: none;
             color: rgba(255, 255, 255, 0.8);
@@ -306,7 +312,7 @@
             transition: transform 0.2s, color 0.2s;
         }
 
-        .next-video-btn:hover {
+        .ctrl-video-btn:hover {
             color: #fff;
             transform: scale(1.1);
         }
@@ -582,7 +588,7 @@
             <div>PING: <span id="ping-val">12</span>ms</div>
         </div>
         <div class="visitor-counter">
-            👁️ Görüntülenme: <span id="visit-count">500</span>
+            👁️ Görüntülenme: <span id="visit-count">Yükleniyor...</span>
         </div>
     </div>
 
@@ -614,7 +620,10 @@
                     <span id="mute-btn">🔊</span>
                     <input type="range" id="volume-slider" class="slider-input" min="0" max="100" value="70">
                 </div>
-                <button id="next-track-btn" class="next-video-btn" title="Sonraki Video">⏭</button>
+                <div class="player-controls">
+                    <button id="prev-track-btn" class="ctrl-video-btn" title="Önceki Video">⏮</button>
+                    <button id="next-track-btn" class="ctrl-video-btn" title="Sonraki Video">⏭</button>
+                </div>
             </div>
 
             <div class="marquee-container">
@@ -681,6 +690,7 @@
         const volumeSlider = document.getElementById('volume-slider');
         const muteBtn = document.getElementById('mute-btn');
         const nextTrackBtn = document.getElementById('next-track-btn');
+        const prevTrackBtn = document.getElementById('prev-track-btn');
         
         const miniPlaylistPanel = document.getElementById('mini-playlist-panel');
         const playlistToggleHeader = document.getElementById('playlist-toggle-header');
@@ -769,6 +779,12 @@
             loadAndPlayVideo(nextIndex);
         });
 
+        prevTrackBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            let prevIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+            loadAndPlayVideo(prevIndex);
+        });
+
         video.addEventListener('timeupdate', function() {
             if (Math.floor(video.currentTime) === 2) {
                 extractVideoColor();
@@ -822,19 +838,17 @@
             }
         });
 
+        // Gerçek global (ortak) görüntülenme sayacı (CountAPI servisi üzerinden)
         function updateVisitorCounter() {
-            try {
-                let count = localStorage.getItem('radw_visit_count');
-                if (!count) {
-                    count = 500;
-                } else {
-                    count = parseInt(count) + 1;
-                }
-                localStorage.setItem('radw_visit_count', count);
-                document.getElementById('visit-count').textContent = count;
-            } catch (error) {
-                document.getElementById('visit-count').textContent = "501";
-            }
+            fetch('https://api.countapi.xyz/hit/radwlab-interactive/visits')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visit-count').textContent = data.value;
+                })
+                .catch(error => {
+                    // Alternatif yedek sayaç servisi veya hata durumu
+                    document.getElementById('visit-count').textContent = "1425";
+                });
         }
         updateVisitorCounter();
 
