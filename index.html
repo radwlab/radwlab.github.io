@@ -497,104 +497,45 @@
         </div>
     </div>
 
-const videoPlaylist = [
-            {
-                key: "aventador",
-                url: "Aventador.mp4",
-                title: "Aventador",
-                startTime: 0
-            },
-            {
-                key: "why",
-                url: "why.mp4",
-                title: "Why",
-                startTime: 0
-            },
-            {
-                key: "senonaasiksin",
-                url: "sen ona asiksin.mp4",
-                title: "Sen Ona Aşıksın",
-                startTime: 0
-            },
-            {
-                key: "senordayoksun",
-                url: "sen orda yoksun.mp4",
-                title: "Sen Orda Yoksun",
-                startTime: 0
-            },
-            {
-                key: "askkirintilari",
-                url: "ask kirintilari.mp4",
-                title: "Aşk Kırıntıları",
-                startTime: 0
-            },
-            {
-                key: "prime",
-                url: "prime.mp4",
-                title: "Prime",
-                startTime: 0
-            },
-            {
-                key: "veneno",
-                url: "Veneno.mp4",
-                title: "Veneno",
-                startTime: 0
-            },
-            {
-                key: "loosescrew",
-                url: "video.mp4",
-                title: "LooseScrew",
-                startTime: 0
-            },
-            {
-                key: "conan",
-                url: "Conan x Xenia.mp4",
-                title: "CONAN x Xenia",
-                startTime: 0
-            },
-            {
-                key: "gone4amin",
-                url: "Gone 4 a min.mp4",
-                title: "Gone 4 a min",
-                startTime: 0
-            },
-            {
-                key: "badboy",
-                url: "BADBOY FETİSH.mp4",
-                title: "Badboy Fetish",
-                startTime: 0
-            },
-            {
-                key: "argentsale",
-                url: "argent sale.mp4",
-                title: "Argent Sale",
-                startTime: 0
-            },
-            {
-                key: "porsche911",
-                url: "Porsche 911.mp4",
-                title: "Porsche 911",
-                startTime: 0
-            },
-            {
-                key: "dehaaskim",
-                url: "deha askim.mp4",
-                title: "Deha Aşkım",
-                startTime: 0
-            },
-            {
-                key: "deha777",
-                url: "777.mp4",
-                title: "Deha 777",
-                startTime: 0
-            },
-            {
-                key: "prensesim",
-                url: "prensesim.mp4",
-                title: "Prensesim",
-                startTime: 0
-            }
+    <!-- Terminal Modalı -->
+    <div id="terminal-modal" class="terminal-modal">
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span>radwlab@root: ~</span>
+                <span id="close-terminal" class="terminal-close">[X]</span>
+            </div>
+            <div id="terminal-body" class="terminal-body">
+                <canvas id="matrix-canvas"></canvas>
+                <div>RADWLAB Interactive Terminal v2.6</div>
+                <div>Yardım için 'help' yazabilirsin.</div>
+            </div>
+            <div class="terminal-input-line">
+                <span>></span>
+                <input type="text" id="terminal-input" class="terminal-input" autofocus>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoPlaylist = [
+            { key: "aventador", url: "Aventador.mp4", title: "Aventador", startTime: 0 },
+            { key: "why", url: "why.mp4", title: "Why", startTime: 0 },
+            { key: "senonaasiksin", url: "sen ona asiksin.mp4", title: "Sen Ona Aşıksın", startTime: 0 },
+            { key: "senordayoksun", url: "sen orda yoksun.mp4", title: "Sen Orda Yoksun", startTime: 0 },
+            { key: "askkirintilari", url: "ask kirintilari.mp4", title: "Aşk Kırıntıları", startTime: 0 },
+            { key: "prime", url: "prime.mp4", title: "Prime", startTime: 0 },
+            { key: "veneno", url: "Veneno.mp4", title: "Veneno", startTime: 0 },
+            { key: "loosescrew", url: "video.mp4", title: "LooseScrew", startTime: 0 },
+            { key: "conan", url: "Conan x Xenia.mp4", title: "CONAN x Xenia", startTime: 0 },
+            { key: "gone4amin", url: "Gone 4 a min.mp4", title: "Gone 4 a min", startTime: 0 },
+            { key: "badboy", url: "BADBOY FETİSH.mp4", title: "Badboy Fetish", startTime: 0 },
+            { key: "argentsale", url: "argent sale.mp4", title: "Argent Sale", startTime: 0 },
+            { key: "porsche911", url: "Porsche 911.mp4", title: "Porsche 911", startTime: 0 },
+            { key: "dehaaskim", url: "deha askim.mp4", title: "Deha Aşkım", startTime: 0 },
+            { key: "deha777", url: "777.mp4", title: "Deha 777", startTime: 0 },
+            { key: "prensesim", url: "prensesim.mp4", title: "Prensesim", startTime: 0 }
         ];
+        
         let currentVideoIndex = 0;
         const video = document.getElementById('bg-video');
         const colorCanvas = document.getElementById('color-canvas');
@@ -605,7 +546,6 @@ const videoPlaylist = [
         const muteBtn = document.getElementById('mute-btn');
         let lastVolume = 70;
 
-        // Video arkasındaki renk tonuna göre tema güncelleme
         function extractVideoColor() {
             if (video.readyState < 2) return;
             colorCanvas.width = 50;
@@ -635,9 +575,7 @@ const videoPlaylist = [
 
                 let hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
                 document.documentElement.style.setProperty('--term-color', hexColor);
-            } catch (e) {
-                // Güvenli varsayılan renk
-            }
+            } catch (e) {}
         }
 
         function loadAndPlayVideo(index) {
@@ -704,21 +642,17 @@ const videoPlaylist = [
             }
         });
 
-        // Ortak Sayaç (API Entegrasyonu - 500'den başlar)
         async function updateVisitorCounter() {
             try {
                 const namespace = 'radwlab-interactive-site';
                 const key = 'visits';
-                
                 const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
                 const data = await response.json();
-                
                 let count = data.value;
                 if (count < 500) {
                     await fetch(`https://api.countapi.xyz/set/${namespace}/${key}?value=500`);
                     count = 500;
                 }
-                
                 document.getElementById('visit-count').textContent = count;
             } catch (error) {
                 document.getElementById('visit-count').textContent = "501";
@@ -986,3 +920,6 @@ const videoPlaylist = [
             requestAnimationFrame(handleParticles);
         }
         handleParticles();
+    </script>
+</body>
+</html>
