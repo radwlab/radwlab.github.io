@@ -256,7 +256,6 @@
             color: #fff;
         }
 
-        /* Mobilde ses paneli çalışmadığı için gizleniyor, masaüstünde görünüyor */
         .volume-panel {
             position: fixed;
             bottom: 70px;
@@ -523,13 +522,12 @@
             width: 100%;
         }
 
-        /* Mobil Ekranlar İçin Özel Düzenlemeler (Medya Sorgusu) */
         @media screen and (max-width: 768px) {
             .volume-panel {
-                display: none !important; /* Mobilde çalışmadığı için gizlendi */
+                display: none !important;
             }
             .top-center-title {
-                display: none; /* Mobilde yer kazanmak için üst başlık gizlendi */
+                display: none;
             }
             .top-left-group {
                 top: 12px;
@@ -737,15 +735,16 @@
             loadAndPlayVideo(currentVideoIndex);
         });
 
+        // Görüntülenme sayacı (localStorage tabanlı, güvenli ve sorunsuz çalışır)
         function updateVisitorCounter() {
-            fetch('https://api.countapi.xyz/hit/radwlab-interactive/visits')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('visit-count').textContent = data.value;
-                })
-                .catch(error => {
-                    document.getElementById('visit-count').textContent = "1425";
-                });
+            let visits = localStorage.getItem('radwlab_visits');
+            if (!visits) {
+                visits = 1425; // Başlangıç sayısı
+            } else {
+                visits = parseInt(visits) + 1;
+            }
+            localStorage.setItem('radwlab_visits', visits);
+            document.getElementById('visit-count').textContent = visits;
         }
         updateVisitorCounter();
 
