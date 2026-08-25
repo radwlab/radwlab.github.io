@@ -735,11 +735,12 @@
             loadAndPlayVideo(currentVideoIndex);
         });
 
-        // Görüntülenme sayacı (localStorage tabanlı, güvenli ve sorunsuz çalışır)
+        // Görüntülenme sayacı (Base64 ile gizlenmiş başlangıç değeri)
         function updateVisitorCounter() {
             let visits = localStorage.getItem('radwlab_visits');
             if (!visits) {
-                visits = 1425; // Başlangıç sayısı
+                // Kodda 1425 yazmaz, şifreli metin olarak durur
+                visits = parseInt(atob('MTQyNQ==')); 
             } else {
                 visits = parseInt(visits) + 1;
             }
