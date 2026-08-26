@@ -323,15 +323,15 @@
             z-index: 1;
         }
 
-        /* BURASI DEĞİŞTİ: Maksimum yükseklik sınırlandı ve scroll eklendi */
+        /* Yükseklik ve iç içe geçmeyi önleyen net ayar */
         .mini-playlist-panel.expanded .playlist-items-container {
-            max-height: 180px; 
-            padding: 6px;
+            max-height: 220px; 
+            padding: 8px;
             margin-top: 0px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
         .playlist-items-container::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.4);
@@ -339,9 +339,9 @@
         }
 
         .playlist-item {
-            padding: 8px 10px;
-            border-radius: 5px;
-            font-size: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 11px;
             color: #ffffff;
             background: rgba(25, 25, 25, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -352,7 +352,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 600;
-            margin-bottom: 3px;
+            margin-bottom: 6px; /* Şarkılar arası boşluk eklendi, iç içe geçme bitti */
+            flex-shrink: 0;
         }
 
         .playlist-item.active {
