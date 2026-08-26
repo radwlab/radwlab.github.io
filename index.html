@@ -301,8 +301,8 @@
         }
 
         .mini-playlist-panel.expanded .playlist-toggle-header {
-            border-radius: 12px;
-            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            border-bottom: var(--card-border);
         }
 
         .playlist-items-container {
@@ -323,10 +323,11 @@
             z-index: 1;
         }
 
+        /* BURASI DEĞİŞTİ: Maksimum yükseklik sınırlandı ve scroll eklendi */
         .mini-playlist-panel.expanded .playlist-items-container {
-            max-height: calc(100vh - 100px);
+            max-height: 180px; 
             padding: 6px;
-            margin-top: 2px;
+            margin-top: 0px;
         }
 
         .playlist-items-container::-webkit-scrollbar {
@@ -528,7 +529,7 @@
 
     <div id="mini-playlist-panel" class="mini-playlist-panel">
         <div id="playlist-toggle-header" class="playlist-toggle-header">
-            <span>Playlist</span>
+            <span>PLAYLIST</span>
             <span id="playlist-arrow">▼</span>
         </div>
         <div id="playlist-items-container" class="playlist-items-container"></div>
