@@ -42,7 +42,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
         }
 
@@ -296,7 +296,7 @@
 </head>
 <body>
 
-    <!-- Sinematik Giriş Ekranı -->
+    <!-- Sinematik Daktilo Giriş Ekranı (Tıklamayla da geçilebilir) -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
     </div>
@@ -330,7 +330,7 @@
         <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline muted preload="metadata">
+                <video class="section-vid" loop playsinline preload="auto">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -346,7 +346,7 @@
         <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline muted preload="metadata">
+                <video class="section-vid" loop playsinline preload="auto">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -362,7 +362,7 @@
         <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline muted preload="metadata">
+                <video class="source-vid" loop playsinline preload="auto">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
@@ -378,37 +378,57 @@
     </div>
 
     <script>
+        // Daktilo Efekti ve Giriş Ekranı
         const textToType = "radw.";
         const typewriterElement = document.getElementById('typewriter');
         const splashScreen = document.getElementById('splash-screen');
         let charIndex = 0;
-        let splashDismissed = false;
+        let hasInteracted = false;
 
-        function closeSplash() {
-            if (splashDismissed) return;
-            splashDismissed = true;
+        function dismissSplash() {
+            if (hasInteracted) return;
+            hasInteracted = true;
             splashScreen.classList.add('fade-out');
+            
+            // Kullanıcı ilk dokunduğunda/tıkladığında tarayıcının ses kilidi açılır
+            // Arka plandaki tüm videoları sesli çalışmaya hazır hale getiriyoruz
+            unlockAudioContext();
         }
 
         function typeWriter() {
             if (charIndex < textToType.length) {
                 typewriterElement.textContent += textToType.charAt(charIndex);
                 charIndex++;
-                setTimeout(typeWriter, 180);
+                setTimeout(typeWriter, 200);
             } else {
-                setTimeout(closeSplash, 500);
+                setTimeout(dismissSplash, 600);
             }
         }
 
-        // Tıklamayla da ekranı kapatabilme imkanı
-        splashScreen.addEventListener('click', closeSplash);
-        splashScreen.addEventListener('touchstart', closeSplash, { passive: true });
-
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 300);
-            // Her ihtimale karşı 3 saniye sonra ekranı zorla kapat
-            setTimeout(closeSplash, 3000);
         });
+
+        // Kullanıcı ekrana dokunduğu an (veya daktilo bittiğinde) ses kilidini kır
+        splashScreen.addEventListener('click', dismissSplash);
+        splashScreen.addEventListener('touchstart', dismissSplash, { passive: true });
+        window.addEventListener('wheel', dismissSplash, { passive: true });
+        window.addEventListener('touchstart', dismissSplash, { passive: true });
+
+        function unlockAudioContext() {
+            sections.forEach((section, idx) => {
+                if (idx === 0) return;
+                const video = section.querySelector('video');
+                if (video) {
+                    video.muted = true;
+                    video.play().then(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                        video.muted = false; // Kilidi açtıktan sonra sesli mod aktifleşir
+                    }).catch(() => {});
+                }
+            });
+        }
 
         // Canlı Saat
         function updateClock() {
@@ -432,11 +452,11 @@
             if (index < 0 || index >= sections.length || isAnimating) return;
             isAnimating = true;
 
-            // Önceki videoyu durdur
             if (currentIndex > 0) {
                 const prevVideo = sections[currentIndex].querySelector('video');
                 if (prevVideo) {
                     prevVideo.pause();
+                    prevVideo.currentTime = 0;
                 }
             }
 
@@ -444,25 +464,17 @@
             currentIndex = index;
             sections[currentIndex].classList.add('active');
 
-            // Yeni videoyu başlat
             if (currentIndex > 0) {
                 const currentVideo = sections[currentIndex].querySelector('video');
                 const currentSlider = sections[currentIndex].querySelector('.audio-slider');
-                if (currentVideo) {
-                    currentVideo.currentTime = 0;
-                    if (currentSlider) {
-                        const vol = parseFloat(currentSlider.value);
-                        currentVideo.volume = vol;
-                        currentVideo.muted = (vol === 0);
-                    }
-                    var playPromise = currentVideo.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(() => {
-                            // Ses kısıp tekrar oynatmayı dene (mobil tarayıcı engellerine karşı)
-                            currentVideo.muted = true;
-                            currentVideo.play();
-                        });
-                    }
+                if (currentVideo && currentSlider) {
+                    currentVideo.muted = false;
+                    currentVideo.volume = parseFloat(currentSlider.value);
+                    currentVideo.play().catch(() => {
+                        // Tarayıcı hala engellerse sessiz oynatıp kullanıcı slider'ı oynatınca açar
+                        currentVideo.muted = true;
+                        currentVideo.play();
+                    });
                 }
             }
 
@@ -471,9 +483,8 @@
             }, 600);
         }
 
-        // Fare tekerleği kontrolü
         window.addEventListener('wheel', (e) => {
-            if (isAnimating || !splashDismissed) return;
+            if (isAnimating || !hasInteracted) return;
             if (Math.abs(e.deltaY) < 15) return;
 
             if (e.deltaY > 0) {
@@ -483,14 +494,13 @@
             }
         }, { passive: true });
 
-        // Dokunmatik (Mobil Kaydırma) kontrolü
         let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
         window.addEventListener('touchend', (e) => {
-            if (isAnimating || !splashDismissed) return;
+            if (isAnimating || !hasInteracted) return;
             let touchEndY = e.changedTouches[0].clientY;
             let diff = touchStartY - touchEndY;
 
@@ -503,7 +513,6 @@
             }
         }, { passive: true });
 
-        // Ses ayar çubukları
         document.querySelectorAll('.audio-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
                 const section = e.target.closest('section');
