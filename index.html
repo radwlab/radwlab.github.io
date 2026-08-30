@@ -261,6 +261,7 @@
 </head>
 <body>
 
+    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-dot"></div>
@@ -273,8 +274,10 @@
         </div>
     </nav>
 
+    <!-- Ana Akış Konteynerı -->
     <div class="main-container" id="mainContainer">
         
+        <!-- 1. Bölüm: Hero (Giriş) -->
         <section class="hero-section active">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
@@ -284,6 +287,7 @@
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
+        <!-- 2. Bölüm: rs6 (rs6.mp4) -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -299,6 +303,7 @@
             </div>
         </section>
 
+        <!-- 3. Bölüm: wav.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -314,6 +319,7 @@
             </div>
         </section>
 
+        <!-- 4. Bölüm: how deep is your love.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -351,32 +357,50 @@
         let currentIndex = 0;
         let isAnimating = false;
 
-        // Sayfa açılır açılmaz TÜM videoları arka planda hazırla ve tetikle
-        sections.forEach((section, idx) => {
-            if (idx === 0) return;
-            const video = section.querySelector('video');
-            const slider = section.querySelector('.audio-slider');
-            if (video && slider) {
-                video.volume = parseFloat(slider.value);
-                // Tarayıcıların engellememesi için önce sessize alıp yükletiyoruz, sonra hazır hale getiriyoruz
-                video.muted = true;
-                video.play().then(() => {
-                    video.pause();
-                    video.currentTime = 0;
-                }).catch(() => {});
-            }
-        });
+        // Tarayıcı kilitlerini açmak için arka planda videoları hazırla
+        function initVideos() {
+            sections.forEach((section, idx) => {
+                if (idx === 0) return;
+                const video = section.querySelector('video');
+                if (video) {
+                    video.load();
+                }
+            });
+        }
+        initVideos();
+
+        // Sayfaya ilk dokunulduğu veya tıklandığı an tarayıcının medya kilidini kökten kaldırır
+        let hasInteracted = false;
+        function unlockMedia() {
+            if (hasInteracted) return;
+            hasInteracted = true;
+            
+            sections.forEach((section, idx) => {
+                if (idx === 0) return;
+                const video = section.querySelector('video');
+                if (video) {
+                    video.muted = true;
+                    video.play().then(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                    }).catch(() => {});
+                }
+            });
+        }
+
+        window.addEventListener('pointerdown', unlockMedia, { once: true });
+        window.addEventListener('keydown', unlockMedia, { once: true });
 
         function goToSection(index) {
             if (index < 0 || index >= sections.length || isAnimating) return;
             isAnimating = true;
 
-            // Önceki videoyu durdur ve sessize al
+            // Önceki videoyu durdur ve başa sar
             if (currentIndex > 0) {
                 const prevVideo = sections[currentIndex].querySelector('video');
                 if (prevVideo) {
                     prevVideo.pause();
-                    prevVideo.muted = true;
+                    prevVideo.currentTime = 0;
                 }
             }
 
@@ -384,12 +408,11 @@
             currentIndex = index;
             sections[currentIndex].classList.add('active');
 
-            // Yeni bölüme geçildiğinde videoyu anında oynat
+            // Yeni bölüme geçildiğinde videoyu doğrudan çalıştır
             if (currentIndex > 0) {
                 const currentVideo = sections[currentIndex].querySelector('video');
                 const currentSlider = sections[currentIndex].querySelector('.audio-slider');
                 if (currentVideo && currentSlider) {
-                    currentVideo.currentTime = 0;
                     currentVideo.muted = false;
                     currentVideo.volume = parseFloat(currentSlider.value);
                     currentVideo.play().catch(() => {});
