@@ -78,7 +78,7 @@
             text-decoration: none;
         }
 
-        /* Ana Akış Konteynerı (Tüm Sayfalar/Videolar) */
+        /* Ana Akış Konteynerı */
         .main-container {
             width: 100%;
             height: 100dvh;
@@ -107,7 +107,7 @@
             transform: translateY(0);
         }
 
-        /* Hero Bölümü (İlk Ekran) */
+        /* Hero Bölümü */
         .hero-section {
             background: radial-gradient(circle at center, #111 0%, #000 70%);
             text-align: center;
@@ -140,7 +140,6 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
         }
 
-        /* Yamuk / İtalik Şık Söz */
         .hero-subtitle {
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             font-style: italic;
@@ -165,7 +164,7 @@
             60% { transform: translateY(-4px); }
         }
 
-        /* Video / Playlist Bölümleri (Maksimum Kalite Optimizasyonu) */
+        /* Video Bölümleri */
         .video-section {
             background: #000;
         }
@@ -181,7 +180,7 @@
         .video-wrapper video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Videoyu orantıyı bozmadan ekranı tamamen ve yüksek kalitede dolduracak şekilde sığdırır */
+            object-fit: cover;
             -o-object-fit: cover;
         }
 
@@ -262,7 +261,6 @@
 </head>
 <body>
 
-    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-dot"></div>
@@ -275,10 +273,8 @@
         </div>
     </nav>
 
-    <!-- Ana Akış Konteynerı -->
     <div class="main-container" id="mainContainer">
         
-        <!-- 1. Bölüm: Hero (Giriş) -->
         <section class="hero-section active">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
@@ -288,7 +284,6 @@
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
-        <!-- 2. Bölüm: rs6 (rs6.mp4) -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -304,7 +299,6 @@
             </div>
         </section>
 
-        <!-- 3. Bölüm: wav.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -320,7 +314,6 @@
             </div>
         </section>
 
-        <!-- 4. Bölüm: how deep is your love.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -358,14 +351,19 @@
         let currentIndex = 0;
         let isAnimating = false;
 
-        // Tüm videoların yüksek kalitede sorunsuz akması için tam önbellek yüklemesi
+        // Sayfa açılır açılmaz TÜM videoları arka planda hazırla ve tetikle
         sections.forEach((section, idx) => {
             if (idx === 0) return;
             const video = section.querySelector('video');
             const slider = section.querySelector('.audio-slider');
             if (video && slider) {
                 video.volume = parseFloat(slider.value);
-                video.load();
+                // Tarayıcıların engellememesi için önce sessize alıp yükletiyoruz, sonra hazır hale getiriyoruz
+                video.muted = true;
+                video.play().then(() => {
+                    video.pause();
+                    video.currentTime = 0;
+                }).catch(() => {});
             }
         });
 
@@ -386,11 +384,12 @@
             currentIndex = index;
             sections[currentIndex].classList.add('active');
 
-            // Yeni bölüm video ise en yüksek performansla oynat
+            // Yeni bölüme geçildiğinde videoyu anında oynat
             if (currentIndex > 0) {
                 const currentVideo = sections[currentIndex].querySelector('video');
                 const currentSlider = sections[currentIndex].querySelector('.audio-slider');
                 if (currentVideo && currentSlider) {
+                    currentVideo.currentTime = 0;
                     currentVideo.muted = false;
                     currentVideo.volume = parseFloat(currentSlider.value);
                     currentVideo.play().catch(() => {});
