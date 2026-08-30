@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>radw :: Experience</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <!-- Locomotive Scroll CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
     <style>
         :root {
             --bg-color: #000000;
             --text-primary: #f5f5f7;
             --text-secondary: #86868b;
-            --accent-color: #2997ff;
             --card-bg: rgba(26, 26, 28, 0.75);
             --border-color: rgba(255, 255, 255, 0.12);
         }
@@ -23,13 +20,20 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior: none;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
         }
 
         /* Navigasyon Bar */
@@ -53,7 +57,7 @@
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             font-size: 0.75rem;
             color: var(--text-secondary);
             font-family: monospace;
@@ -94,28 +98,22 @@
             color: var(--text-primary);
         }
 
-        /* Genel Bölüm Ayarları */
-        .section {
+        /* Ana Sayfa Bölümleri */
+        section {
             width: 100%;
             height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        
-        .section.is-inview {
-            opacity: 1;
-            visibility: visible;
         }
 
-        /* Hero Bölümü */
         .hero-section {
             background: radial-gradient(circle at center, #111 0%, #000 70%);
             text-align: center;
+            flex-direction: column;
         }
 
         .hero-title {
@@ -125,12 +123,12 @@
             background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .hero-avatar {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -139,33 +137,31 @@
 
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             font-size: 0.75rem;
             color: var(--text-secondary);
             letter-spacing: 0.15em;
             animation: bounce 2s infinite;
-            cursor: pointer;
         }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
         }
 
-        /* Vitrin Kartları (Apple Tarzı) */
         .showcase-container {
-            width: 100%;
+            width: 90%;
             max-width: 1024px;
-            height: 85vh;
+            height: 75vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
+            gap: 40px;
             align-items: center;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 40px;
-            padding: 60px;
+            border-radius: 35px;
+            padding: 50px;
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             box-shadow: 0 40px 80px rgba(0,0,0,0.7);
@@ -181,7 +177,7 @@
         .showcase-image-box {
             width: 100%;
             height: 100%;
-            border-radius: 30px;
+            border-radius: 24px;
             overflow: hidden;
             background: #000;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -205,13 +201,51 @@
         }
 
         .showcase-heading {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 4vw, 3.5rem);
             font-weight: 600;
             letter-spacing: -0.02em;
-            line-height: 1.1;
+            line-height: 1.15;
         }
 
-        /* Playlist Sayfası / Modalı */
+        footer {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            background: #000;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-playlist-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 16px 40px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-playlist-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Playlist Sayfası (Tiktok / Reels Tarzı Dikey Akış) */
         .playlist-page {
             position: fixed;
             top: 0;
@@ -220,11 +254,11 @@
             height: 100vh;
             background: #000000;
             z-index: 2000;
-            overflow-y: auto;
-            padding: 100px 20px 60px 20px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
             display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
         .playlist-page.active {
@@ -232,95 +266,121 @@
             opacity: 1;
         }
 
-        .playlist-header {
-            max-width: 1200px;
-            margin: 0 auto 50px auto;
+        /* Üst Kapatma Butonu (Sabit) */
+        .playlist-top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 30px;
+            z-index: 2100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            pointer-events: none;
         }
 
-        .playlist-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        .playlist-top-bar > * {
+            pointer-events: auto;
+        }
+
+        .playlist-title-small {
+            font-size: 1.1rem;
             font-weight: 600;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.02em;
         }
 
         .close-playlist {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.15);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
             transition: background 0.3s ease;
         }
 
         .close-playlist:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.3);
         }
 
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .video-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .video-wrapper {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #000;
+        /* Her Video Tam Ekran Bir Reels Kartı Gibi */
+        .reels-slide {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
         }
 
-        .video-wrapper video {
+        .reels-video-wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .reels-video-wrapper video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
-        .video-details {
-            padding: 24px;
+        /* Video Üstü Bilgi ve Ses Kontrol Katmanı */
+        .reels-overlay {
+            position: absolute;
+            bottom: 40px;
+            left: 30px;
+            right: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 2050;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .reels-info {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 8px;
         }
 
-        .video-name {
+        .reels-name {
             font-size: 1.1rem;
             font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        /* Ses Ayarlama Çubuğu */
         .audio-control {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.8rem;
+            gap: 10px;
+            font-size: 0.75rem;
             color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
         }
 
         .audio-slider {
-            flex: 1;
+            width: 90px;
             -webkit-appearance: none;
             height: 4px;
             border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             outline: none;
         }
 
@@ -333,66 +393,41 @@
             cursor: pointer;
         }
 
-        /* Footer Bölümü */
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .footer-playlist-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 12px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-        }
-
-        .footer-playlist-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-        }
-
-        /* Mobil Uyum */
         @media (max-width: 768px) {
             .showcase-container, .showcase-container.reverse {
                 grid-template-columns: 1fr;
-                height: 90vh;
-                padding: 30px 20px;
-                border-radius: 20px;
+                height: 82vh;
+                padding: 25px 20px;
+                border-radius: 24px;
             }
             .showcase-image-box {
-                height: 250px;
+                height: 220px;
             }
             .hero-title {
-                margin-bottom: 25px;
+                margin-bottom: 20px;
             }
-             .hero-avatar {
+            .hero-avatar {
                 width: 120px;
                 height: 120px;
+            }
+            .reels-overlay {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                bottom: 20px;
+                left: 15px;
+                right: 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-dot"></div>
             <span id="ping-text">14 ms</span>
-            <span style="color: rgba(255,255,255,0.2);">|</span>
+            <span>|</span>
             <span id="clock-text">00:00:00</span>
         </div>
         <div class="nav-right">
@@ -401,388 +436,293 @@
         </div>
     </nav>
 
-    <!-- Locomotive Scroll için ana kapsayıcı -->
-    <main data-scroll-container>
+    <section class="hero-section">
+        <h1 class="hero-title">radw.</h1>
+        <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
+        <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
+    </section>
 
-        <!-- Hero Bölümü -->
-        <section class="section hero-section" data-scroll-section>
-            <div>
-                <h1 class="hero-title" data-scroll data-scroll-speed="1">radw.</h1>
-                <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar" data-scroll data-scroll-speed="0.5">
+    <section>
+        <div class="showcase-container">
+            <div class="showcase-image-box">
+                <img src="IMG_6381.jpeg" alt="Visual 1">
             </div>
-            <div class="scroll-indicator" id="scrollIndicatorBtn" data-scroll data-scroll-speed="-1">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
-        </section>
-
-        <!-- 1. Bölüm: IMG_6381.jpeg -->
-        <section class="section" data-scroll-section>
-            <div class="showcase-container" data-scroll data-scroll-speed="2">
-                <div class="showcase-image-box">
-                    <img src="IMG_6381.jpeg" alt="Visual 1" data-scroll data-scroll-speed="1">
-                </div>
-                <div class="showcase-content">
-                    <h2 class="showcase-heading">İnsanlar değişmez.</h2>
-                </div>
+            <div class="showcase-content">
+                <h2 class="showcase-heading">İnsanlar değişmez.</h2>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- 2. Bölüm (Ters): IMG_6411.jpeg -->
-        <section class="section" data-scroll-section>
-            <div class="showcase-container reverse" data-scroll data-scroll-speed="2">
-                <div class="showcase-image-box">
-                    <img src="IMG_6411.jpeg" alt="Visual 2" data-scroll data-scroll-speed="1">
-                </div>
-                <div class="showcase-content">
-                    <h2 class="showcase-heading">Ne sineği çöpten ne arıyı çiçekten vazgeçiremezsiniz.</h2>
-                </div>
+    <section>
+        <div class="showcase-container reverse">
+            <div class="showcase-image-box">
+                <img src="IMG_6411.jpeg" alt="Visual 2">
             </div>
-        </section>
-
-        <!-- 3. Bölüm: IMG_6437.jpeg -->
-        <section class="section" data-scroll-section>
-            <div class="showcase-container" data-scroll data-scroll-speed="2">
-                <div class="showcase-image-box">
-                    <img src="IMG_6437.jpeg" alt="Visual 3" data-scroll data-scroll-speed="1">
-                </div>
-                <div class="showcase-content">
-                    <h2 class="showcase-heading">Herkes eninde sonunda kendi doğasına döner.</h2>
-                </div>
+            <div class="showcase-content">
+                <h2 class="showcase-heading">Ne sineği çöpten ne arıyı çiçekten vazgeçiremezsiniz.</h2>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer ve En Alttaki Playlist Butonu -->
-        <footer data-scroll-section>
-            <button class="footer-playlist-btn" id="openPlaylistBottom">Playlist Aç</button>
-            <p>Copyright © 2026 radw. Tüm hakları saklıdır.</p>
-        </footer>
+    <section>
+        <div class="showcase-container">
+            <div class="showcase-image-box">
+                <img src="IMG_6437.jpeg" alt="Visual 3">
+            </div>
+            <div class="showcase-content">
+                <h2 class="showcase-heading">Herkes eninde sonunda kendi doğasına döner.</h2>
+            </div>
+        </div>
+    </section>
 
-    </main>
+    <footer>
+        <button class="footer-playlist-btn" id="openPlaylistBottom">Playlist Aç</button>
+        <p class="footer-copy">Copyright © 2026 radw. Tüm hakları saklıdır.</p>
+    </footer>
 
-    <!-- Playlist Ayrı Sayfa / Modalı -->
     <div id="playlistPage" class="playlist-page">
-        <div class="playlist-header">
-            <h2 class="playlist-title">Playlist.</h2>
+        <div class="playlist-top-bar">
+            <span class="playlist-title-small">Playlist.</span>
             <button class="close-playlist" id="closePlaylist">Kapat ✕</button>
         </div>
 
-        <div class="video-grid">
-            <!-- 1. loosescrew.mp4 (İstediğin gibi ilk sırada ve öncelikli çalacak) -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid1" loop muted playsinline>
-                        <source src="loosescrew.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">loosescrew.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid1">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="video.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">video.mp4 (loosescrew)</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 2. 777.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid2" loop muted playsinline>
-                        <source src="777.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">777.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid2">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="777.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">777.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 3. argent sale.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid3" loop muted playsinline>
-                        <source src="argent sale.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">argent sale.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid3">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="argent sale.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">argent sale.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 4. ask kirintilari.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid4" loop muted playsinline>
-                        <source src="ask kirintilari.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">ask kirintilari.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid4">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="ask kirintilari.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">ask kirintilari.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 5. Aventador.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid5" loop muted playsinline>
-                        <source src="Aventador.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">Aventador.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid5">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="Aventador.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">Aventador.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 6. BADBOY FETİŞ.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid6" loop muted playsinline>
-                        <source src="BADBOY FETİŞ.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">BADBOY FETİŞ.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid6">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="BADBOY FETİŞ.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">BADBOY FETİŞ.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 7. Conan x Xenia.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid7" loop muted playsinline>
-                        <source src="Conan x Xenia.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">Conan x Xenia.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid7">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="Conan x Xenia.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">Conan x Xenia.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 8. deha askim.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid8" loop muted playsinline>
-                        <source src="deha askim.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">deha askim.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid8">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="deha askim.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">deha askim.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 9. Gone 4 a min.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid9" loop muted playsinline>
-                        <source src="Gone 4 a min.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">Gone 4 a min.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid9">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="Gone 4 a min.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">Gone 4 a min.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 10. hero.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid10" loop muted playsinline>
-                        <source src="hero.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">hero.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid10">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="hero.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">hero.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 11. outro.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid11" loop muted playsinline>
-                        <source src="outro.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">outro.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid11">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="outro.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">outro.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 12. porsche 911.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid12" loop muted playsinline>
-                        <source src="porsche 911.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">porsche 911.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid12">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="Porsche 911.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">Porsche 911.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 13. prensesim.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid13" loop muted playsinline>
-                        <source src="prensesim.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">prensesim.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid13">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="prensesim.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">prensesim.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 14. prime.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid14" loop muted playsinline>
-                        <source src="prime.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">prime.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid14">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="prime.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">prime.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 15. sen ona asiksin.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid15" loop muted playsinline>
-                        <source src="sen ona asiksin.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">sen ona asiksin.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid15">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="sen ona asiksin.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">sen ona asiksin.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 16. sen orda yoksun.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid16" loop muted playsinline>
-                        <source src="sen orda yoksun.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">sen orda yoksun.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid16">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="sen orda yoksun.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">sen orda yoksun.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 17. Veneno.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid17" loop muted playsinline>
-                        <source src="Veneno.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">Veneno.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid17">
-                    </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="Veneno.mp4" type="video/mp4"></video>
+            </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">Veneno.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
+        </div>
 
-            <!-- 18. video.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid18" loop muted playsinline>
-                        <source src="video.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">video.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid18">
-                    </div>
-                </div>
+        <div class="reels-slide">
+            <div class="reels-video-wrapper">
+                <video class="reels-vid" loop muted playsinline><source src="why.mp4" type="video/mp4"></video>
             </div>
-
-            <!-- 19. why.mp4 -->
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <video id="vid19" loop muted playsinline>
-                        <source src="why.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <span class="video-name">why.mp4</span>
-                    <div class="audio-control">
-                        <span>Ses</span>
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0" data-target="vid19">
-                    </div>
+            <div class="reels-overlay">
+                <div class="reels-info"><span class="reels-name">why.mp4</span></div>
+                <div class="audio-control">
+                    <span>Ses</span>
+                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Locomotive Scroll JS -->
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script>
-        // Locomotive Scroll Başlatma
-        const scroll = new LocomotiveScroll({
-            el: document.querySelector('[data-scroll-container]'),
-            smooth: true,
-            smartphone: { smooth: true },
-            tablet: { smooth: true }
-        });
-
-        // Canlı Saat ve Ping Simülasyonu
+        // Canlı Saat
         function updateClock() {
             const now = new Date();
             document.getElementById('clock-text').innerText = now.toTimeString().split(' ')[0];
@@ -796,17 +736,18 @@
             document.getElementById('ping-text').innerText = randomPing + ' ms';
         }, 3000);
 
-        // Playlist Açma / Kapatma Mantığı
+        // Playlist Açma / Kapatma ve Reels Mantığı
         const playlistPage = document.getElementById('playlistPage');
         const openTop = document.getElementById('openPlaylistTop');
         const openBottom = document.getElementById('openPlaylistBottom');
         const closeBtn = document.getElementById('closePlaylist');
+        const allVideos = document.querySelectorAll('.reels-vid');
 
         function openPlaylistModal(e) {
             e.preventDefault();
             playlistPage.classList.add('active');
-            scroll.stop();
-            document.querySelectorAll('.video-card video').forEach(v => v.play());
+            document.body.style.overflow = 'hidden';
+            checkActiveVideo();
         }
 
         openTop.addEventListener('click', openPlaylistModal);
@@ -814,15 +755,43 @@
 
         closeBtn.addEventListener('click', () => {
             playlistPage.classList.remove('active');
-            scroll.start();
-            document.querySelectorAll('.video-card video').forEach(v => v.pause());
+            document.body.style.overflow = 'scroll';
+            allVideos.forEach(v => v.pause());
         });
+
+        // Hangi videonun ekranda olduğunu bulup sadece onu oynatma (Observer)
+        const observerOptions = {
+            root: playlistPage,
+            threshold: 0.6
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reels-slide').forEach(slide => {
+            observer.observe(slide);
+        });
+
+        function checkActiveVideo() {
+            // Açıldığında ilk videoyu oynat
+            if(allVideos.length > 0) {
+                allVideos[0].play().catch(() => {});
+            }
+        }
 
         // Ses Ayarlama Çubuğu (Slider) Kontrolü
         document.querySelectorAll('.audio-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
-                const targetId = e.target.getAttribute('data-target');
-                const videoElement = document.getElementById(targetId);
+                const slide = e.target.closest('.reels-slide');
+                const videoElement = slide.querySelector('video');
                 const volume = parseFloat(e.target.value);
                 
                 videoElement.volume = volume;
