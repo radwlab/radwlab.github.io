@@ -20,22 +20,17 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            background-color: var(--bg-color);
-        }
-
-        body {
+        html, body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
             height: 100dvh;
-            overflow-y: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Sinematik Giriş Ekranı (Splash Screen) */
+        /* Sinematik Giriş Ekranı */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -47,12 +42,14 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            cursor: pointer;
         }
 
         #splash-screen.fade-out {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
         }
 
         .splash-text {
@@ -62,7 +59,6 @@
             background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
         }
 
         .cursor-blink {
@@ -185,7 +181,6 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
         }
 
-        /* Avatarın Altında İtalik ve Hafif Yan Duran Söz */
         .hero-subtitle {
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             font-style: italic;
@@ -227,7 +222,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            -o-object-fit: cover;
         }
 
         .video-overlay {
@@ -288,13 +282,8 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title {
-                margin-bottom: 20px;
-            }
-            .hero-avatar {
-                width: 120px;
-                height: 120px;
-            }
+            .hero-title { margin-bottom: 20px; }
+            .hero-avatar { width: 120px; height: 120px; }
             .video-overlay {
                 flex-direction: column;
                 align-items: flex-start;
@@ -328,21 +317,20 @@
     <!-- Ana Akış Konteynerı -->
     <div class="main-container" id="mainContainer">
         
-        <!-- 1. Bölüm: Hero (Giriş) -->
+        <!-- 1. Bölüm: Hero -->
         <section class="hero-section active">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
                 <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
-                <!-- Avatarın Altında İtalik ve Hafif Yan Duran Söz -->
                 <p class="hero-subtitle">"Solo temo a Dios"</p>
             </div>
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
-        <!-- 2. Bölüm: rs6 (rs6.mp4) -->
+        <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
+                <video class="section-vid" loop playsinline muted preload="metadata">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -355,10 +343,10 @@
             </div>
         </section>
 
-        <!-- 3. Bölüm: wav.mp4 -->
+        <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
+                <video class="section-vid" loop playsinline muted preload="metadata">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -371,11 +359,11 @@
             </div>
         </section>
 
-        <!-- 4. Bölüm: how deep is your love.mp4 -->
+        <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
-                    <source src="how deep is your love.mp4" type="video/mp4">
+                <video class="section-vid" loop playsinline muted preload="metadata">
+                    <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="video-overlay">
@@ -390,27 +378,36 @@
     </div>
 
     <script>
-        // Sinematik Daktilo Efekti ve Giriş Kaldırma
         const textToType = "radw.";
         const typewriterElement = document.getElementById('typewriter');
         const splashScreen = document.getElementById('splash-screen');
         let charIndex = 0;
+        let splashDismissed = false;
+
+        function closeSplash() {
+            if (splashDismissed) return;
+            splashDismissed = true;
+            splashScreen.classList.add('fade-out');
+        }
 
         function typeWriter() {
             if (charIndex < textToType.length) {
                 typewriterElement.textContent += textToType.charAt(charIndex);
                 charIndex++;
-                setTimeout(typeWriter, 220);
+                setTimeout(typeWriter, 180);
             } else {
-                setTimeout(() => {
-                    splashScreen.classList.add('fade-out');
-                    unlockMedia();
-                }, 600);
+                setTimeout(closeSplash, 500);
             }
         }
 
+        // Tıklamayla da ekranı kapatabilme imkanı
+        splashScreen.addEventListener('click', closeSplash);
+        splashScreen.addEventListener('touchstart', closeSplash, { passive: true });
+
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(typeWriter, 400);
+            setTimeout(typeWriter, 300);
+            // Her ihtimale karşı 3 saniye sonra ekranı zorla kapat
+            setTimeout(closeSplash, 3000);
         });
 
         // Canlı Saat
@@ -421,48 +418,25 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Rastgele Ping Değişimi
+        // Rastgele Ping
         setInterval(() => {
-            const randomPing = Math.floor(Math.random() * 8) + 12;
-            document.getElementById('ping-text').innerText = randomPing + ' ms';
+            document.getElementById('ping-text').innerText = (Math.floor(Math.random() * 8) + 12) + ' ms';
         }, 3000);
 
-        // --- AKIŞ VE VİDEO YÖNETİMİ ---
+        // Bölüm Geçişleri ve Video Yönetimi
         const sections = document.querySelectorAll('#mainContainer > section');
         let currentIndex = 0;
         let isAnimating = false;
-
-        sections.forEach((section, idx) => {
-            if (idx === 0) return;
-            const video = section.querySelector('video');
-            if (video) {
-                video.load();
-            }
-        });
-
-        function unlockMedia() {
-            sections.forEach((section, idx) => {
-                if (idx === 0) return;
-                const video = section.querySelector('video');
-                if (video) {
-                    video.muted = true;
-                    video.play().then(() => {
-                        video.pause();
-                        video.currentTime = 0;
-                    }).catch(() => {});
-                }
-            });
-        }
 
         function goToSection(index) {
             if (index < 0 || index >= sections.length || isAnimating) return;
             isAnimating = true;
 
+            // Önceki videoyu durdur
             if (currentIndex > 0) {
                 const prevVideo = sections[currentIndex].querySelector('video');
                 if (prevVideo) {
                     prevVideo.pause();
-                    prevVideo.currentTime = 0;
                 }
             }
 
@@ -470,13 +444,25 @@
             currentIndex = index;
             sections[currentIndex].classList.add('active');
 
+            // Yeni videoyu başlat
             if (currentIndex > 0) {
                 const currentVideo = sections[currentIndex].querySelector('video');
                 const currentSlider = sections[currentIndex].querySelector('.audio-slider');
-                if (currentVideo && currentSlider) {
-                    currentVideo.muted = false;
-                    currentVideo.volume = parseFloat(currentSlider.value);
-                    currentVideo.play().catch(() => {});
+                if (currentVideo) {
+                    currentVideo.currentTime = 0;
+                    if (currentSlider) {
+                        const vol = parseFloat(currentSlider.value);
+                        currentVideo.volume = vol;
+                        currentVideo.muted = (vol === 0);
+                    }
+                    var playPromise = currentVideo.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            // Ses kısıp tekrar oynatmayı dene (mobil tarayıcı engellerine karşı)
+                            currentVideo.muted = true;
+                            currentVideo.play();
+                        });
+                    }
                 }
             }
 
@@ -485,8 +471,9 @@
             }, 600);
         }
 
+        // Fare tekerleği kontrolü
         window.addEventListener('wheel', (e) => {
-            if (isAnimating || !splashScreen.classList.contains('fade-out')) return;
+            if (isAnimating || !splashDismissed) return;
             if (Math.abs(e.deltaY) < 15) return;
 
             if (e.deltaY > 0) {
@@ -496,13 +483,14 @@
             }
         }, { passive: true });
 
+        // Dokunmatik (Mobil Kaydırma) kontrolü
         let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
         window.addEventListener('touchend', (e) => {
-            if (isAnimating || !splashScreen.classList.contains('fade-out')) return;
+            if (isAnimating || !splashDismissed) return;
             let touchEndY = e.changedTouches[0].clientY;
             let diff = touchStartY - touchEndY;
 
@@ -515,6 +503,7 @@
             }
         }, { passive: true });
 
+        // Ses ayar çubukları
         document.querySelectorAll('.audio-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
                 const section = e.target.closest('section');
