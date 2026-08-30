@@ -18,10 +18,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
-            scroll-behavior: smooth;
             background-color: var(--bg-color);
         }
 
@@ -32,8 +32,7 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
+            overflow-y: hidden;
         }
 
         /* Navigasyon Bar */
@@ -98,16 +97,33 @@
             color: var(--text-primary);
         }
 
-        /* Ana Sayfa Bölümleri */
+        /* Ana Sayfa Akış Konteynerı */
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
         section {
             width: 100%;
             height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
+            position: absolute;
+            top: 0;
+            left: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+        }
+
+        section.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .hero-section {
@@ -207,18 +223,10 @@
             line-height: 1.15;
         }
 
-        footer {
-            width: 100%;
-            height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
+        .footer-section {
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             gap: 25px;
             background: #000;
-            border-top: 1px solid var(--border-color);
             text-align: center;
         }
 
@@ -254,8 +262,7 @@
             height: 100vh;
             background: #000000;
             z-index: 2000;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
+            overflow: hidden;
             display: none;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -307,16 +314,30 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        .reels-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
         .reels-slide {
             width: 100vw;
             height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reels-slide.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .reels-video-wrapper {
@@ -433,49 +454,51 @@
         </div>
     </nav>
 
-    <section class="hero-section">
-        <h1 class="hero-title">radw.</h1>
-        <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
-        <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
-    </section>
+    <div class="main-container" id="mainContainer">
+        <section class="hero-section active">
+            <h1 class="hero-title">radw.</h1>
+            <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
+            <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
+        </section>
 
-    <section>
-        <div class="showcase-container">
-            <div class="showcase-image-box">
-                <img src="IMG_6381.jpeg" alt="Visual 1">
+        <section>
+            <div class="showcase-container">
+                <div class="showcase-image-box">
+                    <img src="IMG_6381.jpeg" alt="Visual 1">
+                </div>
+                <div class="showcase-content">
+                    <h2 class="showcase-heading">İnsanlar değişmez.</h2>
+                </div>
             </div>
-            <div class="showcase-content">
-                <h2 class="showcase-heading">İnsanlar değişmez.</h2>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section>
-        <div class="showcase-container reverse">
-            <div class="showcase-image-box">
-                <img src="IMG_6411.jpeg" alt="Visual 2">
+        <section>
+            <div class="showcase-container reverse">
+                <div class="showcase-image-box">
+                    <img src="IMG_6411.jpeg" alt="Visual 2">
+                </div>
+                <div class="showcase-content">
+                    <h2 class="showcase-heading">Ne sineği çöpten ne arıyı çiçekten vazgeçiremezsiniz.</h2>
+                </div>
             </div>
-            <div class="showcase-content">
-                <h2 class="showcase-heading">Ne sineği çöpten ne arıyı çiçekten vazgeçiremezsiniz.</h2>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section>
-        <div class="showcase-container">
-            <div class="showcase-image-box">
-                <img src="IMG_6437.jpeg" alt="Visual 3">
+        <section>
+            <div class="showcase-container">
+                <div class="showcase-image-box">
+                    <img src="IMG_6437.jpeg" alt="Visual 3">
+                </div>
+                <div class="showcase-content">
+                    <h2 class="showcase-heading">Herkes eninde sonunda kendi doğasına döner.</h2>
+                </div>
             </div>
-            <div class="showcase-content">
-                <h2 class="showcase-heading">Herkes eninde sonunda kendi doğasına döner.</h2>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <footer>
-        <button class="footer-playlist-btn" id="openPlaylistBottom">Playlist Aç</button>
-        <p class="footer-copy">Copyright © 2026 radw. Tüm hakları saklıdır.</p>
-    </footer>
+        <section class="footer-section">
+            <button class="footer-playlist-btn" id="openPlaylistBottom">Playlist Aç</button>
+            <p class="footer-copy">Copyright © 2026 radw. Tüm hakları saklıdır.</p>
+        </section>
+    </div>
 
     <div id="playlistPage" class="playlist-page">
         <div class="playlist-top-bar">
@@ -483,236 +506,238 @@
             <button class="close-playlist" id="closePlaylist">Kapat ✕</button>
         </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="video.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">loosescrew</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+        <div class="reels-container" id="reelsContainer">
+            <div class="reels-slide active">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="video.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">loosescrew</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="777.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">777</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="777.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">777</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="argent sale.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">argent sale</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="argent sale.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">argent sale</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="ask kirintilari.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">ask kirintilari</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="ask kirintilari.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">ask kirintilari</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="Aventador.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">Aventador</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="Aventador.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">Aventador</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="BADBOY FETİŞ.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">BADBOY FETİŞ</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="BADBOY FETİŞ.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">BADBOY FETİŞ</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="Conan x Xenia.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">Conan x Xenia</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="Conan x Xenia.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">Conan x Xenia</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="deha askim.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">deha askim</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="deha askim.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">deha askim</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="Gone 4 a min.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">Gone 4 a min</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="Gone 4 a min.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">Gone 4 a min</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="hero.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">hero</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="hero.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">hero</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="outro.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">outro</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="outro.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">outro</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="Porsche 911.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">Porsche 911</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="Porsche 911.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">Porsche 911</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="prensesim.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">prensesim</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="prensesim.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">prensesim</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="prime.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">prime</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="prime.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">prime</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="sen ona asiksin.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">sen ona asiksin</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="sen ona asiksin.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">sen ona asiksin</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="sen orda yoksun.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">sen orda yoksun</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="sen orda yoksun.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">sen orda yoksun</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="Veneno.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">Veneno</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="Veneno.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">Veneno</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="reels-slide">
-            <div class="reels-video-wrapper">
-                <video class="reels-vid" loop playsinline><source src="why.mp4" type="video/mp4"></video>
-            </div>
-            <div class="reels-overlay">
-                <div class="reels-info"><span class="reels-name">why</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+            <div class="reels-slide">
+                <div class="reels-video-wrapper">
+                    <video class="reels-vid" loop playsinline preload="auto"><source src="why.mp4" type="video/mp4"></video>
+                </div>
+                <div class="reels-overlay">
+                    <div class="reels-info"><span class="reels-name">why</span></div>
+                    <div class="audio-control">
+                        <span>Ses</span>
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
         </div>
@@ -733,26 +758,113 @@
             document.getElementById('ping-text').innerText = randomPing + ' ms';
         }, 3000);
 
-        // Playlist Açma / Kapatma ve Reels Mantığı
+        // --- ANA SAYFA AKIŞ MOTORU ---
+        const mainSections = document.querySelectorAll('#mainContainer > section');
+        let currentMainIndex = 0;
+        let isAnimating = false;
+
+        function goToMainSection(index) {
+            if (index < 0 || index >= mainSections.length || isAnimating) return;
+            isAnimating = true;
+
+            mainSections[currentMainIndex].classList.remove('active');
+            currentMainIndex = index;
+            mainSections[currentMainIndex].classList.add('active');
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (playlistPage.classList.contains('active')) return;
+            if (Math.abs(e.deltaY) < 30) return;
+
+            if (e.deltaY > 0) {
+                goToMainSection(currentMainIndex + 1);
+            } else {
+                goToMainSection(currentMainIndex - 1);
+            }
+        }, { passive: true });
+
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            if (playlistPage.classList.contains('active')) return;
+            let touchEndY = e.changedTouches[0].clientY;
+            let diff = touchStartY - touchEndY;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    goToMainSection(currentMainIndex + 1);
+                } else {
+                    goToMainSection(currentMainIndex - 1);
+                }
+            }
+        }, { passive: true });
+
+
+        // --- PLAYLIST / REELS AKIŞ MOTORU ---
         const playlistPage = document.getElementById('playlistPage');
         const openTop = document.getElementById('openPlaylistTop');
         const openBottom = document.getElementById('openPlaylistBottom');
         const closeBtn = document.getElementById('closePlaylist');
-        const allVideos = document.querySelectorAll('.reels-vid');
+        const reelsSlides = document.querySelectorAll('.reels-slide');
+        let currentReelsIndex = 0;
+        let isReelsAnimating = false;
 
-        // Başlangıçta tüm video ses seviyelerini slider değerine (%50) eşitle
-        allVideos.forEach(video => {
-            const slide = video.closest('.reels-slide');
+        reelsSlides.forEach(slide => {
+            const video = slide.querySelector('video');
             const slider = slide.querySelector('.audio-slider');
             video.volume = parseFloat(slider.value);
+            // Önceden tampon belleğe yüklemeyi tetikle
+            video.load();
         });
+
+        function goToReelsSlide(index) {
+            if (index < 0 || index >= reelsSlides.length || isReelsAnimating) return;
+            isReelsAnimating = true;
+
+            const prevVideo = reelsSlides[currentReelsIndex].querySelector('video');
+            prevVideo.pause();
+            prevVideo.muted = true;
+            reelsSlides[currentReelsIndex].classList.remove('active');
+
+            currentReelsIndex = index;
+            const activeSlide = reelsSlides[currentReelsIndex];
+            activeSlide.classList.add('active');
+
+            const currentVideo = activeSlide.querySelector('video');
+            const currentSlider = activeSlide.querySelector('.audio-slider');
+            currentVideo.muted = false;
+            currentVideo.volume = parseFloat(currentSlider.value);
+            currentVideo.play().catch(() => {});
+
+            setTimeout(() => {
+                isReelsAnimating = false;
+            }, 600);
+        }
 
         function openPlaylistModal(e) {
             e.preventDefault();
             playlistPage.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            playlistPage.scrollTop = 0; // En baştan (loosescrew) başlat
-            playActiveVideo();
+            
+            reelsSlides.forEach((s) => {
+                s.classList.remove('active');
+                s.querySelector('video').pause();
+                s.querySelector('video').muted = true;
+            });
+            currentReelsIndex = 0;
+            reelsSlides[0].classList.add('active');
+            
+            const firstVid = reelsSlides[0].querySelector('video');
+            const firstSlider = reelsSlides[0].querySelector('.audio-slider');
+            firstVid.muted = false;
+            firstVid.volume = parseFloat(firstSlider.value);
+            firstVid.play().catch(() => {});
         }
 
         openTop.addEventListener('click', openPlaylistModal);
@@ -760,48 +872,40 @@
 
         closeBtn.addEventListener('click', () => {
             playlistPage.classList.remove('active');
-            document.body.style.overflow = 'scroll';
-            // Tüm videoları durdur ve seslerini kapat
-            allVideos.forEach(v => {
+            reelsSlides.forEach(slide => {
+                const v = slide.querySelector('video');
                 v.pause();
                 v.muted = true;
             });
         });
 
-        // Hangi videonun ekranda olduğunu bulup sadece onu oynatma ve diğerlerini sessize alma
-        const observerOptions = {
-            root: playlistPage,
-            threshold: 0.6
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target.querySelector('video');
-                const slider = entry.target.querySelector('.audio-slider');
-                
-                if (entry.isIntersecting) {
-                    video.muted = false;
-                    video.volume = parseFloat(slider.value);
-                    video.play().catch(() => {});
-                } else {
-                    video.pause();
-                    video.muted = true; // Önceki videonun sesinin gelmesini kesin olarak engeller
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reels-slide').forEach(slide => {
-            observer.observe(slide);
-        });
-
-        function playActiveVideo() {
-            if(allVideos.length > 0) {
-                allVideos[0].muted = false;
-                allVideos[0].play().catch(() => {});
+        playlistPage.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) < 30) return;
+            if (e.deltaY > 0) {
+                goToReelsSlide(currentReelsIndex + 1);
+            } else {
+                goToReelsSlide(currentReelsIndex - 1);
             }
-        }
+        }, { passive: true });
 
-        // Ses Ayarlama Çubuğu (Slider) Kontrolü
+        let reelsTouchStartY = 0;
+        playlistPage.addEventListener('touchstart', (e) => {
+            reelsTouchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        playlistPage.addEventListener('touchend', (e) => {
+            let reelsTouchEndY = e.changedTouches[0].clientY;
+            let diff = reelsTouchStartY - reelsTouchEndY;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    goToReelsSlide(currentReelsIndex + 1);
+                } else {
+                    goToReelsSlide(currentReelsIndex - 1);
+                }
+            }
+        }, { passive: true });
+
         document.querySelectorAll('.audio-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
                 const slide = e.target.closest('.reels-slide');
