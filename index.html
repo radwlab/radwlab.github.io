@@ -185,7 +185,7 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
         }
 
-        /* Avatarın Altında İtalik ve Hafif Yan Duran Altyazı */
+        /* Avatarın Altında İtalik ve Hafif Yan Duran Söz */
         .hero-subtitle {
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             font-style: italic;
@@ -307,10 +307,12 @@
 </head>
 <body>
 
+    <!-- Sinematik Giriş Ekranı -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
     </div>
 
+    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-dot"></div>
@@ -323,17 +325,21 @@
         </div>
     </nav>
 
+    <!-- Ana Akış Konteynerı -->
     <div class="main-container" id="mainContainer">
         
+        <!-- 1. Bölüm: Hero (Giriş) -->
         <section class="hero-section active">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
                 <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
+                <!-- Avatarın Altında İtalik ve Hafif Yan Duran Söz -->
                 <p class="hero-subtitle">"Solo temo a Dios"</p>
             </div>
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
+        <!-- 2. Bölüm: rs6 (rs6.mp4) -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -349,6 +355,7 @@
             </div>
         </section>
 
+        <!-- 3. Bölüm: wav.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
@@ -364,6 +371,7 @@
             </div>
         </section>
 
+        <!-- 4. Bölüm: how deep is your love.mp4 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop playsinline preload="auto">
