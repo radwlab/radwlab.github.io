@@ -77,15 +77,16 @@
             50% { opacity: 0; }
         }
 
-        /* Sesli Başlat Butonu */
+        /* Giriş Butonu */
         .enter-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 0.9rem;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 500;
+            letter-spacing: 0.05em;
             cursor: pointer;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -323,10 +324,10 @@
 </head>
 <body>
 
-    <!-- Sinematik Daktilo Giriş Ekranı ve Ses Butonu -->
+    <!-- Sinematik Daktilo Giriş Ekranı -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
-        <button class="enter-btn" id="enterBtn">Sesi Aç ve Keşfet</button>
+        <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
     <!-- Üst Menü -->
@@ -425,20 +426,17 @@
             setTimeout(typeWriter, 300);
         });
 
-        // Butona tıklandığı an ses kilidini kır ve videoları hazırla
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
             splashScreen.classList.add('fade-out');
 
-            // Tarayıcı ses kilidini kaldırmak için arka planda videoları tetikle
             sections.forEach((section, idx) => {
                 if (idx === 0) return;
                 const video = section.querySelector('video');
                 if (video) {
                     video.muted = false;
                     video.play().then(() => {
-                        // Eğer aktif değilse ilk başta durdur ki kullanıcı kaydırdıkça çalsın
                         if (idx !== currentIndex) {
                             video.pause();
                             video.currentTime = 0;
