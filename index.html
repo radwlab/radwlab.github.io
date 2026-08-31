@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>radw</title>
     <link rel="icon" type="image/jpeg" href="radw.jpg">
     <style>
@@ -129,6 +129,8 @@
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
             padding: 0 30px;
+            padding-top: env(safe-area-inset-top);
+            height: calc(48px + env(safe-area-inset-top));
         }
 
         .nav-left {
@@ -172,6 +174,12 @@
             align-items: center;
             scroll-snap-align: start;
             scroll-snap-stop: always;
+            opacity: 0.3;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        section.in-view {
+            opacity: 1;
         }
 
         /* Hero Bölümü */
@@ -218,7 +226,7 @@
 
         .scroll-indicator {
             position: absolute;
-            bottom: 30px;
+            bottom: max(30px, env(safe-area-inset-bottom) + 10px);
             font-size: 0.75rem;
             color: var(--text-secondary);
             letter-spacing: 0.15em;
@@ -248,6 +256,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Donmaları önlemek için donanım hızlandırma */
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .video-overlay {
@@ -276,12 +287,50 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
+        .audio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sound-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 14px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .sound-wave.playing {
+            opacity: 1;
+        }
+
+        .bar {
+            width: 3px;
+            background-color: var(--text-primary);
+            border-radius: 2px;
+            animation: soundWave 1s ease-in-out infinite;
+            animation-play-state: paused;
+        }
+
+        .sound-wave.playing .bar {
+            animation-play-state: running;
+        }
+
+        .bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+        .bar:nth-child(2) { height: 80%; animation-delay: 0.2s; }
+        .bar:nth-child(3) { height: 60%; animation-delay: 0.4s; }
+        .bar:nth-child(4) { height: 100%; animation-delay: 0.6s; }
+
+        @keyframes soundWave {
+            0%, 100% { height: 30%; }
+            50% { height: 100%; }
+        }
+
         .audio-control {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
             background: rgba(0, 0, 0, 0.6);
             padding: 8px 14px;
             border-radius: 20px;
@@ -345,7 +394,7 @@
     <div class="main-container" id="mainContainer">
         
         <!-- 1. Bölüm: Hero -->
-        <section class="hero-section">
+        <section class="hero-section in-view">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
                 <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
@@ -357,15 +406,23 @@
         <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <!-- preload="auto" ile videonun önceden önbelleğe alınması sağlandı -->
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="video-overlay">
                 <div class="video-info"><span class="video-name">rs6</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                <div class="audio-wrapper">
+                    <div class="sound-wave">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="audio-control">
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
         </section>
@@ -373,15 +430,22 @@
         <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="video-overlay">
                 <div class="video-info"><span class="video-name">wav</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                <div class="audio-wrapper">
+                    <div class="sound-wave">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="audio-control">
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
         </section>
@@ -389,15 +453,22 @@
         <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="video-overlay">
                 <div class="video-info"><span class="video-name">how deep is your love</span></div>
-                <div class="audio-control">
-                    <span>Ses</span>
-                    <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                <div class="audio-wrapper">
+                    <div class="sound-wave">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="audio-control">
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
                 </div>
             </div>
         </section>
@@ -447,30 +518,55 @@
             document.getElementById('ping-text').innerText = (Math.floor(Math.random() * 8) + 12) + ' ms';
         }, 3000);
 
-        // Video Görünürlük Yöneticisi (Donma Önleyici Intersection Observer)
         const sections = document.querySelectorAll('#mainContainer > section');
+        
+        function toggleSoundWave(section, play) {
+            const wave = section.querySelector('.sound-wave');
+            const slider = section.querySelector('.audio-slider');
+            
+            if (wave) {
+                if (play && slider && parseFloat(slider.value) > 0) {
+                    wave.classList.add('playing');
+                } else {
+                    wave.classList.remove('playing');
+                }
+            }
+        }
 
         const observerOptions = {
             root: null,
-            threshold: 0.6
+            threshold: 0.5
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                const video = entry.target.querySelector('video');
+                const section = entry.target;
+                const video = section.querySelector('video');
                 
                 if (entry.isIntersecting) {
+                    section.classList.add('in-view');
+                    
                     if (video && hasInteracted) {
                         video.muted = false;
-                        const slider = entry.target.querySelector('.audio-slider');
+                        const slider = section.querySelector('.audio-slider');
                         if (slider) video.volume = parseFloat(slider.value);
-                        video.play().catch(() => {});
+                        
+                        // Oynatma sırasındaki hataları önlemek için güvenli çağrı
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                toggleSoundWave(section, true);
+                            }).catch(() => {});
+                        }
                     }
                 } else {
+                    section.classList.remove('in-view');
+                    
                     if (video) {
                         video.pause();
-                        video.currentTime = 0;
+                        video.currentTime = 0; // Başa sararak bellek yükünü hafiflet
                         video.muted = true;
+                        toggleSoundWave(section, false);
                     }
                 }
             });
@@ -484,11 +580,15 @@
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
                 const video = section.querySelector('video');
-                if (rect.top >= 0 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
+                
+                if (rect.top >= -50 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
                     video.muted = false;
                     const slider = section.querySelector('.audio-slider');
                     if (slider) video.volume = parseFloat(slider.value);
-                    video.play().catch(() => {});
+                    
+                    video.play().then(() => {
+                        toggleSoundWave(section, true);
+                    }).catch(() => {});
                 }
             });
         }
@@ -502,6 +602,7 @@
                 if (videoElement) {
                     videoElement.volume = volume;
                     videoElement.muted = (volume === 0);
+                    toggleSoundWave(section, volume > 0);
                 }
             });
         });
