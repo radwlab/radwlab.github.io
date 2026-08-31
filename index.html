@@ -549,7 +549,7 @@
         <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -572,7 +572,7 @@
         <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -595,7 +595,7 @@
         <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
@@ -689,14 +689,16 @@
                     section.classList.add('in-view');
                     
                     if (video && hasInteracted) {
-                        video.currentTime = 0; // Her ekrana girdiğinde videoyu sıfırdan ve akıcı başlatır
-                        video.muted = false;
-                        const slider = section.querySelector('.audio-slider');
-                        if (slider) video.volume = parseFloat(slider.value);
-                        
-                        video.play().then(() => {
-                            toggleSoundWave(section, true);
-                        }).catch(() => {});
+                        requestAnimationFrame(() => {
+                            video.currentTime = 0;
+                            video.muted = false;
+                            const slider = section.querySelector('.audio-slider');
+                            if (slider) video.volume = parseFloat(slider.value);
+                            
+                            video.play().then(() => {
+                                toggleSoundWave(section, true);
+                            }).catch(() => {});
+                        });
                     }
                 } else {
                     section.classList.remove('in-view');
@@ -720,14 +722,16 @@
                 const video = section.querySelector('video');
                 
                 if (rect.top >= -50 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
-                    video.currentTime = 0;
-                    video.muted = false;
-                    const slider = section.querySelector('.audio-slider');
-                    if (slider) video.volume = parseFloat(slider.value);
-                    
-                    video.play().then(() => {
-                        toggleSoundWave(section, true);
-                    }).catch(() => {});
+                    requestAnimationFrame(() => {
+                        video.currentTime = 0;
+                        video.muted = false;
+                        const slider = section.querySelector('.audio-slider');
+                        if (slider) video.volume = parseFloat(slider.value);
+                        
+                        video.play().then(() => {
+                            toggleSoundWave(section, true);
+                        }).catch(() => {});
+                    });
                 }
             });
         }
