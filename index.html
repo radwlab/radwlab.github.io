@@ -136,10 +136,16 @@
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             font-size: 0.75rem;
             color: var(--text-secondary);
             font-family: monospace;
+        }
+
+        .ping-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .ping-dot {
@@ -148,6 +154,11 @@
             background-color: #30d158;
             border-radius: 50%;
             box-shadow: 0 0 8px #30d158;
+        }
+
+        .clock-display {
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
         .nav-right {
@@ -481,6 +492,7 @@
             cursor: pointer;
         }
 
+        /* Görüntüleme Kuralları (PC ve Mobil Ayrımı) */
         @media (max-width: 768px) {
             .hero-title { margin-bottom: 20px; }
             .hero-avatar { width: 120px; height: 120px; }
@@ -491,264 +503,32 @@
                 left: 20px;
                 right: 20px;
             }
+
+            /* Mobilde çoklu videolar yerine sadece marlon.mp4 gösterilir */
+            .desktop-only-video {
+                display: none !important;
+            }
+            .mobile-only-video {
+                display: flex !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            /* PC'de sadece orijinal çoklu videolar gösterilir, marlon gizlenir */
+            .mobile-only-video {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sinematik Giriş Ekranı -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
-    <!-- Sosyal Medya Açılır Menüsü (Modal) -->
     <div class="social-modal" id="socialModal">
         <div class="social-card">
             <img class="modal-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
             <div class="modal-title">radw</div>
-            <div class="social-links-list">
-                <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=BLA4FwBoROCUzAJDZUwmsw&utm_source=copy-link" target="_blank" class="social-link-item">
-                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.72.24 1.08zm1.44-3.84c-.301.48-.921.6-1.401.3-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.68.48.3.66.96.38 1.44zm.12-4C15.24 7.32 8.82 7.14 5.16 8.28c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.52-1.14 15.96 1.5.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
-                    Spotify
-                </a>
-                <a href="https://www.instagram.com/radwoxie?igsi=dGZqcjIwZDZwcDUw&utm_source=qr" target="_blank" class="social-link-item">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    Instagram
-                </a>
-            </div>
-            <button class="close-modal-btn" id="closeModalBtn">kapat</button>
-        </div>
-    </div>
-
-    <!-- Üst Menü -->
-    <nav>
-        <div class="nav-left">
-            <div class="ping-dot"></div>
-            <span id="ping-text">14 ms</span>
-        </div>
-        <div class="nav-right">
-            <button class="me-trigger-btn" id="meBtn">me</button>
-            <a href="#" class="nav-logo">radw.</a>
-        </div>
-    </nav>
-
-    <!-- Ana Akış -->
-    <div class="main-container" id="mainContainer">
-        
-        <!-- 1. Bölüm: Hero -->
-        <section class="hero-section in-view">
-            <h1 class="hero-title">radw.</h1>
-            <div class="hero-profile-box">
-                <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
-                <p class="hero-subtitle">"Solo temo a Dios"</p>
-            </div>
-            <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
-        </section>
-
-        <!-- 2. Bölüm: rs6 -->
-        <section class="video-section">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
-                    <source src="rs6.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">rs6</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. Bölüm: wav -->
-        <section class="video-section">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
-                    <source src="wav.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">wav</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. Bölüm: how deep is your love -->
-        <section class="video-section">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
-                    <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">how deep is your love</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <script>
-        const textToType = "radw.";
-        const typewriterElement = document.getElementById('typewriter');
-        const splashScreen = document.getElementById('splash-screen');
-        const enterBtn = document.getElementById('enterBtn');
-        const meBtn = document.getElementById('meBtn');
-        const socialModal = document.getElementById('socialModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        let charIndex = 0;
-        let hasInteracted = false;
-
-        function typeWriter() {
-            if (charIndex < textToType.length) {
-                typewriterElement.textContent += textToType.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 180);
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(typeWriter, 300);
-        });
-
-        function startSite() {
-            if (hasInteracted) return;
-            hasInteracted = true;
-            splashScreen.classList.add('fade-out');
-            checkVisibleVideo();
-        }
-
-        enterBtn.addEventListener('click', startSite);
-        enterBtn.addEventListener('touchend', startSite);
-
-        meBtn.addEventListener('click', () => socialModal.classList.add('open'));
-        closeModalBtn.addEventListener('click', () => socialModal.classList.remove('open'));
-        socialModal.addEventListener('click', (e) => {
-            if (e.target === socialModal) socialModal.classList.remove('open');
-        });
-
-        setInterval(() => {
-            document.getElementById('ping-text').innerText = (Math.floor(Math.random() * 8) + 12) + ' ms';
-        }, 3000);
-
-        const sections = document.querySelectorAll('#mainContainer > section');
-        
-        function toggleSoundWave(section, play) {
-            const wave = section.querySelector('.sound-wave');
-            const slider = section.querySelector('.audio-slider');
-            
-            if (wave) {
-                if (play && slider && parseFloat(slider.value) > 0) {
-                    wave.classList.add('playing');
-                } else {
-                    wave.classList.remove('playing');
-                }
-            }
-        }
-
-        const observerOptions = {
-            root: null,
-            threshold: 0.5
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const section = entry.target;
-                const video = section.querySelector('video');
-                
-                if (entry.isIntersecting) {
-                    section.classList.add('in-view');
-                    
-                    if (video && hasInteracted) {
-                        requestAnimationFrame(() => {
-                            video.currentTime = 0;
-                            video.muted = false;
-                            const slider = section.querySelector('.audio-slider');
-                            if (slider) video.volume = parseFloat(slider.value);
-                            
-                            video.play().then(() => {
-                                toggleSoundWave(section, true);
-                            }).catch(() => {});
-                        });
-                    }
-                } else {
-                    section.classList.remove('in-view');
-                    
-                    if (video) {
-                        video.pause();
-                        video.muted = true;
-                        toggleSoundWave(section, false);
-                    }
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        function checkVisibleVideo() {
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                const video = section.querySelector('video');
-                
-                if (rect.top >= -50 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
-                    requestAnimationFrame(() => {
-                        video.currentTime = 0;
-                        video.muted = false;
-                        const slider = section.querySelector('.audio-slider');
-                        if (slider) video.volume = parseFloat(slider.value);
-                        
-                        video.play().then(() => {
-                            toggleSoundWave(section, true);
-                        }).catch(() => {});
-                    });
-                }
-            });
-        }
-
-        document.querySelectorAll('.audio-slider').forEach(slider => {
-            slider.addEventListener('input', (e) => {
-                const section = e.target.closest('section');
-                const videoElement = section.querySelector('video');
-                const volume = parseFloat(e.target.value);
-                
-                if (videoElement) {
-                    videoElement.volume = volume;
-                    videoElement.muted = (volume === 0);
-                    toggleSoundWave(section, volume > 0);
-                }
-            });
-        });
-    </script>
-</body>
-</html>
