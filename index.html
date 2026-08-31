@@ -359,7 +359,7 @@
         <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -372,10 +372,10 @@
             </div>
         </section>
 
-        <!-- 3. Bölüm: wav (MP4 formatına güncellendi) -->
+        <!-- 3. Bölüm: wav (Optimize Edilmiş MP4) -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -391,7 +391,7 @@
         <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
@@ -435,11 +435,14 @@
                 if (idx === 0) return;
                 const video = section.querySelector('video');
                 if (video) {
-                    video.muted = false;
                     video.play().then(() => {
                         if (idx !== currentIndex) {
                             video.pause();
                             video.currentTime = 0;
+                        } else {
+                            video.muted = false;
+                            const slider = section.querySelector('.audio-slider');
+                            if (slider) video.volume = parseFloat(slider.value);
                         }
                     }).catch(() => {});
                 }
@@ -471,11 +474,13 @@
             if (index < 0 || index >= sections.length || isAnimating) return;
             isAnimating = true;
 
+            // Önceki videoyu sustur ve durdur
             if (currentIndex > 0) {
                 const prevVideo = sections[currentIndex].querySelector('video');
                 if (prevVideo) {
                     prevVideo.pause();
                     prevVideo.currentTime = 0;
+                    prevVideo.muted = true;
                 }
             }
 
@@ -483,6 +488,7 @@
             currentIndex = index;
             sections[currentIndex].classList.add('active');
 
+            // Yeni videoyu oynat ve sesini aç
             if (currentIndex > 0) {
                 const currentVideo = sections[currentIndex].querySelector('video');
                 const currentSlider = sections[currentIndex].querySelector('.audio-slider');
