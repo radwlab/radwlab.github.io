@@ -24,10 +24,23 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-            overflow: hidden;
+            /* TikTok tarzı kaydırma için taşmayı serbest bırakıyoruz */
+            overflow-y: scroll;
             height: 100dvh;
             width: 100%;
             -webkit-font-smoothing: antialiased;
+            /* Akıcı kaydırma ve snap özelliği */
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar'ı gizle (isteğe bağlı ama daha şık durur) */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         /* Sinematik Giriş Ekranı */
@@ -152,28 +165,18 @@
             width: 100%;
             height: 100dvh;
             position: relative;
-            overflow: hidden;
         }
 
         section {
             width: 100%;
             height: 100dvh;
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative; /* Sabit konum yerine akışa uygun yapıldı */
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        section.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+            /* Her bölüm ekrana tam oturacak (snap) */
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
         }
 
         /* Hero Bölümü */
@@ -347,7 +350,7 @@
     <div class="main-container" id="mainContainer">
         
         <!-- 1. Bölüm: Hero -->
-        <section class="hero-section active">
+        <section class="hero-section">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
                 <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
@@ -372,7 +375,7 @@
             </div>
         </section>
 
-        <!-- 3. Bölüm: wav (Optimize Edilmiş MP4) -->
+        <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" loop muted playsinline preload="auto">
@@ -431,22 +434,8 @@
             hasInteracted = true;
             splashScreen.classList.add('fade-out');
 
-            sections.forEach((section, idx) => {
-                if (idx === 0) return;
-                const video = section.querySelector('video');
-                if (video) {
-                    video.play().then(() => {
-                        if (idx !== currentIndex) {
-                            video.pause();
-                            video.currentTime = 0;
-                        } else {
-                            video.muted = false;
-                            const slider = section.querySelector('.audio-slider');
-                            if (slider) video.volume = parseFloat(slider.value);
-                        }
-                    }).catch(() => {});
-                }
-            });
+            // Hangi video ekrandaysa onu başlat
+            checkVisibleVideo();
         }
 
         enterBtn.addEventListener('click', startSite);
@@ -465,74 +454,53 @@
             document.getElementById('ping-text').innerText = (Math.floor(Math.random() * 8) + 12) + ' ms';
         }, 3000);
 
-        // Bölüm Geçişleri ve Video Yönetimi
+        // Hangi videonun ekranda olduğunu tespit edip oynatan Intersection Observer yapısı (TikTok mantığı)
         const sections = document.querySelectorAll('#mainContainer > section');
-        let currentIndex = 0;
-        let isAnimating = false;
 
-        function goToSection(index) {
-            if (index < 0 || index >= sections.length || isAnimating) return;
-            isAnimating = true;
+        const observerOptions = {
+            root: null,
+            threshold: 0.6 // Bölümün %60'ı ekrana girdiğinde tetiklenir
+        };
 
-            // Önceki videoyu sustur ve durdur
-            if (currentIndex > 0) {
-                const prevVideo = sections[currentIndex].querySelector('video');
-                if (prevVideo) {
-                    prevVideo.pause();
-                    prevVideo.currentTime = 0;
-                    prevVideo.muted = true;
-                }
-            }
-
-            sections[currentIndex].classList.remove('active');
-            currentIndex = index;
-            sections[currentIndex].classList.add('active');
-
-            // Yeni videoyu oynat ve sesini aç
-            if (currentIndex > 0) {
-                const currentVideo = sections[currentIndex].querySelector('video');
-                const currentSlider = sections[currentIndex].querySelector('.audio-slider');
-                if (currentVideo && currentSlider) {
-                    currentVideo.muted = false;
-                    currentVideo.volume = parseFloat(currentSlider.value);
-                    currentVideo.play().catch(() => {});
-                }
-            }
-
-            setTimeout(() => {
-                isAnimating = false;
-            }, 600);
-        }
-
-        window.addEventListener('wheel', (e) => {
-            if (isAnimating || !hasInteracted) return;
-            if (Math.abs(e.deltaY) < 15) return;
-
-            if (e.deltaY > 0) {
-                goToSection(currentIndex + 1);
-            } else {
-                goToSection(currentIndex - 1);
-            }
-        }, { passive: true });
-
-        let touchStartY = 0;
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        window.addEventListener('touchend', (e) => {
-            if (isAnimating || !hasInteracted) return;
-            let touchEndY = e.changedTouches[0].clientY;
-            let diff = touchStartY - touchEndY;
-
-            if (Math.abs(diff) > 35) {
-                if (diff > 0) {
-                    goToSection(currentIndex + 1);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                
+                if (entry.isIntersecting) {
+                    // Ekrana giren bölüm
+                    if (video && hasInteracted) {
+                        video.muted = false;
+                        const slider = entry.target.querySelector('.audio-slider');
+                        if (slider) video.volume = parseFloat(slider.value);
+                        video.play().catch(() => {});
+                    }
                 } else {
-                    goToSection(currentIndex - 1);
+                    // Ekrandan çıkan bölüm
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                        video.muted = true;
+                    }
                 }
-            }
-        }, { passive: true });
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        function checkVisibleVideo() {
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const video = section.querySelector('video');
+                if (rect.top >= 0 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
+                    video.muted = false;
+                    const slider = section.querySelector('.audio-slider');
+                    if (slider) video.volume = parseFloat(slider.value);
+                    video.play().catch(() => {});
+                }
+            });
+        }
 
         document.querySelectorAll('.audio-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
