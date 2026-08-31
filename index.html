@@ -358,7 +358,7 @@
 
         .hero-subtitle {
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-            font-style: normal; /* İtalik kaldırıldı, düz yazı yapıldı */
+            font-style: normal;
             font-weight: 300;
             color: var(--text-secondary);
             letter-spacing: 0.03em;
@@ -523,11 +523,13 @@
 </head>
 <body>
 
+    <!-- Sinematik Giriş Ekranı -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
+    <!-- Sosyal Medya Açılır Menüsü (Modal) -->
     <div class="social-modal" id="socialModal">
         <div class="social-card">
             <img class="modal-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
@@ -546,6 +548,7 @@
         </div>
     </div>
 
+    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-box">
@@ -561,8 +564,10 @@
         </div>
     </nav>
 
+    <!-- Ana Akış -->
     <div class="main-container" id="mainContainer">
         
+        <!-- 1. Bölüm: Hero -->
         <section class="hero-section in-view">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
@@ -572,9 +577,10 @@
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
+        <!-- MOBİLE ÖZEL VİDEO (Sadece mobilde görünür: marlon.mp4) -->
         <section class="video-section mobile-only-video">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="marlon.mp4" type="video/mp4">
                 </video>
             </div>
@@ -594,9 +600,10 @@
             </div>
         </section>
 
+        <!-- PC'YE ÖZEL VİDEOLAR (Sadece PC'de görünür, mobilde gizlenir) -->
         <section class="video-section desktop-only-video">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -618,7 +625,7 @@
 
         <section class="video-section desktop-only-video">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -640,7 +647,7 @@
 
         <section class="video-section desktop-only-video">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="metadata">
+                <video class="section-vid" loop muted playsinline preload="auto">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
@@ -672,6 +679,12 @@
         const closeModalBtn = document.getElementById('closeModalBtn');
         let charIndex = 0;
         let hasInteracted = false;
+
+        // Tüm videoları başlangıçta tamamen sessize al ve durdur
+        document.querySelectorAll('video').forEach(vid => {
+            vid.muted = true;
+            vid.pause();
+        });
 
         function typeWriter() {
             if (charIndex < textToType.length) {
@@ -745,12 +758,13 @@
                     if (video && hasInteracted) {
                         requestAnimationFrame(() => {
                             video.currentTime = 0;
-                            video.muted = false;
                             const slider = section.querySelector('.audio-slider');
-                            if (slider) video.volume = parseFloat(slider.value);
+                            const vol = slider ? parseFloat(slider.value) : 0.5;
+                            video.volume = vol;
+                            video.muted = (vol === 0);
                             
                             video.play().then(() => {
-                                toggleSoundWave(section, true);
+                                toggleSoundWave(section, vol > 0);
                             }).catch(() => {});
                         });
                     }
@@ -778,12 +792,13 @@
                 if (rect.top >= -50 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
                     requestAnimationFrame(() => {
                         video.currentTime = 0;
-                        video.muted = false;
                         const slider = section.querySelector('.audio-slider');
-                        if (slider) video.volume = parseFloat(slider.value);
+                        const vol = slider ? parseFloat(slider.value) : 0.5;
+                        video.volume = vol;
+                        video.muted = (vol === 0);
                         
                         video.play().then(() => {
-                            toggleSoundWave(section, true);
+                            toggleSoundWave(section, vol > 0);
                         }).catch(() => {});
                     });
                 }
