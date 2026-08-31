@@ -113,7 +113,7 @@
             to { opacity: 1; }
         }
 
-        /* Navigasyon Bar ve Üst Menü Seçenekleri */
+        /* Navigasyon Bar */
         nav {
             position: fixed;
             top: 0;
@@ -146,26 +146,6 @@
             background-color: #30d158;
             border-radius: 50%;
             box-shadow: 0 0 8px #30d158;
-        }
-
-        /* Üst Menü Seçenekleri */
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 400;
-            transition: color 0.2s;
-            cursor: pointer;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-primary);
         }
 
         .nav-logo {
@@ -330,7 +310,6 @@
         @media (max-width: 768px) {
             .hero-title { margin-bottom: 20px; }
             .hero-avatar { width: 120px; height: 120px; }
-            .nav-links { display: none; /* Mobilde üst menü kalabalık yapmasın diye gizlenebilir veya sadeleşebilir */ }
             .video-overlay {
                 flex-direction: column;
                 align-items: flex-start;
@@ -349,7 +328,7 @@
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
-    <!-- Üst Menü ve Seçenekler -->
+    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-dot"></div>
@@ -357,15 +336,6 @@
             <span>|</span>
             <span id="clock-text">00:00:00</span>
         </div>
-        
-        <!-- Üst Kısım Seçenekleri -->
-        <ul class="nav-links">
-            <li><a onclick="scrollToSection(0)">Ana Sayfa</a></li>
-            <li><a onclick="scrollToSection(1)">rs6</a></li>
-            <li><a onclick="scrollToSection(2)">wav</a></li>
-            <li><a onclick="scrollToSection(3)">how deep</a></li>
-        </ul>
-
         <div class="nav-right">
             <a href="#" class="nav-logo">radw.</a>
         </div>
@@ -464,14 +434,6 @@
         enterBtn.addEventListener('click', startSite);
         enterBtn.addEventListener('touchend', startSite);
 
-        // Üst Menü Seçenekleri ile Bölümlere Gitme
-        const sections = document.querySelectorAll('#mainContainer > section');
-        function scrollToSection(index) {
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
         // Canlı Saat
         function updateClock() {
             const now = new Date();
@@ -486,6 +448,8 @@
         }, 3000);
 
         // Video Görünürlük Yöneticisi (Donma Önleyici Intersection Observer)
+        const sections = document.querySelectorAll('#mainContainer > section');
+
         const observerOptions = {
             root: null,
             threshold: 0.6
