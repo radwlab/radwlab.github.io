@@ -175,7 +175,7 @@
             scroll-snap-align: start;
             scroll-snap-stop: always;
             opacity: 0.3;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
 
         section.in-view {
@@ -256,9 +256,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Donmaları önlemek için donanım hızlandırma */
-            transform: translateZ(0);
-            will-change: transform;
         }
 
         .video-overlay {
@@ -406,8 +403,7 @@
         <!-- 2. Bölüm: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
-                <!-- preload="auto" ile videonun önceden önbelleğe alınması sağlandı -->
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="rs6.mp4" type="video/mp4">
                 </video>
             </div>
@@ -430,7 +426,7 @@
         <!-- 3. Bölüm: wav -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="wav.mp4" type="video/mp4">
                 </video>
             </div>
@@ -453,7 +449,7 @@
         <!-- 4. Bölüm: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="auto">
+                <video class="section-vid" loop muted playsinline preload="metadata">
                     <source src="how%20deep%20is%20your%20love.mp4" type="video/mp4">
                 </video>
             </div>
@@ -535,7 +531,7 @@
 
         const observerOptions = {
             root: null,
-            threshold: 0.5
+            threshold: 0.6
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -551,20 +547,15 @@
                         const slider = section.querySelector('.audio-slider');
                         if (slider) video.volume = parseFloat(slider.value);
                         
-                        // Oynatma sırasındaki hataları önlemek için güvenli çağrı
-                        const playPromise = video.play();
-                        if (playPromise !== undefined) {
-                            playPromise.then(() => {
-                                toggleSoundWave(section, true);
-                            }).catch(() => {});
-                        }
+                        video.play().then(() => {
+                            toggleSoundWave(section, true);
+                        }).catch(() => {});
                     }
                 } else {
                     section.classList.remove('in-view');
                     
                     if (video) {
                         video.pause();
-                        video.currentTime = 0; // Başa sararak bellek yükünü hafiflet
                         video.muted = true;
                         toggleSoundWave(section, false);
                     }
