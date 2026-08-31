@@ -408,9 +408,8 @@
             justify-content: space-between;
             align-items: flex-end;
             z-index: 100;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
-            padding: 20px;
-            border-radius: 20px;
+            background: transparent; /* Siyah panel arka planı kaldırıldı */
+            padding: 0;
         }
 
         .video-info {
@@ -509,11 +508,13 @@
 </head>
 <body>
 
+    <!-- Sinematik Giriş Ekranı -->
     <div id="splash-screen">
         <div class="splash-text"><span id="typewriter"></span><span class="cursor-blink"></span></div>
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
+    <!-- Sosyal Medya Açılır Menüsü (Modal) -->
     <div class="social-modal" id="socialModal">
         <div class="social-card">
             <img class="modal-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
@@ -532,6 +533,7 @@
         </div>
     </div>
 
+    <!-- Üst Menü -->
     <nav>
         <div class="nav-left">
             <div class="ping-box">
@@ -547,8 +549,10 @@
         </div>
     </nav>
 
+    <!-- Ana Akış -->
     <div class="main-container" id="mainContainer">
         
+        <!-- 1. Bölüm: Hero -->
         <section class="hero-section in-view">
             <h1 class="hero-title">radw.</h1>
             <div class="hero-profile-box">
@@ -558,6 +562,7 @@
             <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
         </section>
 
+        <!-- Video 1: rs6 -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" src="rs6.mp4" loop muted playsinline></video>
@@ -578,6 +583,7 @@
             </div>
         </section>
 
+        <!-- Video 2: wav -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" src="wav.mp4" loop muted playsinline></video>
@@ -598,6 +604,7 @@
             </div>
         </section>
 
+        <!-- Video 3: how deep is your love -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" src="how%20deep%20is%20your%20love.mp4" loop muted playsinline></video>
@@ -618,6 +625,28 @@
             </div>
         </section>
 
+        <!-- Video 4: mustang -->
+        <section class="video-section">
+            <div class="video-wrapper">
+                <video class="section-vid" src="mustang.mp4" loop muted playsinline></video>
+            </div>
+            <div class="video-overlay">
+                <div class="video-info"><span class="video-name">mustang</span></div>
+                <div class="audio-wrapper">
+                    <div class="sound-wave">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="audio-control">
+                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video 5: marlon -->
         <section class="video-section">
             <div class="video-wrapper">
                 <video class="section-vid" src="marlon.mp4" loop muted playsinline></video>
@@ -664,7 +693,6 @@
             updateClock();
             setInterval(updateClock, 1000);
             
-            // Sayfa açılır açılmaz tüm videoları tamamen sessize alıp durduruyoruz
             document.querySelectorAll('video.section-vid').forEach(video => {
                 video.muted = true;
                 video.pause();
