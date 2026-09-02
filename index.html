@@ -24,21 +24,14 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-            overflow-y: scroll;
+            overflow: hidden;
             height: 100dvh;
             width: 100%;
             -webkit-font-smoothing: antialiased;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
         }
 
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        body {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        ::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Sinematik Giriş Ekranı */
         #splash-screen {
@@ -130,51 +123,22 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
-            padding: 0 15px 0 20px;
+            padding: 0 20px;
             padding-top: env(safe-area-inset-top);
-            height: calc(48px + env(safe-area-inset-top));
+            height: calc(52px + env(safe-area-inset-top));
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            font-family: monospace;
-            white-space: nowrap;
-        }
-
-        .ping-box {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .ping-dot {
-            width: 5px;
-            height: 5px;
-            background-color: #30d158;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #30d158;
-        }
-
-        .clock-display {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .nav-right {
+        .nav-group {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .me-trigger-btn {
+        .nav-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 4px 10px;
+            padding: 6px 14px;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 500;
@@ -183,7 +147,7 @@
             transition: background 0.2s, transform 0.2s;
         }
 
-        .me-trigger-btn:active {
+        .nav-btn:active {
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.15);
         }
@@ -191,19 +155,89 @@
         .nav-logo {
             color: var(--text-primary);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             letter-spacing: 0.05em;
             text-decoration: none;
         }
 
-        /* Sosyal Medya Açılır Menüsü (Modal) */
-        .social-modal {
+        /* Sabit Arka Plan Video */
+        .bg-video-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.8);
+            z-index: 1;
+            background: #000;
+        }
+
+        .bg-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translateZ(0);
+        }
+
+        .video-vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
+            pointer-events: none;
+        }
+
+        /* Ana Ekran Ortası */
+        .content-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: clamp(3.5rem, 9vw, 6.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #fff;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+        }
+
+        .main-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+        }
+
+        .main-subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* Açılır Menü ve Modallar */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             display: flex;
@@ -215,268 +249,161 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .social-modal.open {
+        .overlay-menu.open {
             opacity: 1;
             visibility: visible;
         }
 
-        .social-card {
-            background: rgba(20, 20, 20, 0.95);
+        .menu-card {
+            background: rgba(18, 18, 20, 0.95);
             border: 1px solid var(--border-color);
-            padding: 30px;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 340px;
+            padding: 24px;
+            border-radius: 22px;
+            width: 85%;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            transform: translateY(20px);
+            gap: 15px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            transform: translateY(15px);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .social-modal.open .social-card {
+        .overlay-menu.open .menu-card {
             transform: translateY(0);
         }
 
-        .modal-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
+        .menu-header {
+            font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.03em;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
-        .social-links-list {
+        .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            width: 100%;
+            gap: 8px;
+            max-height: 240px;
+            overflow-y: auto;
         }
 
-        .social-link-item {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.06);
+        .menu-item {
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-color);
-            padding: 12px 18px;
-            border-radius: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
             color: var(--text-primary);
-            text-decoration: none;
+            text-align: left;
             font-size: 0.9rem;
             font-weight: 500;
+            cursor: pointer;
             transition: background 0.2s, transform 0.2s;
         }
 
-        .social-link-item svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-            flex-shrink: 0;
-        }
-
-        .social-link-item:active {
-            transform: scale(0.97);
+        .menu-item:active, .menu-item.active {
             background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0.98);
         }
 
-        .close-modal-btn {
+        /* Discord Profil Tasarımı */
+        .discord-profile {
+            align-items: center;
+            text-align: center;
+            gap: 14px;
+        }
+
+        .discord-banner {
+            width: 100%;
+            height: 70px;
+            background: #5865F2;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .discord-avatar-wrapper {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .discord-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #121214;
+            object-fit: cover;
+        }
+
+        .discord-status-dot {
+            width: 14px;
+            height: 14px;
+            background-color: #3ba55d;
+            border: 3px solid #121214;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+        }
+
+        .discord-names {
+            margin-top: 20px;
+        }
+
+        .discord-display-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .discord-username {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .discord-activity {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 0.8rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             margin-top: 5px;
             letter-spacing: 0.05em;
         }
 
-        /* Ana Akış */
-        .main-container {
-            width: 100%;
-            height: 100dvh;
-            position: relative;
-        }
-
-        section {
-            width: 100%;
-            height: 100dvh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            opacity: 0.3;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        section.in-view {
-            opacity: 1;
-        }
-
-        /* Hero Bölümü */
-        .hero-section {
-            background: radial-gradient(circle at center, #111 0%, #000 70%);
-            text-align: center;
-            flex-direction: column;
-        }
-
-        .hero-title {
-            font-size: clamp(3.5rem, 9vw, 7rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
-        }
-
-        .hero-profile-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .hero-avatar {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-            font-style: normal;
-            font-weight: 300;
-            color: var(--text-secondary);
-            letter-spacing: 0.03em;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: max(30px, env(safe-area-inset-bottom) + 10px);
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.15em;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
-        }
-
-        /* Video Bölümleri */
-        .video-section {
-            background: #000;
-        }
-
-        .video-wrapper {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: translateZ(0);
-        }
-
-        .video-overlay {
-            position: absolute;
-            bottom: max(40px, env(safe-area-inset-bottom, 20px) + 20px);
-            left: 30px;
-            right: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+        /* Sağ altta minimal ses kaydırıcı */
+        .audio-dock {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             z-index: 100;
-            background: transparent;
-            padding: 0;
-        }
-
-        .video-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .video-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .audio-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sound-wave {
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 14px;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        .sound-wave.playing {
-            opacity: 1;
-        }
-
-        .bar {
-            width: 3px;
-            background-color: var(--text-primary);
-            border-radius: 2px;
-            animation: soundWave 1s ease-in-out infinite;
-            animation-play-state: paused;
-        }
-
-        .sound-wave.playing .bar {
-            animation-play-state: running;
-        }
-
-        .bar:nth-child(1) { height: 40%; animation-delay: 0s; }
-        .bar:nth-child(2) { height: 80%; animation-delay: 0.2s; }
-        .bar:nth-child(3) { height: 60%; animation-delay: 0.4s; }
-        .bar:nth-child(4) { height: 100%; animation-delay: 0.6s; }
-
-        @keyframes soundWave {
-            0%, 100% { height: 30%; }
-            50% { height: 100%; }
-        }
-
-        .audio-control {
-            display: flex;
-            align-items: center;
             background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
             padding: 8px 14px;
             border-radius: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .audio-slider {
-            width: 80px;
+            width: 70px;
             -webkit-appearance: none;
             height: 4px;
             border-radius: 2px;
@@ -489,20 +416,8 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: var(--text-primary);
+            background: #fff;
             cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title { margin-bottom: 20px; }
-            .hero-avatar { width: 120px; height: 120px; }
-            .video-overlay {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-                left: 20px;
-                right: 20px;
-            }
         }
     </style>
 </head>
@@ -513,160 +428,91 @@
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
-    <div class="social-modal" id="socialModal">
-        <div class="social-card">
-            <img class="modal-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
-            <div class="modal-title">radw</div>
-            <div class="social-links-list">
-                <a href="https://open.spotify.com" target="_blank" class="social-link-item">
-                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.72.24 1.08zm1.44-3.84c-.301.48-.921.6-1.401.3-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.68.48.3.66.96.38 1.44zm.12-4C15.24 7.32 8.82 7.14 5.16 8.28c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.52-1.14 15.96 1.5.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
-                    Spotify
-                </a>
-                <a href="https://www.instagram.com/radwoxie?igsi=dGZqcjIwZDZwcDUw&utm_source=qr" target="_blank" class="social-link-item">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    Instagram
-                </a>
-            </div>
-            <button class="close-modal-btn" id="closeModalBtn">kapat</button>
-        </div>
-    </div>
-
     <nav>
-        <div class="nav-left">
-            <div class="ping-box">
-                <div class="ping-dot"></div>
-                <span id="ping-text">14 ms</span>
-            </div>
-            <span>|</span>
-            <span class="clock-display" id="clockText">00:00:00</span>
+        <div class="nav-group">
+            <button class="nav-btn" id="panelBtn">panel</button>
         </div>
-        <div class="nav-right">
-            <button class="me-trigger-btn" id="meBtn">me</button>
-            <a href="#" class="nav-logo">radw.</a>
+        <a href="#" class="nav-logo">radw.</a>
+        <div class="nav-group">
+            <button class="nav-btn" id="meBtn">me</button>
         </div>
     </nav>
 
-    <div class="main-container" id="mainContainer">
-        
-        <section class="hero-section in-view">
-            <h1 class="hero-title">radw.</h1>
-            <div class="hero-profile-box">
-                <img class="hero-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Radw Avatar">
-                <p class="hero-subtitle">Solo temo a Dios</p>
-            </div>
-            <div class="scroll-indicator">KEŞFETMEK İÇİN KAYDIRIN ↓</div>
-        </section>
+    <div class="bg-video-container">
+        <video id="bgVideo" loop muted playsinline></video>
+        <div class="video-vignette"></div>
+    </div>
 
-        <section class="video-section" data-src="rs6.mp4">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="none"></video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">rs6</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
+    <div class="content-layer">
+        <img class="main-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
+        <h1 class="main-title">radw.</h1>
+        <p class="main-subtitle">Solo temo a Dios</p>
+    </div>
+
+    <div class="overlay-menu" id="panelModal">
+        <div class="menu-card">
+            <div class="menu-header">videolar</div>
+            <div class="menu-list" id="videoList"></div>
+            <button class="close-btn" id="closePanelBtn">kapat</button>
+        </div>
+    </div>
+
+    <div class="overlay-menu" id="discordModal">
+        <div class="menu-card discord-profile">
+            <div class="discord-banner">
+                <div class="discord-avatar-wrapper">
+                    <img class="discord-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Discord Avatar">
+                    <div class="discord-status-dot"></div>
                 </div>
             </div>
-        </section>
-
-        <section class="video-section" data-src="wav.mp4">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="none"></video>
+            <div class="discord-names">
+                <div class="discord-display-name">radw</div>
+                <div class="discord-username">@radwoxie</div>
             </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">wav</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
+            <div class="discord-activity">
+                <span style="font-size: 1.2rem;">🎮</span>
+                <div>
+                    <div style="font-size: 0.65rem; color: var(--text-secondary);">AKTİVİTE</div>
+                    <div style="font-weight: 500; font-size: 0.8rem;">Counter-Strike 2 oynuyor</div>
                 </div>
             </div>
-        </section>
+            <button class="close-btn" id="closeDiscordBtn">kapat</button>
+        </div>
+    </div>
 
-        <section class="video-section" data-src="how%20deep%20is%20your%20love.mp4">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="none"></video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">how deep is your love</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="video-section" data-src="mustang.mp4">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="none"></video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">mustang</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="video-section" data-src="marlon.mp4">
-            <div class="video-wrapper">
-                <video class="section-vid" loop muted playsinline preload="none"></video>
-            </div>
-            <div class="video-overlay">
-                <div class="video-info"><span class="video-name">marlon</span></div>
-                <div class="audio-wrapper">
-                    <div class="sound-wave">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                    <div class="audio-control">
-                        <input type="range" class="audio-slider" min="0" max="1" step="0.05" value="0.5">
-                    </div>
-                </div>
-            </div>
-        </section>
-
+    <div class="audio-dock">
+        <span style="font-size: 0.7rem; color: var(--text-secondary);">ses</span>
+        <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
     </div>
 
     <script>
+        // Tok ve alçak tıklama ses efekti (Derin bas sentezleyici)
+        function playThumpSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(110, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (e) {}
+        }
+
+        // Yazı Efekti
         const textToType = "radw.";
         const typewriterElement = document.getElementById('typewriter');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enterBtn');
-        const meBtn = document.getElementById('meBtn');
-        const socialModal = document.getElementById('socialModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
         let charIndex = 0;
         let hasInteracted = false;
 
@@ -680,145 +526,94 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 200);
-            updateClock();
-            setInterval(updateClock, 1000);
+            initVideoPlaylist();
         });
 
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clockText').innerText = `${hours}:${minutes}:${seconds}`;
+        // Video Listesi
+        const videos = [
+            { name: "rs6", src: "rs6.mp4" },
+            { name: "wav", src: "wav.mp4" },
+            { name: "how deep is your love", src: "how%20deep%20is%20your%20love.mp4" },
+            { name: "mustang", src: "mustang.mp4" },
+            { name: "marlon", src: "marlon.mp4" }
+        ];
+
+        let currentVideoIndex = 0;
+        const bgVideo = document.getElementById('bgVideo');
+        const videoListContainer = document.getElementById('videoList');
+
+        function initVideoPlaylist() {
+            videoListContainer.innerHTML = '';
+            videos.forEach((vid, index) => {
+                const item = document.createElement('div');
+                item.className = `menu-item ${index === currentVideoIndex ? 'active' : ''}`;
+                item.innerText = vid.name;
+                item.addEventListener('click', () => {
+                    playThumpSound();
+                    switchVideo(index);
+                    togglePanel(false);
+                });
+                videoListContainer.appendChild(item);
+            });
+        }
+
+        function switchVideo(index) {
+            currentVideoIndex = index;
+            bgVideo.src = videos[currentVideoIndex].src;
+            bgVideo.load();
+            const vol = parseFloat(document.getElementById('volumeSlider').value);
+            bgVideo.volume = vol;
+            bgVideo.muted = (vol === 0);
+            bgVideo.play().catch(() => {});
+            
+            document.querySelectorAll('.menu-item').forEach((el, idx) => {
+                if (idx === index) el.classList.add('active');
+                else el.classList.remove('active');
+            });
         }
 
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
-            
+            playThumpSound();
             splashScreen.classList.add('fade-out');
-            checkVisibleVideo();
+            switchVideo(0);
         }
 
         enterBtn.addEventListener('click', startSite);
         enterBtn.addEventListener('touchend', startSite);
 
-        meBtn.addEventListener('click', () => socialModal.classList.add('open'));
-        closeModalBtn.addEventListener('click', () => socialModal.classList.remove('open'));
-        socialModal.addEventListener('click', (e) => {
-            if (e.target === socialModal) socialModal.classList.remove('open');
-        });
+        // Panel ve Discord Modal Kontrolleri
+        const panelModal = document.getElementById('panelModal');
+        const discordModal = document.getElementById('discordModal');
 
-        setInterval(() => {
-            document.getElementById('ping-text').innerText = (Math.floor(Math.random() * 8) + 12) + ' ms';
-        }, 3000);
+        function togglePanel(open) {
+            playThumpSound();
+            if (open) panelModal.classList.add('open');
+            else panelModal.classList.remove('open');
+        }
 
-        const sections = document.querySelectorAll('#mainContainer > section');
+        function toggleDiscord(open) {
+            playThumpSound();
+            if (open) discordModal.classList.add('open');
+            else discordModal.classList.remove('open');
+        }
+
+        document.getElementById('panelBtn').addEventListener('click', () => togglePanel(true));
+        document.getElementById('closePanelBtn').addEventListener('click', () => togglePanel(false));
         
-        function toggleSoundWave(section, play) {
-            const wave = section.querySelector('.sound-wave');
-            const slider = section.querySelector('.audio-slider');
-            
-            if (wave) {
-                if (play && slider && parseFloat(slider.value) > 0) {
-                    wave.classList.add('playing');
-                } else {
-                    wave.classList.remove('playing');
-                }
-            }
-        }
+        document.getElementById('meBtn').addEventListener('click', () => toggleDiscord(true));
+        document.getElementById('closeDiscordBtn').addEventListener('click', () => toggleDiscord(false));
 
-        const observerOptions = {
-            root: null,
-            threshold: 0.5
-        };
+        panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
+        discordModal.addEventListener('click', (e) => { if (e.target === discordModal) toggleDiscord(false); });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const section = entry.target;
-                const video = section.querySelector('video');
-                const videoSrc = section.getAttribute('data-src');
-                
-                if (entry.isIntersecting) {
-                    section.classList.add('in-view');
-                    
-                    if (video && hasInteracted) {
-                        // Mobil için video kaynağı sadece ekrana girdiğinde yüklenir
-                        if (!video.src || video.src === window.location.href) {
-                            video.src = videoSrc;
-                            video.load();
-                        }
-
-                        requestAnimationFrame(() => {
-                            video.currentTime = 0;
-                            const slider = section.querySelector('.audio-slider');
-                            const vol = slider ? parseFloat(slider.value) : 0.5;
-                            video.volume = vol;
-                            video.muted = (vol === 0);
-                            
-                            video.play().then(() => {
-                                toggleSoundWave(section, vol > 0);
-                            }).catch(() => {});
-                        });
-                    }
-                } else {
-                    section.classList.remove('in-view');
-                    
-                    if (video) {
-                        video.pause();
-                        video.muted = true;
-                        toggleSoundWave(section, false);
-                        // Mobilde ram/bellek şişmesini önlemek için ekrandan çıkan videonun yükünü boşaltıyoruz
-                        video.removeAttribute('src');
-                        video.load();
-                    }
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        function checkVisibleVideo() {
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                const video = section.querySelector('video');
-                const videoSrc = section.getAttribute('data-src');
-                
-                if (rect.top >= -50 && rect.top < window.innerHeight / 2 && video && hasInteracted) {
-                    if (!video.src || video.src === window.location.href) {
-                        video.src = videoSrc;
-                        video.load();
-                    }
-
-                    requestAnimationFrame(() => {
-                        video.currentTime = 0;
-                        const slider = section.querySelector('.audio-slider');
-                        const vol = slider ? parseFloat(slider.value) : 0.5;
-                        video.volume = vol;
-                        video.muted = (vol === 0);
-                        
-                        video.play().then(() => {
-                            toggleSoundWave(section, vol > 0);
-                        }).catch(() => {});
-                    });
-                }
-            });
-        }
-
-        document.querySelectorAll('.audio-slider').forEach(slider => {
-            slider.addEventListener('input', (e) => {
-                const section = e.target.closest('section');
-                const videoElement = section.querySelector('video');
-                const volume = parseFloat(e.target.value);
-                
-                if (videoElement) {
-                    videoElement.volume = volume;
-                    videoElement.muted = (volume === 0);
-                    toggleSoundWave(section, volume > 0);
-                }
-            });
+        // Ses Kontrolü
+        const volumeSlider = document.getElementById('volumeSlider');
+        volumeSlider.addEventListener('input', (e) => {
+            const vol = parseFloat(e.target.value);
+            bgVideo.volume = vol;
+            bgVideo.muted = (vol === 0);
         });
     </script>
 </body>
