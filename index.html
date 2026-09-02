@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>radw</title>
     <link rel="icon" type="image/jpeg" href="radw.jpg">
+    <!-- Gotik / Vampir Tarzı Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #000000;
@@ -109,7 +111,7 @@
             to { opacity: 1; }
         }
 
-        /* Navigasyon Bar */
+        /* Navigasyon Bar (Mutlak Simetrik 3'lü Grid) */
         nav {
             position: fixed;
             top: 0;
@@ -118,8 +120,8 @@
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
@@ -132,6 +134,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        .nav-group.right {
+            justify-content: flex-end;
         }
 
         .nav-btn {
@@ -153,6 +159,7 @@
         }
 
         .nav-logo {
+            justify-self: center;
             color: var(--text-primary);
             font-weight: 600;
             font-size: 0.95rem;
@@ -241,22 +248,34 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.8);
         }
 
+        /* Gönderdiğin görseldeki Vampir / Gotik 3D Derinlikli Yazı Stili */
         .main-title {
-            font-size: clamp(3.2rem, 8vw, 6rem);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(3.5rem, 9vw, 6.5rem);
             font-weight: 700;
-            letter-spacing: -0.03em;
-            color: #fff;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+            letter-spacing: 0.02em;
+            color: #d1d1d6;
+            text-transform: lowercase;
+            /* Vampir tarzı koyu, katmanlı 3D derinlik gölgeleri */
+            text-shadow: 
+                0 1px 0 #3a3a3c,
+                0 2px 0 #2c2c2e,
+                0 3px 0 #1c1c1e,
+                0 4px 0 #111113,
+                0 6px 1px rgba(0, 0, 0, 0.9),
+                0 0 30px rgba(0, 0, 0, 0.8);
             line-height: 1;
         }
 
+        /* Şık, İtalik Bio Tarzı Altyazı */
         .main-subtitle {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 255, 255, 0.3);
+            font-size: 1.05rem;
+            font-weight: 400;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.08em;
+            text-transform: none;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 255, 255, 0.2);
             background: transparent;
             padding: 0;
             border: none;
@@ -406,7 +425,7 @@
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
-    <!-- Üst Menü -->
+    <!-- Üst Menü (Simetrik Grid) -->
     <nav>
         <div class="nav-group">
             <button class="nav-btn" id="panelBtn">panel</button>
@@ -417,7 +436,7 @@
             </div>
         </div>
         <a href="#" class="nav-logo">radw</a>
-        <div class="nav-group">
+        <div class="nav-group right">
             <button class="nav-btn" id="meBtn">me</button>
         </div>
     </nav>
@@ -469,7 +488,6 @@
     </div>
 
     <script>
-        // Saat ve Ping Güncelleyici
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -494,7 +512,6 @@
         setInterval(measurePing, 5000);
         measurePing();
 
-        // Tok ve alçak tıklama ses efekti (Derin bas sentezleyici)
         function playThumpSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -516,7 +533,6 @@
             } catch (e) {}
         }
 
-        // Yazı Efekti (Noktasız)
         const textToType = "radw";
         const typewriterElement = document.getElementById('typewriter');
         const splashScreen = document.getElementById('splash-screen');
@@ -537,7 +553,6 @@
             initVideoPlaylist();
         });
 
-        // Video Listesi
         const videos = [
             { name: "rs6", src: "rs6.mp4" },
             { name: "wav", src: "wav.mp4" },
@@ -591,7 +606,6 @@
         enterBtn.addEventListener('click', startSite);
         enterBtn.addEventListener('touchend', startSite);
 
-        // Panel ve Sosyal Modal Kontrolleri
         const panelModal = document.getElementById('panelModal');
         const socialModal = document.getElementById('socialModal');
 
@@ -616,7 +630,6 @@
         panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
         socialModal.addEventListener('click', (e) => { if (e.target === socialModal) toggleSocial(false); });
 
-        // Ses Kontrolü
         const volumeSlider = document.getElementById('volumeSlider');
         volumeSlider.addEventListener('input', (e) => {
             const vol = parseFloat(e.target.value);
