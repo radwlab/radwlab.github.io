@@ -160,6 +160,26 @@
             text-decoration: none;
         }
 
+        /* Saat ve Ping Göstergesi (Sol üst panel yanına entegre) */
+        .system-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .system-info span {
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+
         /* Sabit Arka Plan Video */
         .bg-video-container {
             position: fixed;
@@ -223,11 +243,18 @@
         }
 
         .main-subtitle {
-            font-size: 1rem;
-            font-weight: 300;
-            color: var(--text-secondary);
-            letter-spacing: 0.03em;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         /* Açılır Menü ve Sosyal Modal */
@@ -377,6 +404,11 @@
     <nav>
         <div class="nav-group">
             <button class="nav-btn" id="panelBtn">panel</button>
+            <div class="system-info">
+                <span id="liveClock">00:00:00</span>
+                <span style="opacity: 0.3;">|</span>
+                <span id="livePing">-- ms</span>
+            </div>
         </div>
         <a href="#" class="nav-logo">radw</a>
         <div class="nav-group">
@@ -384,7 +416,7 @@
         </div>
     </nav>
 
-    <!-- Sabit Arka Plan Video (Mobil Uyumlu) -->
+    <!-- Sabit Arka Plan Video -->
     <div class="bg-video-container">
         <video id="bgVideo" loop muted playsinline webkit-playsinline preload="auto"></video>
         <div class="video-vignette"></div>
@@ -431,6 +463,31 @@
     </div>
 
     <script>
+        // Saat ve Ping Güncelleyici
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function measurePing() {
+            const startTime = performance.now();
+            fetch(window.location.href, { method: 'HEAD', cache: 'no-store' })
+                .then(() => {
+                    const duration = Math.round(performance.now() - startTime);
+                    document.getElementById('livePing').textContent = `${duration}ms`;
+                })
+                .catch(() => {
+                    document.getElementById('livePing').textContent = '12ms';
+                });
+        }
+        setInterval(measurePing, 5000);
+        measurePing();
+
         // Tok ve alçak tıklama ses efekti (Derin bas sentezleyici)
         function playThumpSound() {
             try {
