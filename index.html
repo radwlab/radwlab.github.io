@@ -378,22 +378,22 @@
         <div class="nav-group">
             <button class="nav-btn" id="panelBtn">panel</button>
         </div>
-        <a href="#" class="nav-logo">radw.</a>
+        <a href="#" class="nav-logo">radw</a>
         <div class="nav-group">
             <button class="nav-btn" id="meBtn">me</button>
         </div>
     </nav>
 
-    <!-- Sabit Arka Plan Video -->
+    <!-- Sabit Arka Plan Video (Mobil Uyumlu) -->
     <div class="bg-video-container">
-        <video id="bgVideo" loop muted playsinline></video>
+        <video id="bgVideo" loop muted playsinline webkit-playsinline preload="auto"></video>
         <div class="video-vignette"></div>
     </div>
 
     <!-- Ana Ekran Bilgileri -->
     <div class="content-layer">
         <img class="main-avatar" src="https://i.pinimg.com/1200x/c7/f2/7c/c7f27cf80aeb376ff2e0627b8e9167b6.jpg" alt="Avatar">
-        <h1 class="main-title">radw.</h1>
+        <h1 class="main-title">radw</h1>
         <p class="main-subtitle">Solo temo a Dios</p>
     </div>
 
@@ -453,8 +453,8 @@
             } catch (e) {}
         }
 
-        // Yazı Efekti
-        const textToType = "radw.";
+        // Yazı Efekti (Noktasız)
+        const textToType = "radw";
         const typewriterElement = document.getElementById('typewriter');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enterBtn');
