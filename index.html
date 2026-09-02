@@ -8,10 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
-            --text-primary: #f5f5f7;
-            --text-secondary: #86868b;
-            --border-color: rgba(255, 255, 255, 0.12);
+            --bg-color: #050507;
+            --surface-color: rgba(18, 18, 22, 0.85);
+            --surface-hover: rgba(28, 28, 35, 0.95);
+            --text-primary: #f1f1f3;
+            --text-secondary: #8e8e93;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(255, 255, 255, 0.25);
+            --accent-glow: rgba(255, 255, 255, 0.15);
         }
 
         * {
@@ -60,7 +64,7 @@
             font-size: clamp(3.5rem, 9vw, 7rem);
             font-weight: 700;
             letter-spacing: -0.03em;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #717175 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             min-height: 1.1em;
@@ -84,25 +88,32 @@
         }
 
         .enter-btn {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(15, 15, 18, 0.9);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
-            padding: 10px 24px;
-            border-radius: 20px;
+            padding: 12px 28px;
+            border-radius: 16px;
             font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
+            font-weight: 600;
+            letter-spacing: 0.08em;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: background 0.3s, transform 0.2s;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
             animation: fadeInBtn 0.8s forwards 1.2s;
         }
 
+        .enter-btn:hover {
+            border-color: var(--border-glow);
+            background: rgba(30, 30, 38, 0.95);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
         .enter-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.2);
+            transform: scale(0.96) translateY(0);
         }
 
         @keyframes fadeInBtn {
@@ -114,7 +125,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(5, 5, 8, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             display: grid;
@@ -138,30 +149,38 @@
         }
 
         .nav-btn {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(20, 20, 25, 0.6);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 12px;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.05em;
             cursor: pointer;
             backdrop-filter: blur(10px);
-            transition: background 0.2s, transform 0.2s;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-btn:hover {
+            background: rgba(40, 40, 50, 0.8);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 12px var(--accent-glow);
+            transform: translateY(-1px);
         }
 
         .nav-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.95) translateY(0);
         }
 
         .nav-logo {
             justify-self: center;
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             text-decoration: none;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
 
         .system-info {
@@ -205,6 +224,7 @@
             height: 100%;
             object-fit: cover;
             transform: translateZ(0);
+            filter: brightness(0.85);
         }
 
         .video-vignette {
@@ -213,7 +233,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
             pointer-events: none;
         }
 
@@ -238,8 +258,14 @@
             height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.03);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .main-subtitle {
@@ -248,12 +274,7 @@
             font-style: italic;
             color: rgba(255, 255, 255, 0.85);
             letter-spacing: 0.08em;
-            text-transform: none;
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 255, 255, 0.2);
-            background: transparent;
-            padding: 0;
-            border: none;
-            backdrop-filter: none;
         }
 
         .overlay-menu {
@@ -262,16 +283,16 @@
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
         }
 
         .overlay-menu.open {
@@ -280,7 +301,7 @@
         }
 
         .menu-card {
-            background: rgba(18, 18, 20, 0.95);
+            background: rgba(12, 12, 16, 0.95);
             border: 1px solid var(--border-color);
             padding: 24px;
             border-radius: 22px;
@@ -289,20 +310,20 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
-            transform: translateY(15px);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.05);
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .overlay-menu.open .menu-card {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .menu-header {
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
@@ -315,7 +336,7 @@
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
             padding: 12px 16px;
             border-radius: 12px;
@@ -324,7 +345,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -338,39 +359,62 @@
             flex-shrink: 0;
         }
 
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--border-glow);
+            transform: translateX(4px);
+            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        }
+
         .menu-item:active, .menu-item.active {
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
             transform: scale(0.98);
         }
 
         .close-btn {
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
             color: var(--text-secondary);
             font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 12px;
             cursor: pointer;
             margin-top: 5px;
             letter-spacing: 0.05em;
             text-align: center;
+            transition: all 0.2s;
         }
 
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border-color: var(--border-glow);
+        }
+
+        /* Yumuşak animasyonlu ses dock bileşeni */
         .audio-dock {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(18, 18, 20, 0.75);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(12, 12, 16, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
+            gap: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .audio-dock:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
         .audio-icon-btn {
@@ -382,7 +426,11 @@
             align-items: center;
             justify-content: center;
             padding: 4px;
-            transition: transform 0.2s;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .audio-icon-btn:hover {
+            transform: scale(1.15);
         }
 
         .audio-icon-btn:active {
@@ -400,31 +448,43 @@
             align-items: center;
             width: 0px;
             overflow: hidden;
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
         }
 
         .audio-dock:hover .audio-slider-container,
         .audio-dock.active .audio-slider-container {
-            width: 85px;
+            width: 95px;
+            opacity: 1;
         }
 
         .audio-slider {
-            width: 85px;
+            width: 95px;
             -webkit-appearance: none;
             height: 4px;
             border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             outline: none;
+            transition: background 0.3s;
+        }
+
+        .audio-slider:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .audio-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: #fff;
+            background: #ffffff;
             cursor: pointer;
-            box-shadow: 0 0 8px rgba(255,255,255,0.8);
+            box-shadow: 0 0 10px rgba(255,255,255,0.9);
+            transition: transform 0.2s;
+        }
+
+        .audio-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
         }
     </style>
 </head>
@@ -485,12 +545,12 @@
         </div>
     </div>
 
-    <div class="audio-dock" id="audioDock">
+    <div class="audio-dock" id="audioDock" onmouseenter="this.classList.add('active')" onmouseleave="this.classList.remove('active')">
         <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
             <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
         </button>
         <div class="audio-slider-container">
-            <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+            <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
         </div>
     </div>
 
