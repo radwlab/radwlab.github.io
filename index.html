@@ -118,7 +118,6 @@
             to { opacity: 1; }
         }
 
-        /* Mobilde üst üste binmeyi önlemek için düzenlendi */
         nav {
             position: fixed;
             top: 0;
@@ -173,7 +172,7 @@
         }
 
         .system-info {
-            display: none; /* Mobilde çok küçük ekranlarda sıkışmaması için gizlendi, dilerseniz açabilirsiniz */
+            display: none;
         }
 
         @media (min-width: 480px) {
@@ -353,7 +352,6 @@
             text-align: center;
         }
 
-        /* Ses Barı */
         .audio-dock {
             position: fixed;
             bottom: 20px;
@@ -458,7 +456,7 @@
         <div class="menu-card">
             <div class="menu-header">sosyal</div>
             <div class="menu-list">
-                <a href="https://open.spotify.com" target="_blank" class="menu-item" onclick="playThumpSound()">
+                <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=B-LYuz_hRzKZFmEVQajlzQ&utm_source=copy-link" target="_blank" class="menu-item" onclick="playThumpSound()">
                     <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.72.24 1.08zm1.44-3.84c-.301.48-.921.6-1.401.3-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.68.48.3.66.96.38 1.44zm.12-4C15.24 7.32 8.82 7.14 5.16 8.28c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.52-1.14 15.96 1.5.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
                     Spotify
                 </a>
@@ -623,8 +621,7 @@
         document.getElementById('meBtn').addEventListener('click', () => toggleSocial(true));
         document.getElementById('closeSocialBtn').addEventListener('click', () => toggleSocial(false));
 
-        panelManagerClick = (e) => { if (e.target === panelModal) togglePanel(false); };
-        panelModal.addEventListener('click', panelManagerClick);
+        panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
         socialModal.addEventListener('click', (e) => { if (e.target === socialModal) toggleSocial(false); });
 
         const volumeSlider = document.getElementById('volumeSlider');
