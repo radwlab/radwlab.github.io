@@ -118,20 +118,21 @@
             to { opacity: 1; }
         }
 
+        /* Mobilde üst üste binmeyi önlemek için düzenlendi */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(3, 3, 5, 0.6);
+            background: rgba(3, 3, 5, 0.65);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
-            padding: 0 20px;
+            padding: 0 16px;
             padding-top: env(safe-area-inset-top);
             height: calc(52px + env(safe-area-inset-top));
         }
@@ -139,7 +140,7 @@
         .nav-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .nav-group.right {
@@ -150,9 +151,9 @@
             background: rgba(20, 20, 25, 0.5);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 7px 16px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.05em;
             cursor: pointer;
@@ -160,49 +161,38 @@
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nav-btn:hover {
-            background: rgba(40, 40, 50, 0.8);
-            border-color: var(--glass-border);
-            transform: translateY(-1px);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.95) translateY(0);
-        }
-
         .nav-logo {
-            justify-self: center;
             color: var(--text-primary);
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 0.1em;
             text-decoration: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .system-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-secondary);
+            display: none; /* Mobilde çok küçük ekranlarda sıkışmaması için gizlendi, dilerseniz açabilirsiniz */
         }
 
-        .system-info .clock-val {
-            color: var(--text-primary);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .ping-val {
-            color: #32d74b;
-            font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 8px rgba(50, 215, 75, 0.4);
-            animation: pingPulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pingPulse {
-            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(50, 215, 75, 0.5); }
-            50% { opacity: 0.4; text-shadow: 0 0 2px rgba(50, 215, 75, 0.1); }
+        @media (min-width: 480px) {
+            .system-info {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.7rem;
+                font-weight: 500;
+                color: var(--text-secondary);
+            }
+            .system-info .clock-val {
+                color: var(--text-primary);
+                font-variant-numeric: tabular-nums;
+            }
+            .ping-val {
+                color: #32d74b;
+                font-variant-numeric: tabular-nums;
+            }
         }
 
         .bg-video-container {
@@ -220,7 +210,7 @@
             height: 100%;
             object-fit: cover;
             transform: translateZ(0);
-            filter: brightness(1.05) contrast(1.02); /* Video netliği artırıldı */
+            filter: brightness(1.05) contrast(1.02);
         }
 
         .video-vignette {
@@ -229,7 +219,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Karartma filtresi hafifletilerek video netliği ön plana çıkarıldı */
             background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%);
             pointer-events: none;
         }
@@ -251,27 +240,21 @@
         }
 
         .main-avatar {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 25px rgba(0,0,0,0.5);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .main-avatar:hover {
-            transform: scale(1.03);
-            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .main-subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 400;
             font-style: italic;
             color: rgba(255, 255, 255, 0.9);
             letter-spacing: 0.08em;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
         }
 
         .overlay-menu {
@@ -307,7 +290,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             transform: translateY(20px) scale(0.97);
@@ -344,7 +327,6 @@
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -358,18 +340,6 @@
             flex-shrink: 0;
         }
 
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--glass-border);
-            transform: translateX(4px);
-        }
-
-        .menu-item:active, .menu-item.active {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: scale(0.98);
-        }
-
         .close-btn {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
@@ -380,40 +350,25 @@
             border-radius: 12px;
             cursor: pointer;
             margin-top: 5px;
-            letter-spacing: 0.05em;
             text-align: center;
-            transition: all 0.2s;
         }
 
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-primary);
-            border-color: var(--glass-border);
-        }
-
-        /* Glassmorphism & Dark Mode Tasarımlı Yeni Ses Barı (Audio Dock) */
+        /* Ses Barı */
         .audio-dock {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 20px;
+            right: 20px;
             z-index: 100;
-            background: rgba(15, 15, 22, 0.7);
+            background: rgba(15, 15, 22, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 10px 16px;
+            padding: 10px 14px;
             border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .audio-dock:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 20px rgba(255, 255, 255, 0.08);
-            background: rgba(20, 20, 30, 0.85);
+            gap: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
         .audio-icon-btn {
@@ -425,15 +380,6 @@
             align-items: center;
             justify-content: center;
             padding: 2px;
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .audio-icon-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .audio-icon-btn:active {
-            transform: scale(0.9);
         }
 
         .audio-icon-btn svg {
@@ -445,27 +391,16 @@
         .audio-slider-container {
             display: flex;
             align-items: center;
-            width: 0px;
-            overflow: hidden;
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-            opacity: 0;
+            width: 90px;
         }
 
-        .audio-dock:hover .audio-slider-container,
-        .audio-dock.active .audio-slider-container {
-            width: 105px;
-            opacity: 1;
-        }
-
-        /* Özel Şık Slider Tasarımı */
         .audio-slider {
-            width: 105px;
+            width: 90px;
             -webkit-appearance: none;
             height: 5px;
             border-radius: 3px;
             background: rgba(255, 255, 255, 0.15);
             outline: none;
-            transition: background 0.3s;
         }
 
         .audio-slider::-webkit-slider-thumb {
@@ -476,12 +411,6 @@
             background: #ffffff;
             cursor: pointer;
             box-shadow: 0 0 10px rgba(255,255,255,0.9);
-            transition: transform 0.2s, background-color 0.2s;
-        }
-
-        .audio-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.35);
-            background: #f0f0f5;
         }
     </style>
 </head>
@@ -542,7 +471,7 @@
         </div>
     </div>
 
-    <div class="audio-dock" id="audioDock" onmouseenter="this.classList.add('active')" onmouseleave="this.classList.remove('active')">
+    <div class="audio-dock" id="audioDock">
         <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
             <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
         </button>
@@ -557,7 +486,8 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
+            const clockEl = document.getElementById('liveClock');
+            if(clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
@@ -567,10 +497,12 @@
             fetch(window.location.href, { method: 'HEAD', cache: 'no-store' })
                 .then(() => {
                     const duration = Math.round(performance.now() - startTime);
-                    document.getElementById('livePing').textContent = `${duration}ms`;
+                    const pingEl = document.getElementById('livePing');
+                    if(pingEl) pingEl.textContent = `${duration}ms`;
                 })
                 .catch(() => {
-                    document.getElementById('livePing').textContent = '12ms';
+                    const pingEl = document.getElementById('livePing');
+                    if(pingEl) pingEl.textContent = '12ms';
                 });
         }
         setInterval(measurePing, 5000);
@@ -691,13 +623,13 @@
         document.getElementById('meBtn').addEventListener('click', () => toggleSocial(true));
         document.getElementById('closeSocialBtn').addEventListener('click', () => toggleSocial(false));
 
-        panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
+        panelManagerClick = (e) => { if (e.target === panelModal) togglePanel(false); };
+        panelModal.addEventListener('click', panelManagerClick);
         socialModal.addEventListener('click', (e) => { if (e.target === socialModal) toggleSocial(false); });
 
         const volumeSlider = document.getElementById('volumeSlider');
         const muteToggleBtn = document.getElementById('muteToggleBtn');
         const volumeIcon = document.getElementById('volumeIcon');
-        const audioDock = document.getElementById('audioDock');
         let lastVolume = 0.5;
 
         volumeSlider.addEventListener('input', (e) => {
