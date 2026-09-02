@@ -160,7 +160,7 @@
             text-decoration: none;
         }
 
-        /* Saat ve Ping Göstergesi (Sol üst panel yanına entegre) */
+        /* Saat ve Yanıp Sönen Yeşil Ping Göstergesi */
         .system-info {
             display: flex;
             align-items: center;
@@ -175,9 +175,21 @@
             backdrop-filter: blur(10px);
         }
 
-        .system-info span {
+        .system-info .clock-val {
             color: var(--text-primary);
             font-variant-numeric: tabular-nums;
+        }
+
+        .ping-val {
+            color: #32d74b;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 8px rgba(50, 215, 75, 0.4);
+            animation: pingPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pingPulse {
+            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(50, 215, 75, 0.5); }
+            50% { opacity: 0.4; text-shadow: 0 0 2px rgba(50, 215, 75, 0.1); }
         }
 
         /* Sabit Arka Plan Video */
@@ -405,9 +417,9 @@
         <div class="nav-group">
             <button class="nav-btn" id="panelBtn">panel</button>
             <div class="system-info">
-                <span id="liveClock">00:00:00</span>
+                <span id="liveClock" class="clock-val">00:00:00</span>
                 <span style="opacity: 0.3;">|</span>
-                <span id="livePing">-- ms</span>
+                <span id="livePing" class="ping-val">-- ms</span>
             </div>
         </div>
         <a href="#" class="nav-logo">radw</a>
