@@ -86,17 +86,17 @@
         }
 
         .enter-btn {
-            background: rgba(20, 20, 25, 0.8);
+            background: rgba(0, 0, 0, 0.4);
             color: var(--text-primary);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 12px 28px;
             border-radius: 16px;
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.08em;
             cursor: pointer;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
@@ -104,10 +104,10 @@
         }
 
         .enter-btn:hover {
-            border-color: rgba(255, 255, 255, 0.35);
-            background: rgba(35, 35, 45, 0.9);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.65);
             transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
         }
 
         .enter-btn:active {
@@ -123,14 +123,14 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(3, 3, 5, 0.65);
+            background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding: 0 16px;
             padding-top: env(safe-area-inset-top);
             height: calc(52px + env(safe-area-inset-top));
@@ -147,8 +147,8 @@
         }
 
         .nav-btn {
-            background: rgba(20, 20, 25, 0.5);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
             padding: 6px 12px;
             border-radius: 10px;
@@ -156,8 +156,14 @@
             font-weight: 600;
             letter-spacing: 0.05em;
             cursor: pointer;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
         .nav-logo {
@@ -262,9 +268,9 @@
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(3, 3, 5, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -280,8 +286,8 @@
         }
 
         .menu-card {
-            background: rgba(12, 12, 16, 0.85);
-            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 24px;
             border-radius: 22px;
             width: 85%;
@@ -289,7 +295,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             transform: translateY(20px) scale(0.97);
@@ -317,8 +323,8 @@
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 12px 16px;
             border-radius: 12px;
             color: var(--text-primary);
@@ -330,6 +336,14 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .menu-item svg {
@@ -340,8 +354,8 @@
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-secondary);
             font-size: 0.8rem;
             font-weight: 600;
@@ -350,6 +364,14 @@
             cursor: pointer;
             margin-top: 5px;
             text-align: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .audio-dock {
@@ -357,10 +379,10 @@
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(15, 15, 22, 0.75);
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 14px;
             border-radius: 20px;
             display: flex;
@@ -370,19 +392,28 @@
         }
 
         .audio-icon-btn {
-            background: transparent;
-            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
             color: var(--text-primary);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2px;
+            padding: 6px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .audio-icon-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .audio-icon-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
         }
 
