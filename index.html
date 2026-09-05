@@ -46,7 +46,7 @@
             align-items: center;
             gap: 25px;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         #splash-screen.fade-out {
@@ -95,16 +95,12 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: background 0.2s, border-color 0.2s;
             opacity: 0;
-            animation: fadeInBtn 0.5s forwards 1s;
+            animation: fadeInBtn 0.4s forwards 0.8s;
         }
 
         .enter-btn:hover {
             border-color: rgba(255, 255, 255, 0.35);
             background: rgba(0, 0, 0, 0.8);
-        }
-
-        .enter-btn:active {
-            transform: scale(0.96);
         }
 
         @keyframes fadeInBtn {
@@ -147,12 +143,11 @@
             font-weight: 600;
             letter-spacing: 0.05em;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background 0.2s;
         }
 
         .nav-btn:hover {
             background: rgba(0, 0, 0, 0.7);
-            border-color: rgba(255, 255, 255, 0.25);
         }
 
         .nav-logo {
@@ -263,7 +258,7 @@
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
         .overlay-menu.open {
@@ -314,12 +309,11 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background 0.2s;
         }
 
         .menu-item:hover {
             background: rgba(0, 0, 0, 0.8);
-            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .menu-item svg {
@@ -340,7 +334,7 @@
             cursor: pointer;
             margin-top: 5px;
             text-align: center;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s;
         }
 
         .close-btn:hover {
@@ -348,20 +342,16 @@
             color: var(--text-primary);
         }
 
-        /* Arka planı tamamen şeffaf/çerçevesiz, ses değiştikçe kararan ses kontrol alanı */
+        /* Çerçevesiz, arka kutusu olmayan, soldan sağa dolan ses alanı */
         .audio-dock {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px 12px;
-            border-radius: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: background 0.3s ease;
+            background: transparent;
         }
 
         .audio-icon-btn {
@@ -382,24 +372,45 @@
         }
 
         .audio-icon-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
         }
 
         .audio-slider-container {
+            position: relative;
+            width: 90px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            overflow: hidden;
             display: flex;
             align-items: center;
-            width: 80px;
+        }
+
+        /* Soldan sağa dolan beyaz kısım */
+        .audio-fill-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            pointer-events: none;
+            border-radius: 3px;
+            transition: width 0.05s linear;
         }
 
         .audio-slider {
-            width: 80px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
             -webkit-appearance: none;
-            height: 4px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2);
+            background: transparent;
             outline: none;
+            cursor: pointer;
+            z-index: 2;
+            margin: 0;
         }
 
         .audio-slider::-webkit-slider-thumb {
@@ -479,6 +490,7 @@
             <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
         </button>
         <div class="audio-slider-container">
+            <div class="audio-fill-bar" id="audioFillBar"></div>
             <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
         </div>
     </div>
@@ -550,7 +562,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 200);
             initVideoPlaylist();
-            updateDockBackground(0.5);
+            updateFillBar(0.5);
         });
 
         const videos = [
@@ -637,14 +649,11 @@
         const volumeSlider = document.getElementById('volumeSlider');
         const muteToggleBtn = document.getElementById('muteToggleBtn');
         const volumeIcon = document.getElementById('volumeIcon');
-        const audioDock = document.getElementById('audioDock');
+        const audioFillBar = document.getElementById('audioFillBar');
         let lastVolume = 0.5;
 
-        function updateDockBackground(vol) {
-            // Ses arttıkça (vol 0'dan 1'e gittikçe) arka plan koyuluğu/opaklığı artar
-            const opacity = 0.1 + (vol * 0.65);
-            audioDock.style.background = `rgba(0, 0, 0, ${opacity})`;
-            audioDock.style.borderColor = `rgba(255, 255, 255, ${0.05 + (vol * 0.1)})`;
+        function updateFillBar(vol) {
+            audioFillBar.style.width = `${vol * 100}%`;
         }
 
         volumeSlider.addEventListener('input', (e) => {
@@ -652,7 +661,7 @@
             bgVideo.volume = vol;
             bgVideo.muted = (vol === 0);
             updateVolumeIcon(vol);
-            updateDockBackground(vol);
+            updateFillBar(vol);
             if (vol > 0) lastVolume = vol;
         });
 
@@ -663,14 +672,14 @@
                 bgVideo.volume = lastVolume > 0 ? lastVolume : 0.5;
                 volumeSlider.value = bgVideo.volume;
                 updateVolumeIcon(bgVideo.volume);
-                updateDockBackground(bgVideo.volume);
+                updateFillBar(bgVideo.volume);
             } else {
                 lastVolume = bgVideo.volume;
                 bgVideo.muted = true;
                 bgVideo.volume = 0;
                 volumeSlider.value = 0;
                 updateVolumeIcon(0);
-                updateDockBackground(0);
+                updateFillBar(0);
             }
         });
 
