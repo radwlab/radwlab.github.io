@@ -11,10 +11,10 @@
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.6);
             
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-hover-bg: rgba(255, 255, 255, 0.1);
-            --glass-hover-border: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-hover-bg: rgba(255, 255, 255, 0.08);
+            --glass-hover-border: rgba(255, 255, 255, 0.35);
         }
 
         * {
@@ -37,6 +37,7 @@
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Splash Screen (Giriş Ekranı) */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -50,7 +51,7 @@
             align-items: center;
             gap: 25px;
             z-index: 9999;
-            transition: opacity 0.3s ease, visibility 0.3s;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
         #splash-screen.fade-out {
@@ -63,7 +64,7 @@
             font-size: clamp(3.5rem, 9vw, 7rem);
             font-weight: 700;
             letter-spacing: -0.03em;
-            background: linear-gradient(180deg, #ffffff 0%, #717175 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #55555c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             min-height: 1.1em;
@@ -91,19 +92,23 @@
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
             padding: 12px 28px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.08em;
             cursor: pointer;
-            transition: background 0.1s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .enter-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
+            transform: scale(1.03);
         }
 
+        /* Üst Menü Barı */
         nav {
             position: fixed;
             top: 0;
@@ -132,19 +137,22 @@
         .nav-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: var(--text-primary);
             font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 0.05em;
             cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 8px;
-            transition: background 0.1s ease;
+            padding: 7px 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
         }
 
         .nav-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
+            transform: translateY(-1px);
         }
 
         .nav-logo {
@@ -181,6 +189,7 @@
             }
         }
 
+        /* Arka Plan Video */
         .bg-video-container {
             position: fixed;
             top: 0;
@@ -203,10 +212,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%);
             pointer-events: none;
         }
 
+        /* Orta Profil Bilgileri */
         .content-layer {
             position: fixed;
             top: 0;
@@ -229,63 +239,40 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            pointer-events: auto;
+            animation: floatAvatar 4s ease-in-out infinite;
+        }
+
+        @keyframes floatAvatar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         .main-subtitle {
             font-size: 1rem;
             font-weight: 400;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.85);
             letter-spacing: 0.08em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Profil Altı Sadece İleri Geri İkon Tuşları */
-        .profile-nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            pointer-events: auto;
-            margin-top: 4px;
-        }
-
-        .video-ctrl-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.1s ease, border-color 0.1s ease;
-        }
-
-        .video-ctrl-btn:hover {
-            border-color: var(--glass-hover-border);
-            background: var(--glass-hover-bg);
-        }
-
-        .video-ctrl-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        /* Arka Plan Kararması (Modal Arkası) */
+        /* Şeffaf Hareketli Ortalanmış Modaller (Panel & Me) */
         .overlay-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .overlay-menu.open {
@@ -293,55 +280,36 @@
             visibility: visible;
         }
 
-        /* Sol Menü Kutusu Kayma Animasyonu */
-        .menu-drawer-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 280px;
-            max-width: 80%;
-            height: 100dvh;
-            background: #000000;
-            border-right: 1px solid var(--glass-border);
-            padding: calc(20px + env(safe-area-inset-top)) 20px 20px 20px;
+        .menu-card {
+            background: rgba(15, 15, 18, 0.45);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 24px;
+            border-radius: 20px;
+            width: 300px;
+            max-width: 90vw;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 14px;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            transform: scale(0.9) translateY(15px);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
         }
 
-        .overlay-menu.open .menu-drawer-left {
-            transform: translateX(0);
-        }
-
-        /* Sağ Menü Kutusu Kayma Animasyonu */
-        .menu-drawer-right {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 280px;
-            max-width: 80%;
-            height: 100dvh;
-            background: #000000;
-            border-left: 1px solid var(--glass-border);
-            padding: calc(20px + env(safe-area-inset-top)) 20px 20px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .overlay-menu.open .menu-drawer-right {
-            transform: translateX(0);
+        .overlay-menu.open .menu-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
 
         .menu-header {
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
-            letter-spacing: 0.12em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
         }
 
@@ -350,10 +318,9 @@
             flex-direction: column;
             gap: 8px;
             width: 100%;
+            max-height: 240px;
             overflow-y: auto;
-            overflow-x: hidden;
             scrollbar-width: none;
-            flex-grow: 1;
         }
 
         .menu-list::-webkit-scrollbar {
@@ -370,11 +337,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             text-decoration: none;
-            padding: 12px 14px;
-            border-radius: 10px;
-            transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+            padding: 12px 16px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             width: 100%;
             white-space: nowrap;
         }
@@ -383,11 +350,12 @@
             background: var(--glass-hover-bg);
             border-color: var(--glass-hover-border);
             color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         .menu-item.active {
-            background: var(--glass-hover-bg);
-            border-color: var(--glass-hover-border);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.4);
             color: #ffffff;
             font-weight: 700;
         }
@@ -400,15 +368,15 @@
         }
 
         .close-btn {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--glass-border);
             color: var(--text-secondary);
             font-size: 0.75rem;
             font-weight: 600;
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+            transition: all 0.2s ease;
             width: 100%;
         }
 
@@ -418,6 +386,7 @@
             color: var(--text-primary);
         }
 
+        /* Ses Kontrol Paneli (Audio Dock) */
         .audio-dock {
             position: fixed;
             bottom: 25px;
@@ -428,8 +397,10 @@
             gap: 10px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 8px 12px;
-            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 14px;
+            border-radius: 14px;
         }
 
         .audio-icon-btn {
@@ -442,6 +413,11 @@
             justify-content: center;
             padding: 4px;
             opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .audio-icon-btn:hover {
+            opacity: 1;
         }
 
         .audio-icon-btn svg {
@@ -454,7 +430,7 @@
             position: relative;
             width: 90px;
             height: 6px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 3px;
             overflow: hidden;
             display: flex;
@@ -522,28 +498,18 @@
     <div class="content-layer">
         <img class="main-avatar" src="radw.png" alt="Avatar">
         <p class="main-subtitle">Solo temo a Dios</p>
-        <div class="profile-nav-controls">
-            <button class="video-ctrl-btn" id="prevVideoBtn" title="Önceki Video">
-                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-            </button>
-            <button class="video-ctrl-btn" id="nextVideoBtn" title="Sonraki Video">
-                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-            </button>
-        </div>
     </div>
 
-    <!-- Sol Menü Çekmecesi (Panel) -->
     <div class="overlay-menu" id="panelModal">
-        <div class="menu-drawer-left">
+        <div class="menu-card">
             <div class="menu-header">videolar</div>
             <div class="menu-list" id="videoList"></div>
             <button class="close-btn" id="closePanelBtn">kapat</button>
         </div>
     </div>
 
-    <!-- Sağ Menü Çekmecesi (Me) -->
     <div class="overlay-menu" id="socialModal">
-        <div class="menu-drawer-right">
+        <div class="menu-card">
             <div class="menu-header">sosyal</div>
             <div class="menu-list">
                 <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=B-LYuz_hRzKZFmEVQajlzQ&utm_source=copy-link" target="_blank" class="menu-item" onclick="playThumpSound()">
@@ -681,21 +647,6 @@
             });
         }
 
-        // Profil altı sadece ikonlu ileri / geri buton işlevleri
-        document.getElementById('prevVideoBtn').addEventListener('click', () => {
-            playThumpSound();
-            let newIndex = currentVideoIndex - 1;
-            if (newIndex < 0) newIndex = videos.length - 1;
-            switchVideo(newIndex);
-        });
-
-        document.getElementById('nextVideoBtn').addEventListener('click', () => {
-            playThumpSound();
-            let newIndex = currentVideoIndex + 1;
-            if (newIndex >= videos.length) newIndex = 0;
-            switchVideo(newIndex);
-        });
-
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
@@ -716,20 +667,34 @@
 
         function togglePanel(open) {
             playThumpSound();
-            if (open) panelModal.classList.add('open');
-            else panelModal.classList.remove('open');
+            if (open) {
+                socialModal.classList.remove('open');
+                panelModal.classList.add('open');
+            } else {
+                panelModal.classList.remove('open');
+            }
         }
 
         function toggleSocial(open) {
             playThumpSound();
-            if (open) socialModal.classList.add('open');
-            else socialModal.classList.remove('open');
+            if (open) {
+                panelModal.classList.remove('open');
+                socialModal.classList.add('open');
+            } else {
+                socialModal.classList.remove('open');
+            }
         }
 
-        document.getElementById('panelBtn').addEventListener('click', () => togglePanel(true));
+        document.getElementById('panelBtn').addEventListener('click', () => {
+            const isOpen = panelModal.classList.contains('open');
+            togglePanel(!isOpen);
+        });
         document.getElementById('closePanelBtn').addEventListener('click', () => togglePanel(false));
         
-        document.getElementById('meBtn').addEventListener('click', () => toggleSocial(true));
+        document.getElementById('meBtn').addEventListener('click', () => {
+            const isOpen = socialModal.classList.contains('open');
+            toggleSocial(!isOpen);
+        });
         document.getElementById('closeSocialBtn').addEventListener('click', () => toggleSocial(false));
 
         panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
