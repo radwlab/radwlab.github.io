@@ -239,6 +239,7 @@
             letter-spacing: 0.08em;
         }
 
+        /* Arka Plan Hafif Kararması */
         .overlay-menu {
             position: fixed;
             top: 0;
@@ -257,14 +258,15 @@
             visibility: visible;
         }
 
+        /* Ortak Küçük Kutu Tasarımı */
         .menu-card {
             position: absolute;
             top: calc(65px + env(safe-area-inset-top));
-            background: rgba(0, 0, 0, 0.4);
+            background: #0b0b0f;
             border: 1px solid var(--glass-border);
             padding: 16px;
             border-radius: 14px;
-            width: 250px;
+            width: 240px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -275,6 +277,7 @@
             opacity: 0;
         }
 
+        /* Panel Butonuna Basınca Sol Üstten Açılma */
         #panelModal .menu-card {
             left: 20px;
             transform: translateY(-10px) scale(0.95);
@@ -284,6 +287,7 @@
             opacity: 1;
         }
 
+        /* Me Butonuna Basınca Sağ Üstten Açılma */
         #socialModal .menu-card {
             right: 20px;
             transform: translateY(-10px) scale(0.95);
@@ -301,33 +305,25 @@
             text-transform: uppercase;
         }
 
-        /* Çark / Döner Liste Sistemi (3 Öğelik Odak Alanı) */
-        .wheel-container {
-            position: relative;
-            height: 130px;
-            width: 100%;
-            overflow: hidden;
+        .menu-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: ns-resize;
-            user-select: none;
+            gap: 6px;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
         }
 
-        .wheel-list {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+        .menu-list::-webkit-scrollbar {
+            display: none;
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.4);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
             font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
@@ -338,28 +334,22 @@
             text-decoration: none;
             padding: 8px 10px;
             border-radius: 8px;
+            transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
             width: 100%;
-            height: 38px;
             white-space: nowrap;
-            transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
-            filter: blur(2px);
-            opacity: 0.4;
-            transform: scale(0.92);
-        }
-
-        /* Ortadaki Aktif/Seçili Öğe */
-        .menu-item.wheel-active {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #ffffff;
-            font-weight: 700;
-            filter: blur(0px);
-            opacity: 1;
-            transform: scale(1);
         }
 
         .menu-item:hover {
+            background: var(--glass-hover-bg);
+            border-color: var(--glass-hover-border);
+            color: var(--text-primary);
+        }
+
+        .menu-item.active {
+            background: var(--glass-hover-bg);
+            border-color: var(--glass-hover-border);
             color: #ffffff;
+            font-weight: 700;
         }
 
         .menu-item svg {
@@ -370,7 +360,7 @@
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-secondary);
             font-size: 0.7rem;
@@ -497,9 +487,7 @@
     <div class="overlay-menu" id="panelModal">
         <div class="menu-card">
             <div class="menu-header">videolar</div>
-            <div class="wheel-container" id="videoWheelContainer">
-                <div class="wheel-list" id="videoWheelList"></div>
-            </div>
+            <div class="menu-list" id="videoList"></div>
             <button class="close-btn" id="closePanelBtn">kapat</button>
         </div>
     </div>
@@ -507,14 +495,13 @@
     <div class="overlay-menu" id="socialModal">
         <div class="menu-card">
             <div class="menu-header">sosyal</div>
-            <div class="wheel-container" id="socialWheelContainer">
-                <div class="wheel-list" id="socialWheelList">
-                    <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=B-LYuz_hRzKZFmEVQajlzQ&utm_source=copy-link" target="_blank" class="menu-item" onclick="playThumpSound()">
-                        <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.72.24 1.08zm1.44-3.84c-.301.48-.921.6-1.401.3-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.68.48.3.66.96.38 1.44zm.12-4C15.24 7.32 8.82 7.14 5.16 8.28c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.52-1.14 15.96 1.5.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
-                        Spotify
-                    </a>
-                    <a href="https://www.instagram.com/radwoxie?igsi=dGZqcjIwZDZwcDUw&utm_source=qr" target="_blank" class="menu-item" onclick="playThumpSound()">
-                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <div class="menu-list">
+                <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=B-LYuz_hRzKZFmEVQajlzQ&utm_source=copy-link" target="_blank" class="menu-item" onclick="playThumpSound()">
+                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.72.24 1.08zm1.44-3.84c-.301.48-.921.6-1.401.3-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.68.48.3.66.96.38 1.44zm.12-4C15.24 7.32 8.82 7.14 5.16 8.28c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.52-1.14 15.96 1.5.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
+                    Spotify
+                </a>
+                <a href="https://www.instagram.com/radwoxie?igsi=dGZqcjIwZDZwcDUw&utm_source=qr" target="_blank" class="menu-item" onclick="playThumpSound()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     Instagram
                 </a>
             </div>
@@ -598,8 +585,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 200);
-            initVideoWheel();
-            initSocialWheel();
+            initVideoPlaylist();
             updateFillBar(0.5);
         });
 
@@ -613,148 +599,37 @@
 
         let currentVideoIndex = 0;
         const bgVideo = document.getElementById('bgVideo');
-        
-        let videoWheelIndex = 0;
-        const videoWheelList = document.getElementById('videoWheelList');
+        const videoListContainer = document.getElementById('videoList');
 
-        function initVideoWheel() {
-            videoWheelList.innerHTML = '';
+        function initVideoPlaylist() {
+            videoListContainer.innerHTML = '';
             videos.forEach((vid, index) => {
                 const item = document.createElement('div');
-                item.className = `menu-item ${index === videoWheelIndex ? 'wheel-active' : ''}`;
+                item.className = `menu-item ${index === currentVideoIndex ? 'active' : ''}`;
                 item.innerText = vid.name;
                 item.addEventListener('click', () => {
                     playThumpSound();
                     switchVideo(index);
                     togglePanel(false);
                 });
-                videoWheelList.appendChild(item);
-            });
-            updateVideoWheelPosition();
-        }
-
-        function updateVideoWheelPosition() {
-            const itemHeight = 46; // 38px height + 8px gap approx
-            const offset = 46 - (videoWheelIndex * itemHeight);
-            videoWheelList.style.transform = `translateY(${offset}px)`;
-            
-            const items = videoWheelList.querySelectorAll('.menu-item');
-            items.forEach((el, idx) => {
-                if(idx === videoWheelIndex) {
-                    el.classList.add('wheel-active');
-                } else {
-                    el.classList.remove('wheel-active');
-                }
+                videoListContainer.appendChild(item);
             });
         }
 
         function switchVideo(index) {
             currentVideoIndex = index;
-            videoWheelIndex = index;
-            updateVideoWheelPosition();
-            
             bgVideo.src = videos[currentVideoIndex].src;
             bgVideo.load();
             const vol = parseFloat(document.getElementById('volumeSlider').value);
             bgVideo.volume = vol;
             bgVideo.muted = (vol === 0);
             bgVideo.play().catch(() => {});
-        }
-
-        // Fare tekerleği ile çarkı döndürme (Video)
-        const videoWheelContainer = document.getElementById('videoWheelContainer');
-        videoWheelContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            if (e.deltaY > 0) {
-                if (videoWheelIndex < videos.length - 1) {
-                    videoWheelIndex++;
-                    playThumpSound();
-                    updateVideoWheelPosition();
-                }
-            } else {
-                if (videoWheelIndex > 0) {
-                    videoWheelIndex--;
-                    playThumpSound();
-                    updateVideoWheelPosition();
-                }
-            }
-        }, { passive: false });
-
-        // Mobil dokunmatik kaydırma desteği (Video)
-        let touchStartY = 0;
-        videoWheelContainer.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        });
-        videoWheelContainer.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const diff = touchStartY - touchEndY;
-            if (Math.abs(diff) > 20) {
-                if (diff > 0 && videoWheelIndex < videos.length - 1) {
-                    videoWheelIndex++;
-                    playThumpSound();
-                    updateVideoWheelPosition();
-                } else if (diff < 0 && videoWheelIndex > 0) {
-                    videoWheelIndex--;
-                    playThumpSound();
-                    updateVideoWheelPosition();
-                }
-            }
-        });
-
-        // Sosyal Çarkı (Aynı mantık)
-        let socialWheelIndex = 0;
-        const socialWheelList = document.getElementById('socialWheelList');
-        const socialItems = socialWheelList.querySelectorAll('.menu-item');
-
-        function initSocialWheel() {
-            socialItems.forEach((el, index) => {
-                if (index === socialWheelIndex) el.classList.add('wheel-active');
-                else el.classList.remove('wheel-active');
-            });
-            updateSocialWheelPosition();
-        }
-
-        function updateSocialWheelPosition() {
-            const offset = 46 - (socialWheelIndex * 46);
-            socialWheelList.style.transform = `translateY(${offset}px)`;
-            socialItems.forEach((el, idx) => {
-                if(idx === socialWheelIndex) el.classList.add('wheel-active');
-                else el.classList.remove('wheel-active');
+            
+            document.querySelectorAll('#videoList .menu-item').forEach((el, idx) => {
+                if (idx === index) el.classList.add('active');
+                else el.classList.remove('active');
             });
         }
-
-        const socialWheelContainer = document.getElementById('socialWheelContainer');
-        socialWheelContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            if (e.deltaY > 0 && socialWheelIndex < socialItems.length - 1) {
-                socialWheelIndex++;
-                playThumpSound();
-                updateSocialWheelPosition();
-            } else if (e.deltaY < 0 && socialWheelIndex > 0) {
-                socialWheelIndex--;
-                playThumpSound();
-                updateSocialWheelPosition();
-            }
-        }, { passive: false });
-
-        socialWheelContainer.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        });
-        socialWheelContainer.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const diff = touchStartY - touchEndY;
-            if (Math.abs(diff) > 20) {
-                if (diff > 0 && socialWheelIndex < socialItems.length - 1) {
-                    socialWheelIndex++;
-                    playThumpSound();
-                    updateSocialWheelPosition();
-                } else if (diff < 0 && socialWheelIndex > 0) {
-                    socialWheelIndex--;
-                    playThumpSound();
-                    updateSocialWheelPosition();
-                }
-            }
-        });
 
         function startSite() {
             if (hasInteracted) return;
@@ -850,7 +725,7 @@
 
         function updateVolumeIcon(vol) {
             if (vol === 0) {
-                volumeIcon.innerHTML = '<path d="M3.63 3.63a.996.996 0 000 1.41L7.29 8.7 4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36a.996.996 0 101.41-1.41L5.04 3.63a.996.996 0 00-1.41 0zM11.94 17.5L8.44 14H4.5V9.5h3.94l3.5-3.5v11.5zM19 12c0 .82-.28 1.58-.75 2.19l1.42 1.42C20.3 14.67 21 13.4 21 12c0-2.54-1.46-4.73-3.58-5.78l-1.06 1.06C17.78 8.1 19 9.9 19 12 z"/>';
+                volumeIcon.innerHTML = '<path d="M3.63 3.63a.996.996 0 000 1.41L7.29 8.7 4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36a.996.996 0 101.41-1.41L5.04 3.63a.996.996 0 00-1.41 0zM11.94 17.5L8.44 14H4.5V9.5h3.94l3.5-3.5v11.5zM19 12c0 .82-.28 1.58-.75 2.19l1.42 1.42C20.3 14.67 21 13.4 21 12c0-2.54-1.46-4.73-3.58-5.78l-1.06 1.06C17.78 8.1 19 9.9 19 12z"/>';
             } else {
                 volumeIcon.innerHTML = '<path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/>';
             }
