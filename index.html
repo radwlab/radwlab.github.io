@@ -229,6 +229,7 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
         }
 
         .main-subtitle {
@@ -239,18 +240,44 @@
             letter-spacing: 0.08em;
         }
 
-        /* Arka Plan Hafif Kararması */
+        /* Profil Altı İleri Geri Buton Alanı */
+        .profile-nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+            margin-top: 4px;
+        }
+
+        .video-ctrl-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.1s ease, border-color 0.1s ease;
+        }
+
+        .video-ctrl-btn:hover {
+            border-color: var(--glass-hover-border);
+            background: var(--glass-hover-bg);
+        }
+
+        /* Arka Plan Kararması (Modal Arkası) */
         .overlay-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .overlay-menu.open {
@@ -258,47 +285,52 @@
             visibility: visible;
         }
 
-        /* Ortak Küçük Kutu Tasarımı */
-        .menu-card {
+        /* Sol Menü Kutusu Kayma Animasyonu */
+        .menu-drawer-left {
             position: absolute;
-            top: calc(65px + env(safe-area-inset-top));
-            background: #0b0b0f;
-            border: 1px solid var(--glass-border);
-            padding: 16px;
-            border-radius: 14px;
-            width: 240px;
+            top: 0;
+            left: 0;
+            width: 280px;
+            max-width: 80%;
+            height: 100dvh;
+            background: #000000;
+            border-right: 1px solid var(--glass-border);
+            padding: calc(20px + env(safe-area-inset-top)) 20px 20px 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-            opacity: 0;
+            gap: 16px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Panel Butonuna Basınca Sol Üstten Açılma */
-        #panelModal .menu-card {
-            left: 20px;
-            transform: translateY(-10px) scale(0.95);
-        }
-        #panelModal.open .menu-card {
-            transform: translateY(0) scale(1);
-            opacity: 1;
+        .overlay-menu.open .menu-drawer-left {
+            transform: translateX(0);
         }
 
-        /* Me Butonuna Basınca Sağ Üstten Açılma */
-        #socialModal .menu-card {
-            right: 20px;
-            transform: translateY(-10px) scale(0.95);
+        /* Sağ Menü Kutusu Kayma Animasyonu */
+        .menu-drawer-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 280px;
+            max-width: 80%;
+            height: 100dvh;
+            background: #000000;
+            border-left: 1px solid var(--glass-border);
+            padding: calc(20px + env(safe-area-inset-top)) 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #socialModal.open .menu-card {
-            transform: translateY(0) scale(1);
-            opacity: 1;
+
+        .overlay-menu.open .menu-drawer-right {
+            transform: translateX(0);
         }
 
         .menu-header {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
             letter-spacing: 0.12em;
@@ -308,12 +340,12 @@
         .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             width: 100%;
-            max-height: 150px;
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: none;
+            flex-grow: 1;
         }
 
         .menu-list::-webkit-scrollbar {
@@ -324,7 +356,7 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
@@ -332,8 +364,8 @@
             justify-content: center;
             gap: 8px;
             text-decoration: none;
-            padding: 8px 10px;
-            border-radius: 8px;
+            padding: 12px 14px;
+            border-radius: 10px;
             transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
             width: 100%;
             white-space: nowrap;
@@ -353,8 +385,8 @@
         }
 
         .menu-item svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
             flex-shrink: 0;
         }
@@ -363,10 +395,10 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-secondary);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
             width: 100%;
@@ -482,10 +514,14 @@
     <div class="content-layer">
         <img class="main-avatar" src="radw.png" alt="Avatar">
         <p class="main-subtitle">Solo temo a Dios</p>
+        <div class="profile-nav-controls">
+            <button class="video-ctrl-btn" id="prevVideoBtn">← geri</button>
+            <button class="video-ctrl-btn" id="nextVideoBtn">ileri →</button>
+        </div>
     </div>
 
     <div class="overlay-menu" id="panelModal">
-        <div class="menu-card">
+        <div class="menu-drawer-left">
             <div class="menu-header">videolar</div>
             <div class="menu-list" id="videoList"></div>
             <button class="close-btn" id="closePanelBtn">kapat</button>
@@ -493,7 +529,7 @@
     </div>
 
     <div class="overlay-menu" id="socialModal">
-        <div class="menu-card">
+        <div class="menu-drawer-right">
             <div class="menu-header">sosyal</div>
             <div class="menu-list">
                 <a href="https://open.spotify.com/user/317c2weftqao52xztynzzozjboyi?si=B-LYuz_hRzKZFmEVQajlzQ&utm_source=copy-link" target="_blank" class="menu-item" onclick="playThumpSound()">
@@ -631,6 +667,21 @@
             });
         }
 
+        // Profil altı ileri / geri buton işlevleri
+        document.getElementById('prevVideoBtn').addEventListener('click', () => {
+            playThumpSound();
+            let newIndex = currentVideoIndex - 1;
+            if (newIndex < 0) newIndex = videos.length - 1;
+            switchVideo(newIndex);
+        });
+
+        document.getElementById('nextVideoBtn').addEventListener('click', () => {
+            playThumpSound();
+            let newIndex = currentVideoIndex + 1;
+            if (newIndex >= videos.length) newIndex = 0;
+            switchVideo(newIndex);
+        });
+
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
@@ -651,36 +702,20 @@
 
         function togglePanel(open) {
             playThumpSound();
-            if (open) {
-                socialModal.classList.remove('open');
-                panelModal.classList.add('open');
-            } else {
-                panelModal.classList.remove('open');
-            }
+            if (open) panelModal.classList.add('open');
+            else panelModal.classList.remove('open');
         }
 
         function toggleSocial(open) {
             playThumpSound();
-            if (open) {
-                panelModal.classList.remove('open');
-                socialModal.classList.add('open');
-            } else {
-                socialModal.classList.remove('open');
-            }
+            if (open) socialModal.classList.add('open');
+            else socialModal.classList.remove('open');
         }
 
-        document.getElementById('panelBtn').addEventListener('click', () => {
-            const isOpen = panelModal.classList.contains('open');
-            togglePanel(!isOpen);
-        });
-        
+        document.getElementById('panelBtn').addEventListener('click', () => togglePanel(true));
         document.getElementById('closePanelBtn').addEventListener('click', () => togglePanel(false));
         
-        document.getElementById('meBtn').addEventListener('click', () => {
-            const isOpen = socialModal.classList.contains('open');
-            toggleSocial(!isOpen);
-        });
-        
+        document.getElementById('meBtn').addEventListener('click', () => toggleSocial(true));
         document.getElementById('closeSocialBtn').addEventListener('click', () => toggleSocial(false));
 
         panelModal.addEventListener('click', (e) => { if (e.target === panelModal) togglePanel(false); });
