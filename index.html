@@ -240,7 +240,7 @@
             letter-spacing: 0.08em;
         }
 
-        /* Profil Altı İleri Geri Buton Alanı */
+        /* Profil Altı Sadece İleri Geri İkon Tuşları */
         .profile-nav-controls {
             display: flex;
             align-items: center;
@@ -253,10 +253,12 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 6px 14px;
+            width: 36px;
+            height: 36px;
             border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: background 0.1s ease, border-color 0.1s ease;
         }
@@ -264,6 +266,12 @@
         .video-ctrl-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
+        }
+
+        .video-ctrl-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         /* Arka Plan Kararması (Modal Arkası) */
@@ -515,11 +523,16 @@
         <img class="main-avatar" src="radw.png" alt="Avatar">
         <p class="main-subtitle">Solo temo a Dios</p>
         <div class="profile-nav-controls">
-            <button class="video-ctrl-btn" id="prevVideoBtn">← geri</button>
-            <button class="video-ctrl-btn" id="nextVideoBtn">ileri →</button>
+            <button class="video-ctrl-btn" id="prevVideoBtn" title="Önceki Video">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="video-ctrl-btn" id="nextVideoBtn" title="Sonraki Video">
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
         </div>
     </div>
 
+    <!-- Sol Menü Çekmecesi (Panel) -->
     <div class="overlay-menu" id="panelModal">
         <div class="menu-drawer-left">
             <div class="menu-header">videolar</div>
@@ -528,6 +541,7 @@
         </div>
     </div>
 
+    <!-- Sağ Menü Çekmecesi (Me) -->
     <div class="overlay-menu" id="socialModal">
         <div class="menu-drawer-right">
             <div class="menu-header">sosyal</div>
@@ -667,7 +681,7 @@
             });
         }
 
-        // Profil altı ileri / geri buton işlevleri
+        // Profil altı sadece ikonlu ileri / geri buton işlevleri
         document.getElementById('prevVideoBtn').addEventListener('click', () => {
             playThumpSound();
             let newIndex = currentVideoIndex - 1;
