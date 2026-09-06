@@ -87,7 +87,6 @@
             50% { opacity: 0; }
         }
 
-        /* Dark-Tech Şeffaf Beyaz Buton */
         .enter-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
@@ -101,17 +100,14 @@
             box-shadow: var(--glass-shadow);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transform-origin: center center;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease;
+            transition: background 0.15s ease, border-color 0.15s ease;
             opacity: 0;
             animation: fadeInBtn 0.5s forwards 0.8s;
-            will-change: transform;
         }
 
         .enter-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
-            transform: scale(1.06);
         }
 
         @keyframes fadeInBtn {
@@ -155,16 +151,13 @@
             border-radius: 8px;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            transform-origin: center center;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease;
-            will-change: transform;
+            transition: background 0.15s ease, border-color 0.15s ease;
             text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
 
         .nav-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
-            transform: scale(1.08);
         }
 
         .nav-logo {
@@ -217,7 +210,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: translateZ(0);
         }
 
         .video-vignette {
@@ -270,7 +262,7 @@
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.2); /* Arka planın rahatça görünmesi için yüksek şeffaflık */
+            background: rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             display: flex;
@@ -287,7 +279,7 @@
             visibility: visible;
         }
 
-        /* Ana Büyük Kutu Tamamen Şeffaf Dark-Tech */
+        /* Ana Büyük Kutu Şeffaf Dark-Tech */
         .menu-card {
             background: rgba(10, 10, 15, 0.35);
             border: 1px solid var(--glass-border);
@@ -313,36 +305,30 @@
             text-transform: uppercase;
         }
 
-        /* Video Listesi: Tam 3 Satır Boyutunda ve Kaydırılabilir */
+        /* Video Listesi: Tam 3 Satır Yüksekliği, Çift Yönlü Scroll Tamamen Kaldırıldı */
         .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             width: 100%;
-            align-items: stretch;
-            max-height: 135px; /* Yaklaşık 3 satır yüksekliği */
+            align-items: center;
+            max-height: 135px;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 2px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.2) transparent;
+            scrollbar-width: none; /* Firefox */
         }
 
         .menu-list::-webkit-scrollbar {
-            display: block;
-            width: 4px;
+            display: none; /* Chrome, Safari, Edge */
         }
 
-        .menu-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        /* Video ve Sosyal İsimleri İçin Ayrı Küçük Kutular */
+        /* Kutular Kaldırıldı, Saf İsim Hâline Getirildi */
         .menu-item {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            font-size: 0.85rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
@@ -350,30 +336,22 @@
             justify-content: center;
             gap: 8px;
             text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 10px;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            transform-origin: center center;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-            will-change: transform;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: color 0.15s ease, text-shadow 0.15s ease;
             width: 100%;
+            white-space: nowrap;
         }
 
         .menu-item:hover {
-            border-color: var(--glass-hover-border);
-            background: var(--glass-hover-bg);
-            transform: scale(1.03);
+            color: var(--text-primary);
         }
 
         /* Seçili Video Parlak/Vurgulu Efekt */
         .menu-item.active {
             font-weight: 700;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.5);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 255, 255, 0.4);
         }
 
         .menu-item svg {
@@ -395,9 +373,7 @@
             margin-top: 4px;
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            transform-origin: center center;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-            will-change: transform;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
             width: 100%;
         }
 
@@ -405,7 +381,6 @@
             background: var(--glass-hover-bg);
             border-color: var(--glass-hover-border);
             color: var(--text-primary);
-            transform: scale(1.03);
         }
 
         /* Ses Ayar Paneli Dark-Tech Şeffaf */
@@ -424,15 +399,12 @@
             box-shadow: var(--glass-shadow);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transform-origin: center center;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease;
-            will-change: transform;
+            transition: background 0.15s ease, border-color 0.15s ease;
         }
 
         .audio-dock:hover {
             background: var(--glass-hover-bg);
             border-color: var(--glass-hover-border);
-            transform: scale(1.05);
         }
 
         .audio-icon-btn {
