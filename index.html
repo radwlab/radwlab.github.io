@@ -8,17 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #030305;
-            --text-primary: #f5f5f7;
-            --text-secondary: #86868b;
+            --bg-color: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1a6;
             
-            /* Şeffaf Cam Efekti Değişkenleri */
-            --glass-bg: rgba(15, 15, 20, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover-bg: rgba(30, 30, 40, 0.7);
-            --glass-hover-border: rgba(255, 255, 255, 0.25);
-            --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            --hover-scale: scale(1.03);
+            /* Şeffaf Siyah & Hafif Beyaz Cam Efekti */
+            --glass-bg: rgba(20, 20, 25, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-hover-bg: rgba(40, 40, 50, 0.85);
+            --glass-hover-border: rgba(255, 255, 255, 0.35);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --hover-scale: scale(1.08);
         }
 
         * {
@@ -54,7 +54,7 @@
             align-items: center;
             gap: 25px;
             z-index: 9999;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
         #splash-screen.fade-out {
@@ -92,9 +92,8 @@
 
         .enter-btn {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            color: var(--text-primary);
             border: 1px solid var(--glass-border);
+            color: var(--text-primary);
             padding: 12px 28px;
             border-radius: 16px;
             font-size: 0.85rem;
@@ -102,9 +101,10 @@
             letter-spacing: 0.08em;
             cursor: pointer;
             box-shadow: var(--glass-shadow);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
             opacity: 0;
-            animation: fadeInBtn 0.6s forwards 0.8s;
+            animation: fadeInBtn 0.5s forwards 0.8s;
+            will-change: transform;
         }
 
         .enter-btn:hover {
@@ -122,13 +122,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(3, 3, 5, 0.35);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.7);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid var(--glass-border);
             padding: 0 16px;
             padding-top: env(safe-area-inset-top);
             height: calc(52px + env(safe-area-inset-top));
@@ -146,7 +145,6 @@
 
         .nav-btn {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
             padding: 6px 12px;
@@ -155,7 +153,8 @@
             font-weight: 600;
             letter-spacing: 0.05em;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
         }
 
         .nav-btn:hover {
@@ -221,7 +220,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
             pointer-events: none;
         }
 
@@ -265,15 +264,14 @@
             left: 0;
             width: 100%;
             height: 100dvh;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .overlay-menu.open {
@@ -282,8 +280,7 @@
         }
 
         .menu-card {
-            background: rgba(12, 12, 16, 0.65);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(18, 18, 24, 0.85);
             border: 1px solid var(--glass-border);
             padding: 24px;
             border-radius: 20px;
@@ -292,7 +289,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            box-shadow: var(--glass-shadow);
         }
 
         .menu-header {
@@ -312,9 +309,8 @@
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 12px 16px;
             border-radius: 12px;
             color: var(--text-primary);
@@ -326,7 +322,8 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
         }
 
         .menu-item:hover {
@@ -343,9 +340,8 @@
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-secondary);
             font-size: 0.8rem;
             font-weight: 600;
@@ -354,7 +350,8 @@
             cursor: pointer;
             margin-top: 5px;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
         }
 
         .close-btn:hover {
@@ -364,6 +361,7 @@
             transform: var(--hover-scale);
         }
 
+        /* Ses Ayarı Paneli Dahil Büyüme Animasyonu */
         .audio-dock {
             position: fixed;
             bottom: 25px;
@@ -373,12 +371,12 @@
             align-items: center;
             gap: 10px;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             padding: 8px 12px;
             border-radius: 16px;
             box-shadow: var(--glass-shadow);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
         }
 
         .audio-dock:hover {
@@ -414,7 +412,7 @@
             position: relative;
             width: 90px;
             height: 6px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 3px;
             overflow: hidden;
             display: flex;
@@ -427,10 +425,9 @@
             left: 0;
             height: 100%;
             width: 50%;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             pointer-events: none;
             border-radius: 3px;
-            transition: width 0.05s linear;
         }
 
         .audio-slider {
@@ -601,7 +598,7 @@
             { name: "how deep is your love", src: "how%20deep%20is%20your%20love.mp4" },
             { name: "pagani", src: "pagani.mp4" },
             { name: "mw", src: "mw.mp4" },
-            { name: "southpaw", src: "south.mp4" },
+            { name: "southpaw", src: "southpaw.mp4" },
             { name: "rashford", src: "rashford.mp4" }
         ];
 
