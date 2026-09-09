@@ -124,6 +124,12 @@
             height: calc(65px + env(safe-area-inset-top));
         }
 
+        .nav-left-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .nav-btn, .nav-icon-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
@@ -259,6 +265,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        .menu-item.active {
+            border-color: var(--glass-hover-border);
+            background: var(--glass-hover-bg);
+            color: var(--text-primary);
+        }
+
         .menu-item svg {
             width: 16px;
             height: 16px;
@@ -376,14 +388,30 @@
     </div>
 
     <nav>
-        <a href="https://discord.gg/donturl" target="_blank" class="nav-icon-btn" title="Discord" onclick="playThumpSound()">
-            <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        </a>
+        <div class="nav-left-group">
+            <a href="https://discord.gg/donturl" target="_blank" class="nav-icon-btn" title="Discord" onclick="playThumpSound()">
+                <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            </a>
+            <button class="nav-icon-btn" id="videoModalBtn" title="Video Seç" onclick="playThumpSound()">
+                <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+            </button>
+        </div>
         <button class="nav-btn" id="meBtn">contact</button>
     </nav>
 
     <div class="bg-video-container">
-        <video id="bgVideo" src="mw.mp4" loop playsinline webkit-playsinline preload="auto"></video>
+        <video id="bgVideo" loop playsinline webkit-playsinline preload="auto"></video>
+    </div>
+
+    <!-- Video Seçim Modalı -->
+    <div class="overlay-menu" id="videoModal">
+        <div class="menu-card">
+            <div class="menu-header">videolar</div>
+            <div class="menu-list" id="videoListContainer">
+                <!-- Videolar JavaScript ile buraya eklenecek -->
+            </div>
+            <button class="close-btn" id="closeVideoModalBtn">kapat</button>
+        </div>
     </div>
 
     <div class="overlay-menu" id="socialModal">
@@ -450,12 +478,68 @@
             }
         }
 
+        // Tüm önceki videolar burada listelendi (Dilediğin gibi isimlerini/sayısını değiştirebilirsin)
+        const videoList = [
+            { name: "Video 1", file: "mw.mp4" },
+            { name: "Video 2", file: "mw2.mp4" },
+            { name: "Video 3", file: "mw3.mp4" }
+        ];
+        let currentVideoIndex = 0;
+        const bgVideo = document.getElementById('bgVideo');
+
+        function loadVideo(index) {
+            currentVideoIndex = index;
+            bgVideo.src = videoList[index].file;
+            bgVideo.load();
+            updateVideoListUI();
+        }
+
+        function updateVideoListUI() {
+            const container = document.getElementById('videoListContainer');
+            container.innerHTML = '';
+            videoList.forEach((vid, idx) => {
+                const item = document.createElement('div');
+                item.className = `menu-item ${idx === currentVideoIndex ? 'active' : ''}`;
+                item.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+                    ${vid.name}
+                `;
+                item.addEventListener('click', () => {
+                    playThumpSound();
+                    loadVideo(idx);
+                    if (hasInteracted) {
+                        bgVideo.play().catch(() => {});
+                    }
+                    toggleVideoModal(false);
+                });
+                container.appendChild(item);
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 200);
             updateFillBar(0.5);
+            loadVideo(0);
         });
 
-        const bgVideo = document.getElementById('bgVideo');
+        const videoModal = document.getElementById('videoModal');
+
+        function toggleVideoModal(open) {
+            playThumpSound();
+            if (open) {
+                updateVideoListUI();
+                videoModal.classList.add('open');
+            } else {
+                videoModal.classList.remove('open');
+            }
+        }
+
+        document.getElementById('videoModalBtn').addEventListener('click', () => {
+            const isOpen = videoModal.classList.contains('open');
+            toggleVideoModal(!isOpen);
+        });
+        document.getElementById('closeVideoModalBtn').addEventListener('click', () => toggleVideoModal(false));
+        videoModal.addEventListener('click', (e) => { if (e.target === videoModal) toggleVideoModal(false); });
 
         function startSite() {
             if (hasInteracted) return;
@@ -494,7 +578,6 @@
             toggleSocial(!isOpen);
         });
         document.getElementById('closeSocialBtn').addEventListener('click', () => toggleSocial(false));
-
         socialModal.addEventListener('click', (e) => { if (e.target === socialModal) toggleSocial(false); });
 
         const volumeSlider = document.getElementById('volumeSlider');
@@ -536,7 +619,7 @@
 
         function updateVolumeIcon(vol) {
             if (vol === 0) {
-                volumeIcon.innerHTML = '<path d="M3.63 3.63a.996.996 0 000 1.41L7.29 8.7 4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36a.996.996 0 101.41-1.41L5.04 3.63a.996.996 0 00-1.41 0zM11.94 17.5L8.44 14H4.5V9.5h3.94l3.5-3.5v11.5zM19 12c0 .82-.28 1.58-.75 2.19l1.42 1.42C20.3 14.67 21 13.4 21 12c0-2.54-1.46-4.73-3.58-5.78l-1.06 1.06C17.78 8.1 19 9.9 19 12z"/>';
+                volumeIcon.innerHTML = '<path d="M3.63 3.63a.996.996 0 000 1.41L7.29 8.7 4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36a.996.996 0 101.41-1.41L5.04 3.63a.996.996 0 00-1.41 0zM11.94 17.5L8.44 14H4.5V9.5h3.94l3.5-3.5v11.5zM19 12c0 .82-.28 1.58-.75 2.19l1.42 1.42C20.3 14.67 21 13.4 21 12c0-2.54-1.46-4.73-3.58-5.78l-1.06 1.06C17.78 8.1 19 9.9 19 12 z"/>';
             } else {
                 volumeIcon.innerHTML = '<path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/>';
             }
