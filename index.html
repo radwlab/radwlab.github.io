@@ -401,9 +401,7 @@
     <div class="overlay-menu" id="videoModal">
         <div class="menu-card">
             <div class="menu-header">videolar</div>
-            <div class="menu-list" id="videoListContainer">
-                <!-- Videolar JavaScript ile buraya eklenecek -->
-            </div>
+            <div class="menu-list" id="videoListContainer"></div>
             <button class="close-btn" id="closeVideoModalBtn">kapat</button>
         </div>
     </div>
@@ -455,19 +453,19 @@
             }
         }
 
-        // Esref tek (mw2.mp4) ve mw3 (mw3.mp4) listeden kaldırıldı
+        // Uzantı uyumsuzluklarını önlemek için dosya isimleri standartlaştırıldı
         const videoList = [
             { name: "godfather", file: "mw.mp4" },
             { name: "ben", file: "ben.mp4" },
-            { name: "car", file: "car.mp4.MP4" },
+            { name: "car", file: "car.mp4" },
             { name: "deep end", file: "deep end.mp4" },
             { name: "dexter", file: "dexter.mp4" },
-            { name: "hikaye", file: "hikaye.mp4.MP4" },
-            { name: "karga", file: "karga.mp4.MP4" },
-            { name: "killer", file: "killer.mp4.MP4" },
-            { name: "serbet", file: "serbet.mp4.MP4" },
-            { name: "southpaw", file: "southpaw.mp4.MP4" },
-            { name: "zehir", file: "zehir.mp4.MP4" }
+            { name: "hikaye", file: "hikaye.mp4" },
+            { name: "karga", file: "karga.mp4" },
+            { name: "killer", file: "killer.mp4" },
+            { name: "serbet", file: "serbet.mp4" },
+            { name: "southpaw", file: "southpaw.mp4" },
+            { name: "zehir", file: "zehir.mp4" }
         ];
         let currentVideoIndex = 0;
         const bgVideo = document.getElementById('bgVideo');
