@@ -32,6 +32,7 @@
             height: 100vh;
             width: 100%;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         ::-webkit-scrollbar { display: none; }
@@ -51,7 +52,8 @@
             align-items: center;
             gap: 25px;
             z-index: 9999;
-            transition: opacity 0.3s ease, visibility 0.3s;
+            transition: opacity 0.25s ease, visibility 0.25s;
+            will-change: opacity;
         }
 
         #splash-screen.fade-out {
@@ -97,7 +99,7 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .enter-btn:hover {
@@ -136,7 +138,7 @@
             width: 38px;
             padding: 0;
             border-radius: 10px;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -154,7 +156,7 @@
             background: var(--glass-hover-bg);
         }
 
-        /* Arka Plan Video */
+        /* Arka Plan Video - Donanım Hızlandırma ve Kalite Optimizasyonu */
         .bg-video-container {
             position: fixed;
             top: 0;
@@ -163,12 +165,18 @@
             height: 100vh;
             z-index: 1;
             background: #000;
+            overflow: hidden;
+            transform: translateZ(0);
         }
 
         .bg-video-container video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            image-rendering: high-quality;
         }
 
         /* Modaller */
@@ -178,14 +186,15 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(5, 5, 8, 0.8);
+            background: rgba(5, 5, 8, 0.75);
             z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s;
+            transition: opacity 0.15s ease, visibility 0.15s;
+            will-change: opacity;
         }
 
         .overlay-menu.open {
@@ -239,7 +248,7 @@
             text-decoration: none;
             padding: 12px 14px;
             border-radius: 12px;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
             width: 100%;
             white-space: nowrap;
         }
@@ -272,7 +281,7 @@
             padding: 10px 16px;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
             width: 100%;
         }
 
@@ -296,6 +305,7 @@
             padding: 8px 14px;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transform: translateZ(0);
         }
 
         .audio-icon-btn {
@@ -308,7 +318,7 @@
             justify-content: center;
             padding: 4px;
             opacity: 0.8;
-            transition: opacity 0.2s;
+            transition: opacity 0.15s;
         }
 
         .audio-icon-btn:hover {
