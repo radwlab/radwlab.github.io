@@ -189,22 +189,24 @@
             image-rendering: high-quality;
         }
 
-        /* Modaller */
+        /* Slide Animasyonlu Şeffaf Dark Panel */
         .overlay-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(5, 5, 8, 0.75);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.15s ease, visibility 0.15s;
-            will-change: opacity;
+            transition: opacity 0.25s ease, backdrop-filter 0.25s ease, visibility 0.25s;
+            will-change: opacity, backdrop-filter;
         }
 
         .overlay-menu.open {
@@ -213,22 +215,30 @@
         }
 
         .menu-card {
-            background: #121218;
+            background: rgba(14, 14, 20, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            padding: 24px;
-            border-radius: 20px;
-            width: 290px;
-            max-width: 85vw;
+            padding: 20px;
+            border-radius: 18px;
+            width: 250px;
+            max-width: 80vw;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(25px) scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .overlay-menu.open .menu-card {
+            transform: translateY(0) scale(1);
         }
 
         .menu-header {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: var(--text-secondary);
             letter-spacing: 0.15em;
@@ -238,33 +248,34 @@
         .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             width: 100%;
-            max-height: 55vh;
+            max-height: 48vh;
             overflow-y: auto;
+            padding-right: 2px;
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
-            padding: 12px 14px;
-            border-radius: 12px;
-            transition: all 0.1s ease;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: all 0.15s ease;
             width: 100%;
             white-space: nowrap;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.07);
             border-color: var(--glass-hover-border);
             color: var(--text-primary);
         }
@@ -276,27 +287,27 @@
         }
 
         .menu-item svg {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             fill: currentColor;
             flex-shrink: 0;
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            padding: 10px 16px;
-            border-radius: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: all 0.15s ease;
             width: 100%;
         }
 
         .close-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.07);
             border-color: var(--glass-hover-border);
             color: var(--text-primary);
         }
@@ -407,7 +418,7 @@
         <video id="bgVideo" loop playsinline webkit-playsinline></video>
     </div>
 
-    <!-- Video Seçim Modalı -->
+    <!-- Slide Animasyonlu Video Seçim Modalı -->
     <div class="overlay-menu" id="videoModal">
         <div class="menu-card">
             <div class="menu-header">videolar</div>
