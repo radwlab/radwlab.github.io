@@ -197,7 +197,7 @@
             image-rendering: high-quality;
         }
 
-        /* Ultra Minimalist Siyah Panel */
+        /* Küçükten büyüğe hareketli açılma/kapanma efektine sahip panel */
         .overlay-menu {
             position: fixed;
             top: 0;
@@ -213,8 +213,8 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, backdrop-filter 0.2s ease, visibility 0.2s;
-            will-change: opacity;
+            transition: opacity 0.25s ease, backdrop-filter 0.25s ease, visibility 0.25s;
+            will-change: opacity, visibility;
         }
 
         .overlay-menu.open {
@@ -235,13 +235,16 @@
             flex-direction: column;
             gap: 8px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-            transform: translateY(15px) scale(0.95);
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.7);
+            opacity: 0;
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
             position: relative;
+            will-change: transform, opacity;
         }
 
         .overlay-menu.open .menu-card {
-            transform: translateY(0) scale(1);
+            transform: scale(1);
+            opacity: 1;
         }
 
         .menu-top-bar {
@@ -617,6 +620,7 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
+            toggleVideoModal(false); // Paneli kapatır
         });
 
         nextVideoBtn.addEventListener('click', () => {
@@ -625,6 +629,7 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
+            toggleVideoModal(false); // Paneli kapatır
         });
 
         playPauseBtn.addEventListener('click', () => {
@@ -635,6 +640,7 @@
                 bgVideo.pause();
                 updatePlayPauseIcon(false);
             }
+            toggleVideoModal(false); // Paneli kapatır
         });
 
         function startSite() {
