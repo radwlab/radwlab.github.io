@@ -189,14 +189,14 @@
             image-rendering: high-quality;
         }
 
-        /* Slide Animasyonlu Şeffaf Dark Panel */
+        /* Slide Animasyonlu Şeffaf Siyah Panel */
         .overlay-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
@@ -205,8 +205,8 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.25s ease, backdrop-filter 0.25s ease, visibility 0.25s;
-            will-change: opacity, backdrop-filter;
+            transition: opacity 0.2s ease, backdrop-filter 0.2s ease, visibility 0.2s;
+            will-change: opacity;
         }
 
         .overlay-menu.open {
@@ -215,101 +215,146 @@
         }
 
         .menu-card {
-            background: rgba(14, 14, 20, 0.65);
+            background: rgba(8, 8, 10, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            padding: 20px;
-            border-radius: 18px;
-            width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 16px;
+            width: 230px;
             max-width: 80vw;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            transform: translateY(25px) scale(0.95);
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
         }
 
         .overlay-menu.open .menu-card {
             transform: translateY(0) scale(1);
         }
 
+        .menu-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4px;
+        }
+
         .menu-header {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: var(--text-secondary);
             letter-spacing: 0.15em;
             text-transform: uppercase;
         }
 
+        .close-icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .close-icon-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .close-icon-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
         .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
             width: 100%;
-            max-height: 48vh;
+            max-height: 40vh;
             overflow-y: auto;
             padding-right: 2px;
         }
 
         .menu-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 0.78rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
             text-decoration: none;
-            padding: 10px 12px;
-            border-radius: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
             transition: all 0.15s ease;
             width: 100%;
             white-space: nowrap;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--glass-hover-border);
-            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .menu-item.active {
-            border-color: var(--glass-hover-border);
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .menu-item svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        /* Alt Video Kontrol Paneli (İleri, Geri, Oynat/Durdur) */
+        .media-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 2px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            cursor: pointer;
+            width: 34px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-btn svg {
             width: 14px;
             height: 14px;
             fill: currentColor;
-            flex-shrink: 0;
-        }
-
-        .close-btn {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            color: var(--text-secondary);
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 8px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            width: 100%;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--glass-hover-border);
-            color: var(--text-primary);
         }
 
         /* Ses Paneli */
@@ -418,12 +463,30 @@
         <video id="bgVideo" loop playsinline webkit-playsinline></video>
     </div>
 
-    <!-- Slide Animasyonlu Video Seçim Modalı -->
+    <!-- Slide Animasyonlu Şeffaf Siyah Panel -->
     <div class="overlay-menu" id="videoModal">
         <div class="menu-card">
-            <div class="menu-header">videolar</div>
+            <div class="menu-top-bar">
+                <div class="menu-header">videolar</div>
+                <button class="close-icon-btn" id="closeVideoModalBtn" title="Kapat">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            
             <div class="menu-list" id="videoListContainer"></div>
-            <button class="close-btn" id="closeVideoModalBtn">kapat</button>
+
+            <!-- Alt Medya Kontrolleri (Geri, Oynat/Durdur, İleri) -->
+            <div class="media-controls">
+                <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
+                    <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
+                    <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -464,14 +527,18 @@
             { name: "killer", file: "killer.MP4" },
             { name: "serbet", file: "serbet.MP4" },
             { name: "southpaw", file: "southpaw.MP4" },
-            { name: "zehir", file: "zehir.MP4" }
+            { name: "zehir", file: "zehir.MP4" },
+            { name: "panther", file: "panther.mp4" },
+            { name: "ironman", file: "ironman.mp4" },
+            { name: "blackfire", file: "blackfire.mp4" },
+            { name: "dragon", file: "dragon.mp4" }
         ];
         let currentVideoIndex = 0;
         const bgVideo = document.getElementById('bgVideo');
 
         function loadVideo(index) {
-            currentVideoIndex = index;
-            bgVideo.src = videoList[index].file;
+            currentVideoIndex = (index + videoList.length) % videoList.length;
+            bgVideo.src = videoList[currentVideoIndex].file;
             bgVideo.load();
             updateVideoListUI();
         }
@@ -490,8 +557,8 @@
                     loadVideo(idx);
                     if (hasInteracted) {
                         bgVideo.play().catch(() => {});
+                        updatePlayPauseIcon(true);
                     }
-                    toggleVideoModal(false);
                 });
                 container.appendChild(item);
             });
@@ -521,6 +588,48 @@
         document.getElementById('closeVideoModalBtn').addEventListener('click', () => toggleVideoModal(false));
         videoModal.addEventListener('click', (e) => { if (e.target === videoModal) toggleVideoModal(false); });
 
+        // Medya Kontrolleri İşlevleri
+        const prevVideoBtn = document.getElementById('prevVideoBtn');
+        const nextVideoBtn = document.getElementById('nextVideoBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+
+        function updatePlayPauseIcon(isPlaying) {
+            if (isPlaying) {
+                // Durdur simgesi (Oynatılıyorken tıklanırsa durdurulacak)
+                playPauseIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            } else {
+                // Oynat simgesi (Durağanken tıklanırsa oynatılacak)
+                playPauseIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            }
+        }
+
+        prevVideoBtn.addEventListener('click', () => {
+            loadVideo(currentVideoIndex - 1);
+            if (hasInteracted) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            }
+        });
+
+        nextVideoBtn.addEventListener('click', () => {
+            loadVideo(currentVideoIndex + 1);
+            if (hasInteracted) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            }
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (bgVideo.paused) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            } else {
+                bgVideo.pause();
+                updatePlayPauseIcon(false);
+            }
+        });
+
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
@@ -528,9 +637,12 @@
             
             bgVideo.muted = false;
             bgVideo.volume = parseFloat(document.getElementById('volumeSlider').value);
-            bgVideo.play().catch(() => {
+            bgVideo.play().then(() => {
+                updatePlayPauseIcon(true);
+            }).catch(() => {
                 bgVideo.muted = true;
                 bgVideo.play();
+                updatePlayPauseIcon(true);
             });
         }
 
