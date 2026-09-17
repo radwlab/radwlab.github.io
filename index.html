@@ -43,16 +43,14 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Splash Screen (Sadece Buton) */
+        /* Giriş Ekranı (Tamamen sade, videocuksuz) */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: #000000;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -416,7 +414,7 @@
 </head>
 <body>
 
-    <!-- Giriş Ekranı (Sadece Buton) -->
+    <!-- Giriş Ekranı (Sadece Siyah Arka Plan ve Buton) -->
     <div id="splash-screen">
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
@@ -434,7 +432,7 @@
         </div>
     </div>
 
-    <!-- Arka Plan Video -->
+    <!-- Arka Plan Video (Sadece Giriş Yapıldıktan Sonra Görünecek Kısım) -->
     <div class="bg-video-container">
         <video id="bgVideo" loop playsinline webkit-playsinline></video>
     </div>
