@@ -43,7 +43,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Splash Screen (Açılış Bu Videoyla Başlar) */
+        /* Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -106,7 +106,7 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
-        /* Ana İçerik / Profil Alanı (Merkez) */
+        /* Ana İçerik / Profil Alanı */
         .main-content {
             position: fixed;
             top: 50%;
@@ -433,7 +433,7 @@
 </head>
 <body>
 
-    <!-- Açılış Ekranı (this is love.mp4 burada sesli başlar) -->
+    <!-- Açılış Ekranı -->
     <div id="splash-screen">
         <div class="splash-video-container">
             <video id="splashVideo" preload="auto" playsinline webkit-playsinline>
@@ -456,7 +456,7 @@
         </div>
     </div>
 
-    <!-- Arka Plan Video (Giriş Sonrası Devreye Giren Liste) -->
+    <!-- Arka Plan Video -->
     <div class="bg-video-container">
         <video id="bgVideo" loop playsinline webkit-playsinline></video>
     </div>
@@ -501,7 +501,8 @@
     <script>
         const videoList = [
             { name: "godfather", file: "mw.mp4" },
-            { name: "ben", file: "ben.mp4" },
+            { name: "this is love", file: "this is love.mp4" },
+            { name: "esref tek", file: "ben.mp4" },
             { name: "car", file: "car.MP4" },
             { name: "deep end", file: "deep end.mp4" },
             { name: "dexter", file: "dexter.mp4" },
@@ -528,7 +529,6 @@
             updateFillBar(0.5);
             loadVideo(0);
             
-            // Açılış videosunu otomatik sessiz başlat (tarayıcı engeline takılmamak için)
             splashVideo.muted = true;
             splashVideo.play().catch(() => {});
         });
@@ -618,7 +618,6 @@
             }
         });
 
-        // Giriş butonuna basıldığında açılış videosu biter, arkadaki ana video sesli olarak devreye girer
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
