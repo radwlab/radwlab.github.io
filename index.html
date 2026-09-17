@@ -22,15 +22,12 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
         }
 
-        /* Tüm scrollbar'ları kökten gizle (Yatay ve Dikey) */
-        * {
-            -ms-overflow-style: none !important;  /* IE ve Edge */
-            scrollbar-width: none !important;  /* Firefox */
-        }
         *::-webkit-scrollbar {
-            display: none !important; /* Chrome, Safari ve Opera */
+            display: none !important;
             width: 0 !important;
             height: 0 !important;
         }
@@ -46,7 +43,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Splash Screen */
+        /* Splash Screen (Açılış Bu Videoyla Başlar) */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -59,8 +56,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.25s ease, visibility 0.25s;
-            will-change: opacity;
+            transition: opacity 0.3s ease, visibility 0.3s;
         }
 
         #splash-screen.fade-out {
@@ -83,6 +79,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: translateZ(0);
         }
 
         .enter-btn {
@@ -91,7 +88,7 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            padding: 12px 30px;
+            padding: 12px 32px;
             border-radius: 14px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -100,12 +97,13 @@
             transition: all 0.15s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .enter-btn:hover {
             border-color: var(--glass-hover-border);
             background: var(--glass-hover-bg);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
         /* Ana İçerik / Profil Alanı (Merkez) */
@@ -186,10 +184,9 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             transform: translateZ(0);
-            image-rendering: high-quality;
         }
 
-        /* Küçükten büyüğe hareketli açılma/kapanma efektine sahip panel */
+        /* Panel */
         .overlay-menu {
             position: fixed;
             top: 0;
@@ -205,8 +202,7 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.25s ease, backdrop-filter 0.25s ease, visibility 0.25s;
-            will-change: opacity, visibility;
+            transition: opacity 0.2s ease, visibility 0.2s;
         }
 
         .overlay-menu.open {
@@ -227,16 +223,12 @@
             flex-direction: column;
             gap: 8px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-            transform: scale(0.7);
-            opacity: 0;
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
-            position: relative;
-            will-change: transform, opacity;
+            transform: scale(0.85);
+            transition: transform 0.2s ease;
         }
 
         .overlay-menu.open .menu-card {
             transform: scale(1);
-            opacity: 1;
         }
 
         .menu-top-bar {
@@ -278,7 +270,6 @@
             fill: currentColor;
         }
 
-        /* 3-4 video sığacak yükseklik sınırı */
         .menu-list {
             display: flex;
             flex-direction: column;
@@ -286,7 +277,6 @@
             width: 100%;
             max-height: 145px; 
             overflow-y: auto;
-            overflow-x: hidden;
         }
 
         .menu-item {
@@ -325,7 +315,6 @@
             opacity: 0.6;
         }
 
-        /* Alt Medya Kontrolleri */
         .media-controls {
             display: flex;
             justify-content: center;
@@ -375,7 +364,6 @@
             padding: 8px 14px;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transform: translateZ(0);
         }
 
         .audio-icon-btn {
@@ -445,16 +433,17 @@
 </head>
 <body>
 
+    <!-- Açılış Ekranı (this is love.mp4 burada sesli başlar) -->
     <div id="splash-screen">
         <div class="splash-video-container">
-            <video id="splashVideo" playsinline>
+            <video id="splashVideo" preload="auto" playsinline webkit-playsinline>
                 <source src="this is love.mp4" type="video/mp4">
             </video>
         </div>
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
-    <!-- Merkezde IMG_6727.jpeg ve altında ikonlar -->
+    <!-- Ana İçerik -->
     <div class="main-content">
         <img src="IMG_6727.jpeg" alt="Radw" class="profile-avatar">
         <div class="profile-buttons">
@@ -467,11 +456,12 @@
         </div>
     </div>
 
+    <!-- Arka Plan Video (Giriş Sonrası Devreye Giren Liste) -->
     <div class="bg-video-container">
         <video id="bgVideo" loop playsinline webkit-playsinline></video>
     </div>
 
-    <!-- Minimalist Siyah Panel -->
+    <!-- Video Seçim Paneli -->
     <div class="overlay-menu" id="videoModal">
         <div class="menu-card">
             <div class="menu-top-bar">
@@ -483,7 +473,6 @@
             
             <div class="menu-list" id="videoListContainer"></div>
 
-            <!-- Alt Medya Kontrolleri -->
             <div class="media-controls">
                 <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
                     <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -498,6 +487,7 @@
         </div>
     </div>
 
+    <!-- Ses Paneli -->
     <div class="audio-dock" id="audioDock">
         <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
             <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
@@ -509,22 +499,6 @@
     </div>
 
     <script>
-        const splashScreen = document.getElementById('splash-screen');
-        const splashVideo = document.getElementById('splashVideo');
-        const enterBtn = document.getElementById('enterBtn');
-        let hasInteracted = false;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            splashVideo.volume = 0.5; // Açılış videosu için ses seviyesi
-            splashVideo.play().catch(() => {
-                // Eğer tarayıcı otomatik sesli oynatmayı bloklarsa videoyu sessize alıp yine de oynatmayı dener
-                splashVideo.muted = true;
-                splashVideo.play();
-            });
-            updateFillBar(0.5);
-            loadVideo(0);
-        });
-
         const videoList = [
             { name: "godfather", file: "mw.mp4" },
             { name: "ben", file: "ben.mp4" },
@@ -542,8 +516,22 @@
             { name: "blackfire", file: "blackfire.mp4" },
             { name: "dragon", file: "dragon.mp4" }
         ];
+
         let currentVideoIndex = 0;
         const bgVideo = document.getElementById('bgVideo');
+        const splashScreen = document.getElementById('splash-screen');
+        const splashVideo = document.getElementById('splashVideo');
+        const enterBtn = document.getElementById('enterBtn');
+        let hasInteracted = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateFillBar(0.5);
+            loadVideo(0);
+            
+            // Açılış videosunu otomatik sessiz başlat (tarayıcı engeline takılmamak için)
+            splashVideo.muted = true;
+            splashVideo.play().catch(() => {});
+        });
 
         function loadVideo(index) {
             currentVideoIndex = (index + videoList.length) % videoList.length;
@@ -586,8 +574,7 @@
         }
 
         document.getElementById('videoModalBtn').addEventListener('click', () => {
-            const isOpen = videoModal.classList.contains('open');
-            toggleVideoModal(!isOpen);
+            toggleVideoModal(!videoModal.classList.contains('open'));
         });
         document.getElementById('closeVideoModalBtn').addEventListener('click', () => toggleVideoModal(false));
         videoModal.addEventListener('click', (e) => { if (e.target === videoModal) toggleVideoModal(false); });
@@ -611,7 +598,6 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
-            toggleVideoModal(false);
         });
 
         nextVideoBtn.addEventListener('click', () => {
@@ -620,7 +606,6 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
-            toggleVideoModal(false);
         });
 
         playPauseBtn.addEventListener('click', () => {
@@ -631,17 +616,19 @@
                 bgVideo.pause();
                 updatePlayPauseIcon(false);
             }
-            toggleVideoModal(false);
         });
 
+        // Giriş butonuna basıldığında açılış videosu biter, arkadaki ana video sesli olarak devreye girer
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
-            splashVideo.pause(); // Açılış videosunu durdur
+            
+            splashVideo.pause();
             splashScreen.classList.add('fade-out');
             
+            const currentVol = parseFloat(document.getElementById('volumeSlider').value);
             bgVideo.muted = false;
-            bgVideo.volume = parseFloat(document.getElementById('volumeSlider').value);
+            bgVideo.volume = currentVol;
             bgVideo.play().then(() => {
                 updatePlayPauseIcon(true);
             }).catch(() => {
@@ -651,12 +638,8 @@
             });
         }
 
-        enterBtn.addEventListener('click', startSlideOrStart);
-        enterBtn.addEventListener('touchend', startSlideOrStart);
-        function startSlideOrStart(e) {
-            e.preventDefault();
-            startSite();
-        }
+        enterBtn.addEventListener('click', startSite);
+        enterBtn.addEventListener('touchend', startSite);
 
         const volumeSlider = document.getElementById('volumeSlider');
         const muteToggleBtn = document.getElementById('muteToggleBtn');
