@@ -43,7 +43,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Giriş Ekranı (Sade) */
+        /* Giriş Ekranı (Daktilo Alanı) */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -55,6 +55,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 20px;
             z-index: 9999;
             transition: opacity 0.3s ease, visibility 0.3s;
         }
@@ -65,13 +66,37 @@
             pointer-events: none;
         }
 
+        .typewriter-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            color: var(--text-primary);
+            min-height: 1.5rem;
+            font-family: monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            background-color: var(--text-primary);
+            width: 8px;
+            height: 1.1rem;
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .enter-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            padding: 14px 36px;
+            padding: 12px 32px;
             border-radius: 14px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.08em;
             cursor: pointer;
@@ -79,6 +104,16 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.15s, background 0.15s;
+        }
+
+        .enter-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         .enter-btn:hover {
@@ -414,8 +449,9 @@
 </head>
 <body>
 
-    <!-- Giriş Ekranı (Sade) -->
+    <!-- Giriş Ekranı (Daktilo Efekti) -->
     <div id="splash-screen">
+        <div class="typewriter-text"><span id="typedText"></span><span class="cursor" id="typeCursor"></span></div>
         <button class="enter-btn" id="enterBtn">giriş</button>
     </div>
 
@@ -494,15 +530,33 @@
             { name: "dragon", file: "dragon.mp4" }
         ];
 
-        let currentVideoIndex = 0; // Kesin olarak 0. indeks (godfather / mw.mp4) ile başlar
+        let currentVideoIndex = 0;
         const bgVideo = document.getElementById('bgVideo');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enterBtn');
+        const typedTextEl = document.getElementById('typedText');
+        const typeCursor = document.getElementById('typeCursor');
         let hasInteracted = false;
+
+        // Daktilo Efekti
+        const greetingText = "hi stalker";
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < greetingText.length) {
+                typedTextEl.textContent += greetingText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            } else {
+                typeCursor.style.display = 'none';
+                enterBtn.classList.add('show');
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             updateFillBar(0.5);
-            loadVideo(0); // 0. index zorunlu olarak Godfather'ı yükler
+            loadVideo(0);
+            setTimeout(typeWriter, 400);
         });
 
         function loadVideo(index) {
@@ -528,6 +582,7 @@
                         bgVideo.play().catch(() => {});
                         updatePlayPauseIcon(true);
                     }
+                    // Başka video seçildiğinde panel otomatik kapanır
                     toggleVideoModal(false);
                 });
                 container.appendChild(item);
@@ -570,6 +625,8 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
+            // İleri/geri tuşuna basıldığında da panel kapanır
+            toggleVideoModal(false);
         });
 
         nextVideoBtn.addEventListener('click', () => {
@@ -578,6 +635,8 @@
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
             }
+            // İleri/geri tuşuna basıldığında da panel kapanır
+            toggleVideoModal(false);
         });
 
         playPauseBtn.addEventListener('click', () => {
