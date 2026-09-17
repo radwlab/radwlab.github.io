@@ -98,17 +98,8 @@
             letter-spacing: 0.08em;
             cursor: pointer;
             transition: all 0.15s ease;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-        }
-
-        .enter-btn.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
         }
 
         .enter-btn:hover {
@@ -456,7 +447,7 @@
 
     <div id="splash-screen">
         <div class="splash-video-container">
-            <video id="splashVideo" playsinline muted>
+            <video id="splashVideo" playsinline>
                 <source src="this is love.mp4" type="video/mp4">
             </video>
         </div>
@@ -523,19 +514,15 @@
         const enterBtn = document.getElementById('enterBtn');
         let hasInteracted = false;
 
-        // Sayfa açılır açılmaz splash videosunu oynatmayı dene
         window.addEventListener('DOMContentLoaded', () => {
+            splashVideo.volume = 0.5; // Açılış videosu için ses seviyesi
             splashVideo.play().catch(() => {
-                // Tarayıcı otomatik oynatmayı engellerse direkt butonu göster
-                enterBtn.classList.add('show');
+                // Eğer tarayıcı otomatik sesli oynatmayı bloklarsa videoyu sessize alıp yine de oynatmayı dener
+                splashVideo.muted = true;
+                splashVideo.play();
             });
             updateFillBar(0.5);
             loadVideo(0);
-        });
-
-        // Splash videosu bittiğinde giriş butonunu göster
-        splashVideo.addEventListener('ended', () => {
-            enterBtn.classList.add('show');
         });
 
         const videoList = [
@@ -650,6 +637,7 @@
         function startSite() {
             if (hasInteracted) return;
             hasInteracted = true;
+            splashVideo.pause(); // Açılış videosunu durdur
             splashScreen.classList.add('fade-out');
             
             bgVideo.muted = false;
