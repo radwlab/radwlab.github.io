@@ -424,4 +424,236 @@
         <img src="IMG_6727.jpeg" alt="Radw" class="profile-avatar">
         <div class="profile-buttons">
             <a href="https://discord.gg/donturl" target="_blank" class="profile-icon-btn" title="Discord">
-                <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.61
+                <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            </a>
+            <button class="profile-icon-btn" id="videoModalBtn" title="Video Seç">
+                <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Arka Plan Video -->
+    <div class="bg-video-container">
+        <video id="bgVideo" loop playsinline webkit-playsinline></video>
+    </div>
+
+    <!-- Video Seçim Paneli -->
+    <div class="overlay-menu" id="videoModal">
+        <div class="menu-card">
+            <div class="menu-top-bar">
+                <div class="menu-header">videolar</div>
+                <button class="close-icon-btn" id="closeVideoModalBtn" title="Kapat">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            
+            <div class="menu-list" id="videoListContainer"></div>
+
+            <div class="media-controls">
+                <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
+                    <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
+                    <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ses Paneli -->
+    <div class="audio-dock" id="audioDock">
+        <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
+            <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
+        </button>
+        <div class="audio-slider-container">
+            <div class="audio-fill-bar" id="audioFillBar"></div>
+            <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+        </div>
+    </div>
+
+    <script>
+        const videoList = [
+            { name: "godfather", file: "mw.mp4" },
+            { name: "this is love", file: "this is love.mp4" },
+            { name: "esref tek", file: "ben.mp4" },
+            { name: "car", file: "car.MP4" },
+            { name: "deep end", file: "deep end.mp4" },
+            { name: "dexter", file: "dexter.mp4" },
+            { name: "hikaye", file: "hikaye.MP4" },
+            { name: "karga", file: "karga.MP4" },
+            { name: "killer", file: "killer.MP4" },
+            { name: "serbet", file: "serbet.MP4" },
+            { name: "southpaw", file: "southpaw.MP4" },
+            { name: "zehir", file: "zehir.MP4" },
+            { name: "panther", file: "panther.mp4" },
+            { name: "ironman", file: "ironman.mp4" },
+            { name: "blackfire", file: "blackfire.mp4" },
+            { name: "dragon", file: "dragon.mp4" }
+        ];
+
+        let currentVideoIndex = 0; // Kesin olarak 0. indeks (godfather / mw.mp4) ile başlar
+        const bgVideo = document.getElementById('bgVideo');
+        const splashScreen = document.getElementById('splash-screen');
+        const enterBtn = document.getElementById('enterBtn');
+        let hasInteracted = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateFillBar(0.5);
+            loadVideo(0); // 0. index zorunlu olarak Godfather'ı yükler
+        });
+
+        function loadVideo(index) {
+            currentVideoIndex = (index + videoList.length) % videoList.length;
+            bgVideo.src = videoList[currentVideoIndex].file;
+            bgVideo.load();
+            updateVideoListUI();
+        }
+
+        function updateVideoListUI() {
+            const container = document.getElementById('videoListContainer');
+            container.innerHTML = '';
+            videoList.forEach((vid, idx) => {
+                const item = document.createElement('div');
+                item.className = `menu-item ${idx === currentVideoIndex ? 'active' : ''}`;
+                item.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+                    ${vid.name}
+                `;
+                item.addEventListener('click', () => {
+                    loadVideo(idx);
+                    if (hasInteracted) {
+                        bgVideo.play().catch(() => {});
+                        updatePlayPauseIcon(true);
+                    }
+                    toggleVideoModal(false);
+                });
+                container.appendChild(item);
+            });
+        }
+
+        const videoModal = document.getElementById('videoModal');
+
+        function toggleVideoModal(open) {
+            if (open) {
+                updateVideoListUI();
+                videoModal.classList.add('open');
+            } else {
+                videoModal.classList.remove('open');
+            }
+        }
+
+        document.getElementById('videoModalBtn').addEventListener('click', () => {
+            toggleVideoModal(!videoModal.classList.contains('open'));
+        });
+        document.getElementById('closeVideoModalBtn').addEventListener('click', () => toggleVideoModal(false));
+        videoModal.addEventListener('click', (e) => { if (e.target === videoModal) toggleVideoModal(false); });
+
+        const prevVideoBtn = document.getElementById('prevVideoBtn');
+        const nextVideoBtn = document.getElementById('nextVideoBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+
+        function updatePlayPauseIcon(isPlaying) {
+            if (isPlaying) {
+                playPauseIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            } else {
+                playPauseIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            }
+        }
+
+        prevVideoBtn.addEventListener('click', () => {
+            loadVideo(currentVideoIndex - 1);
+            if (hasInteracted) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            }
+        });
+
+        nextVideoBtn.addEventListener('click', () => {
+            loadVideo(currentVideoIndex + 1);
+            if (hasInteracted) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            }
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (bgVideo.paused) {
+                bgVideo.play().catch(() => {});
+                updatePlayPauseIcon(true);
+            } else {
+                bgVideo.pause();
+                updatePlayPauseIcon(false);
+            }
+        });
+
+        function startSite() {
+            if (hasInteracted) return;
+            hasInteracted = true;
+            
+            splashScreen.classList.add('fade-out');
+            
+            const currentVol = parseFloat(document.getElementById('volumeSlider').value);
+            bgVideo.muted = false;
+            bgVideo.volume = currentVol;
+            bgVideo.play().then(() => {
+                updatePlayPauseIcon(true);
+            }).catch(() => {
+                bgVideo.muted = true;
+                bgVideo.play();
+                updatePlayPauseIcon(true);
+            });
+        }
+
+        enterBtn.addEventListener('click', startSite);
+        enterBtn.addEventListener('touchend', startSite);
+
+        const volumeSlider = document.getElementById('volumeSlider');
+        const muteToggleBtn = document.getElementById('muteToggleBtn');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const audioFillBar = document.getElementById('audioFillBar');
+        let lastVolume = 0.5;
+
+        function updateFillBar(vol) {
+            audioFillBar.style.width = `${vol * 100}%`;
+        }
+
+        volumeSlider.addEventListener('input', (e) => {
+            const vol = parseFloat(e.target.value);
+            bgVideo.volume = vol;
+            bgVideo.muted = (vol === 0);
+            updateVolumeIcon(vol);
+            updateFillBar(vol);
+            if (vol > 0) lastVolume = vol;
+        });
+
+        muteToggleBtn.addEventListener('click', () => {
+            if (bgVideo.muted || bgVideo.volume === 0) {
+                bgVideo.muted = false;
+                bgVideo.volume = lastVolume > 0 ? lastVolume : 0.5;
+                volumeSlider.value = bgVideo.volume;
+                updateVolumeIcon(bgVideo.volume);
+                updateFillBar(bgVideo.volume);
+            } else {
+                lastVolume = bgVideo.volume;
+                bgVideo.muted = true;
+                bgVideo.volume = 0;
+                volumeSlider.value = 0;
+                updateVolumeIcon(0);
+                updateFillBar(0);
+            }
+        });
+
+        function updateVolumeIcon(vol) {
+            if (vol === 0) {
+                volumeIcon.innerHTML = '<path d="M3.63 3.63a.996.996 0 000 1.41L7.29 8.7 4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36a.996.996 0 101.41-1.41L5.04 3.63a.996.996 0 00-1.41 0zM11.94 17.5L8.44 14H4.5V9.5h3.94l3.5-3.5v11.5zM19 12c0 .82-.28 1.58-.75 2.19l1.42 1.42C20.3 14.67 21 13.4 21 12c0-2.54-1.46-4.73-3.58-5.78l-1.06 1.06C17.78 8.1 19 9.9 19 12 z"/>';
+            } else {
+                volumeIcon.innerHTML = '<path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/>';
+            }
+        }
+    </script>
+</body>
+</html>
