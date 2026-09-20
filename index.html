@@ -468,9 +468,9 @@
         </div>
     </div>
 
-    <!-- Arka Plan Video -->
+    <!-- Arka Plan Video (GoodbyeDPI & WARP Uyumlu CORS/Preload Ayarları) -->
     <div class="bg-video-container">
-        <video id="bgVideo" loop playsinline webkit-playsinline></video>
+        <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="metadata"></video>
     </div>
 
     <!-- Video Seçim Paneli -->
@@ -558,8 +558,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             updateFillBar(0.5);
+            bgVideo.muted = true;
             loadVideo(0);
-            // Daktilo döngüsünün kesin başlamasını sağlayan emniyet zamanlayıcısı
             setTimeout(typeWriter, 300);
         });
 
@@ -567,6 +567,7 @@
             currentVideoIndex = (index + videoList.length) % videoList.length;
             bgVideo.src = videoList[currentVideoIndex].file;
             bgVideo.load();
+            bgVideo.play().catch(() => {});
             updateVideoListUI();
         }
 
@@ -582,10 +583,7 @@
                 `;
                 item.addEventListener('click', () => {
                     loadVideo(idx);
-                    if (hasInteracted) {
-                        bgVideo.play().catch(() => {});
-                        updatePlayPauseIcon(true);
-                    }
+                    updatePlayPauseIcon(true);
                     toggleVideoModal(false);
                 });
                 container.appendChild(item);
@@ -624,19 +622,13 @@
 
         prevVideoBtn.addEventListener('click', () => {
             loadVideo(currentVideoIndex - 1);
-            if (hasInteracted) {
-                bgVideo.play().catch(() => {});
-                updatePlayPauseIcon(true);
-            }
+            updatePlayPauseIcon(true);
             toggleVideoModal(false);
         });
 
         nextVideoBtn.addEventListener('click', () => {
             loadVideo(currentVideoIndex + 1);
-            if (hasInteracted) {
-                bgVideo.play().catch(() => {});
-                updatePlayPauseIcon(true);
-            }
+            updatePlayPauseIcon(true);
             toggleVideoModal(false);
         });
 
