@@ -43,7 +43,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Giriş Ekranı (Daktilo Alanı) */
+        /* Giriş Ekranı */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -57,7 +57,7 @@
             align-items: center;
             gap: 20px;
             z-index: 9999;
-            transition: opacity 0.3s ease, visibility 0.3s;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
         #splash-screen.fade-out {
@@ -449,7 +449,7 @@
 </head>
 <body>
 
-    <!-- Giriş Ekranı (Daktilo Efekti) -->
+    <!-- Giriş Ekranı -->
     <div id="splash-screen">
         <div class="typewriter-text"><span id="typedText"></span><span class="cursor" id="typeCursor"></span></div>
         <button class="enter-btn" id="enterBtn">giriş</button>
@@ -542,7 +542,6 @@
         const typeCursor = document.getElementById('typeCursor');
         let hasInteracted = false;
 
-        // Daktilo Efekti
         const greetingText = "hi stalker";
         let charIndex = 0;
 
@@ -560,7 +559,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateFillBar(0.5);
             loadVideo(0);
-            setTimeout(typeWriter, 400);
+            // Daktilo döngüsünün kesin başlamasını sağlayan emniyet zamanlayıcısı
+            setTimeout(typeWriter, 300);
         });
 
         function loadVideo(index) {
