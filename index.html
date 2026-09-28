@@ -144,59 +144,170 @@
             transform: translateZ(0);
         }
 
-        /* Sol Alt Kayan Video İsmi */
-        .marquee-container {
+        /* Orta Üst: Avatar Alanı */
+        .top-center-avatar {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        .top-center-avatar:hover {
+            border-color: var(--glass-hover-border);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .top-center-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sol Alt: Kayan Yazı ve Açılır Liste Kutusu */
+        .bottom-left-container {
             position: fixed;
             bottom: 25px;
             left: 25px;
             z-index: 100;
+        }
+
+        .marquee-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            max-width: 180px;
+            width: 140px;
             overflow: hidden;
             white-space: nowrap;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .marquee-btn:hover {
+            border-color: var(--glass-hover-border);
+            background: var(--glass-hover-bg);
+        }
+
+        /* Kesintisiz Sonsuz Kayan Yazı Efekti */
+        .marquee-track {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scrollMarquee 8s linear infinite;
         }
 
         .marquee-text {
-            display: inline-block;
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.05em;
             color: var(--text-primary);
             text-transform: uppercase;
-            animation: marquee 6s linear infinite;
+            display: inline-block;
+            padding-right: 30px;
         }
 
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        /* Sağ Alt Kontrol Paneli (Ses ve Liste Yan Yana) */
-        .bottom-dock {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 100;
+        /* Sol Altta Açılan Video Listesi Menüsü */
+        .popup-menu {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 0;
+            background: rgba(8, 8, 10, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 14px;
+            width: 190px;
+            max-height: 200px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            align-items: flex-end;
+            gap: 5px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.2s ease;
         }
 
-        /* Üst Kontrol Butonları (İleri, Geri, Durdur) */
-        .media-controls-dock {
+        .popup-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-size: 0.73rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            padding: 7px 8px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item.active {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-item svg {
+            width: 11px;
+            height: 11px;
+            fill: currentColor;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        /* Orta Alt Kontrol Paneli (İleri, Geri, Durdur) */
+        .center-dock {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
             display: flex;
             gap: 6px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             padding: 6px;
-            border-radius: 12px;
+            border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -207,9 +318,9 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             color: #ffffff;
             cursor: pointer;
-            width: 32px;
-            height: 30px;
-            border-radius: 8px;
+            width: 34px;
+            height: 32px;
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,19 +333,17 @@
         }
 
         .control-btn svg {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             fill: currentColor;
         }
 
-        /* Alt Kısım: Ses Ayarı ve Video Listesi Yan Yana */
-        .dock-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        /* Sağ Alt: Ses Paneli */
         .audio-dock {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -310,166 +419,6 @@
             height: 0;
             background: transparent;
         }
-
-        .profile-icon-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            cursor: pointer;
-            height: 38px;
-            width: 38px;
-            padding: 0;
-            border-radius: 14px;
-            transition: all 0.15s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .profile-icon-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        .profile-icon-btn:hover {
-            border-color: var(--glass-hover-border);
-            background: var(--glass-hover-bg);
-            transform: translateY(-2px);
-        }
-
-        /* Video Seçim Paneli (Modal) */
-        .overlay-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s;
-        }
-
-        .overlay-menu.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .menu-card {
-            background: rgba(8, 8, 10, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 12px;
-            border-radius: 14px;
-            width: 200px;
-            max-width: 80vw;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-            transform: scale(0.85);
-            transition: transform 0.2s ease;
-        }
-
-        .overlay-menu.open .menu-card {
-            transform: scale(1);
-        }
-
-        .menu-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 2px;
-        }
-
-        .menu-header {
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        .close-icon-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: color 0.15s, background 0.15s;
-        }
-
-        .close-icon-btn:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .close-icon-btn svg {
-            width: 12px;
-            height: 12px;
-            fill: currentColor;
-        }
-
-        .menu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            width: 100%;
-            max-height: 145px; 
-            overflow-y: auto;
-        }
-
-        .menu-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            color: #ffffff;
-            font-size: 0.73rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            padding: 7px 8px;
-            border-radius: 6px;
-            transition: all 0.15s ease;
-            width: 100%;
-            white-space: nowrap;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .menu-item.active {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .menu-item svg {
-            width: 11px;
-            height: 11px;
-            fill: currentColor;
-            flex-shrink: 0;
-            opacity: 0.6;
-        }
     </style>
 </head>
 <body>
@@ -485,55 +434,43 @@
         <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="metadata"></video>
     </div>
 
-    <!-- Sol Alt Kayan Video İsmi -->
-    <div class="marquee-container">
-        <div class="marquee-text" id="marqueeText">yükleniyor...</div>
+    <!-- Orta Üst: Avatar (mert.PNG) -->
+    <div class="top-center-avatar">
+        <img src="mert.PNG" alt="Avatar" id="userAvatar">
     </div>
 
-    <!-- Sağ Alt Kontrol Alanı (İleri/Geri/Durdur üstte, Ses ve Liste yanyana altta) -->
-    <div class="bottom-dock">
-        <div class="media-controls-dock">
-            <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
-                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-            </button>
-            <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
-                <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </button>
-            <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
-                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-            </button>
-        </div>
-
-        <div class="dock-row">
-            <!-- Ses Paneli -->
-            <div class="audio-dock" id="audioDock">
-                <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
-                    <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
-                </button>
-                <div class="audio-slider-container">
-                    <div class="audio-fill-bar" id="audioFillBar"></div>
-                    <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
-                </div>
+    <!-- Sol Alt: Kayan Video İsmi ve Açılır Liste -->
+    <div class="bottom-left-container" id="bottomLeftContainer">
+        <div class="popup-menu" id="videoPopupList"></div>
+        <button class="marquee-btn" id="marqueeBtn" title="Video Listesi">
+            <div class="marquee-track">
+                <span class="marquee-text" id="marqueeText1">yükleniyor...</span>
+                <span class="marquee-text" id="marqueeText2">yükleniyor...</span>
             </div>
-
-            <!-- Video Seçim Butonu -->
-            <button class="profile-icon-btn" id="videoModalBtn" title="Video Seç">
-                <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
-            </button>
-        </div>
+        </button>
     </div>
 
-    <!-- Video Seçim Paneli -->
-    <div class="overlay-menu" id="videoModal">
-        <div class="menu-card">
-            <div class="menu-top-bar">
-                <div class="menu-header">videolar</div>
-                <button class="close-icon-btn" id="closeVideoModalBtn" title="Kapat">
-                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                </button>
-            </div>
-            
-            <div class="menu-list" id="videoListContainer"></div>
+    <!-- Orta Alt: İleri, Geri, Durdur Butonları -->
+    <div class="center-dock">
+        <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
+            <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
+            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+    </div>
+
+    <!-- Sağ Alt: Ses Paneli -->
+    <div class="audio-dock" id="audioDock">
+        <button class="audio-icon-btn" id="muteToggleBtn" title="Sesi Aç/Kapat">
+            <svg id="volumeIcon" viewBox="0 0 24 24"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/></svg>
+        </button>
+        <div class="audio-slider-container">
+            <div class="audio-fill-bar" id="audioFillBar"></div>
+            <input type="range" class="audio-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
         </div>
     </div>
 
@@ -569,7 +506,8 @@
         const enterBtn = document.getElementById('enterBtn');
         const typedTextEl = document.getElementById('typedText');
         const typeCursor = document.getElementById('typeCursor');
-        const marqueeText = document.getElementById('marqueeText');
+        const marqueeText1 = document.getElementById('marqueeText1');
+        const marqueeText2 = document.getElementById('marqueeText2');
         let hasInteracted = false;
 
         const greetingText = "hi stalker";
@@ -598,12 +536,16 @@
             bgVideo.src = videoList[currentVideoIndex].file;
             bgVideo.load();
             bgVideo.play().catch(() => {});
-            marqueeText.textContent = videoList[currentVideoIndex].name;
+            
+            const name = videoList[currentVideoIndex].name;
+            marqueeText1.textContent = name;
+            marqueeText2.textContent = name;
+            
             updateVideoListUI();
         }
 
         function updateVideoListUI() {
-            const container = document.getElementById('videoListContainer');
+            const container = document.getElementById('videoPopupList');
             container.innerHTML = '';
             videoList.forEach((vid, idx) => {
                 const item = document.createElement('div');
@@ -612,31 +554,38 @@
                     <svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
                     ${vid.name}
                 `;
-                item.addEventListener('click', () => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     loadVideo(idx);
                     updatePlayPauseIcon(true);
-                    toggleVideoModal(false);
+                    toggleVideoPopup(false);
                 });
                 container.appendChild(item);
             });
         }
 
-        const videoModal = document.getElementById('videoModal');
+        const videoPopupList = document.getElementById('videoPopupList');
+        const marqueeBtn = document.getElementById('marqueeBtn');
 
-        function toggleVideoModal(open) {
+        function toggleVideoPopup(open) {
             if (open) {
                 updateVideoListUI();
-                videoModal.classList.add('open');
+                videoPopupList.classList.add('open');
             } else {
-                videoModal.classList.remove('open');
+                videoPopupList.classList.remove('open');
             }
         }
 
-        document.getElementById('videoModalBtn').addEventListener('click', () => {
-            toggleVideoModal(!videoModal.classList.contains('open'));
+        marqueeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleVideoPopup(!videoPopupList.classList.contains('open'));
         });
-        document.getElementById('closeVideoModalBtn').addEventListener('click', () => toggleVideoModal(false));
-        videoModal.addEventListener('click', (e) => { if (e.target === videoModal) toggleVideoModal(false); });
+
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('bottomLeftContainer').contains(e.target)) {
+                toggleVideoPopup(false);
+            }
+        });
 
         const prevVideoBtn = document.getElementById('prevVideoBtn');
         const nextVideoBtn = document.getElementById('nextVideoBtn');
@@ -654,11 +603,13 @@
         prevVideoBtn.addEventListener('click', () => {
             loadVideo(currentVideoIndex - 1);
             updatePlayPauseIcon(true);
+            toggleVideoPopup(false);
         });
 
         nextVideoBtn.addEventListener('click', () => {
             loadVideo(currentVideoIndex + 1);
             updatePlayPauseIcon(true);
+            toggleVideoPopup(false);
         });
 
         playPauseBtn.addEventListener('click', () => {
