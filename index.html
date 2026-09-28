@@ -144,15 +144,15 @@
             transform: translateZ(0);
         }
 
-        /* Orta Üst: Avatar Alanı */
+        /* Tam Merkez: Avatar Alanı */
         .top-center-avatar {
             position: fixed;
-            top: 25px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             z-index: 100;
-            width: 65px;
-            height: 65px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             overflow: hidden;
             border: 1px solid var(--glass-border);
@@ -168,7 +168,7 @@
 
         .top-center-avatar:hover {
             border-color: var(--glass-hover-border);
-            transform: translateX(-50%) scale(1.05);
+            transform: translate(-50%, -50%) scale(1.05);
         }
 
         .top-center-avatar img {
@@ -191,7 +191,7 @@
             padding: 10px 14px;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            width: 140px;
+            width: 130px;
             overflow: hidden;
             white-space: nowrap;
             backdrop-filter: blur(10px);
@@ -381,7 +381,7 @@
 
         .audio-slider-container {
             position: relative;
-            width: 75px;
+            width: 65px;
             height: 6px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
@@ -419,6 +419,29 @@
             height: 0;
             background: transparent;
         }
+
+        /* Mobil Cihazlar İçin Uyumluluk Ayarları (Çakışmaları Önlemek İçin) */
+        @media screen and (max-width: 768px) {
+            .bottom-left-container {
+                left: 15px;
+                bottom: 20px;
+            }
+            .marquee-btn {
+                width: 100px;
+                padding: 8px 10px;
+            }
+            .center-dock {
+                bottom: 20px;
+            }
+            .audio-dock {
+                right: 15px;
+                bottom: 20px;
+                padding: 6px 10px;
+            }
+            .audio-slider-container {
+                width: 45px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -434,7 +457,7 @@
         <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="metadata"></video>
     </div>
 
-    <!-- Orta Üst: Avatar (mert.PNG) -->
+    <!-- Tam Merkez: Avatar (mert.PNG) -->
     <div class="top-center-avatar">
         <img src="mert.PNG" alt="Avatar" id="userAvatar">
     </div>
