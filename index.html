@@ -144,7 +144,7 @@
             transform: translateZ(0);
         }
 
-        /* Sol Üst: Ping ve Saat Göstergesi */
+        /* Sol Üst: Ping ve Saat Widget */
         .top-left-widget {
             position: fixed;
             top: 25px;
@@ -166,7 +166,7 @@
         }
 
         .ping-box {
-            color: #4ade80; /* Canlı yeşil renk */
+            color: #4ade80;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -191,12 +191,12 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Tam Merkez: Avatar Alanı */
+        /* Tam Merkez: Ses ve Siyah Çerçeve Tepkili Avatar Alanı */
         .top-center-avatar {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(1);
             z-index: 100;
             width: 80px;
             height: 80px;
@@ -206,22 +206,24 @@
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            /* Başlangıç gölgesi: Hem hafif beyaz parlama hem de dinamik siyah efekt için katmanlı gölge */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: border-color 0.15s, transform 0.15s;
+            will-change: transform, box-shadow;
+            transition: border-color 0.15s;
         }
 
         .top-center-avatar:hover {
             border-color: var(--glass-hover-border);
-            transform: translate(-50%, -50%) scale(1.05);
         }
 
         .top-center-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            pointer-events: none;
         }
 
         /* Sol Alt: Tek Kayan Yazı ve Açılır Liste Kutusu */
@@ -443,7 +445,6 @@
             width: 50%;
             background: linear-gradient(90deg, #ffffff, #a2a2b5);
             pointer-events: none;
-            border-radius: zpx;
             border-radius: 3px;
         }
 
@@ -462,7 +463,7 @@
         .audio-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 0;
-            height: 0; gec;
+            height: 0;
             background: transparent;
         }
 
@@ -518,8 +519,8 @@
         <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="none"></video>
     </div>
 
-    <!-- Tam Merkez: Avatar (mert.PNG) -->
-    <div class="top-center-avatar">
+    <!-- Tam Merkez: Ses ve Siyah Çerçeve Tepkili Avatar -->
+    <div class="top-center-avatar" id="avatarElement">
         <img src="mert.PNG" alt="Avatar" id="userAvatar">
     </div>
 
@@ -591,7 +592,60 @@
         const marqueeText = document.getElementById('marqueeText');
         const clockText = document.getElementById('clockText');
         const pingText = document.getElementById('pingText');
+        const avatarElement = document.getElementById('avatarElement');
         let hasInteracted = false;
+
+        // Web Audio API için Değişkenler
+        let audioCtx = null;
+        let analyser = null;
+        let dataArray = null;
+        let isAudioInitialized = false;
+
+        function initAudioContext() {
+            if (isAudioInitialized) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                analyser = audioCtx.createAnalyser();
+                const source = audioCtx.createMediaElementSource(bgVideo);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                analyser.fftSize = 64;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                isAudioInitialized = true;
+            } catch (e) {
+                console.log("AudioContext başlatılamadı:", e);
+            }
+        }
+
+        // Avatar ve Siyah Çerçeve/Gölge Tepki Döngüsü
+        function updateAvatarReactivity() {
+            requestAnimationFrame(updateAvatarReactivity);
+            
+            if (!bgVideo.paused && isAudioInitialized && analyser && dataArray) {
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                let average = sum / dataArray.length;
+                
+                // Frekansa bağlı boyut değişimi
+                let scale = 1 + (average / 255) * 0.25;
+                // Çerçeve arkasında ritmik büyüyüp küçülen siyah gölge/efekt boyutu
+                let blackSpread = (average / 255) * 28;
+                let whiteBlur = 10 + (average / 255) * 30;
+                
+                avatarElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                // Çok katmanlı gölge: 1. katman dış siyah dinamik parlama, 2. katman normal iç gölge
+                avatarElement.style.boxShadow = `0 0 ${blackSpread}px 4px rgba(0, 0, 0, 0.95), 0 10px ${whiteBlur}px rgba(255, 255, 255, ${0.2 + (average / 255) * 0.4})`;
+            } else {
+                avatarElement.style.transform = `translate(-50%, -50%) scale(1)`;
+                avatarElement.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(0, 0, 0, 0.8)`;
+            }
+        }
+        updateAvatarReactivity();
 
         // Canlı Saat Fonksiyonu (Saniye dahil)
         function updateClock() {
@@ -604,7 +658,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Gerçekçi Ping Ölçer (Fetch ile gecikme hesaplama)
+        // Gerçekçi Ping Ölçer
         async function measurePing() {
             const start = performance.now();
             try {
@@ -612,12 +666,11 @@
                 const duration = Math.round(performance.now() - start);
                 pingText.textContent = `${duration} ms`;
             } catch {
-                // Hata durumunda rastgele stabil düşük bir değer göster
                 pingText.textContent = `${Math.floor(Math.random() * 8) + 12} ms`;
             }
         }
         measurePing();
-        setInterval(measurePing, 10000); // Her 10 saniyede bir güncelle
+        setInterval(measurePing, 10000);
 
         const greetingText = "hi stalker";
         let charIndex = 0;
@@ -737,6 +790,10 @@
             splashScreen.classList.add('fade-out');
             
             loadVideo(0);
+            initAudioContext();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
             
             const currentVol = parseFloat(document.getElementById('volumeSlider').value);
             bgVideo.muted = false;
