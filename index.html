@@ -452,7 +452,7 @@
 
     <!-- Arka Plan Video -->
     <div class="bg-video-container">
-        <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="metadata"></video>
+        <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="none"></video>
     </div>
 
     <!-- Tam Merkez: Avatar (mert.PNG) -->
@@ -544,8 +544,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             updateFillBar(0.5);
-            bgVideo.muted = true;
-            loadVideo(0);
+            marqueeText.textContent = videoList[0].name;
+            updateVideoListUI();
             setTimeout(typeWriter, 300);
         });
 
@@ -644,6 +644,9 @@
             hasInteracted = true;
             
             splashScreen.classList.add('fade-out');
+            
+            // Giriş tuşuna basıldığı an ilk videoyu yükle ve oynat
+            loadVideo(0);
             
             const currentVol = parseFloat(document.getElementById('volumeSlider').value);
             bgVideo.muted = false;
