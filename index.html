@@ -191,38 +191,35 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Tam Merkez: Ses ve Siyah Çerçeve Tepkili Avatar Alanı */
+        /* Tam Merkez: NCS Tarzı Siyah Top / Çember Efektli Avatar Alanı */
         .top-center-avatar {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(1);
             z-index: 100;
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            /* Başlangıç gölgesi: Hem hafif beyaz parlama hem de dinamik siyah efekt için katmanlı gölge */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(0, 0, 0, 0.8);
+            background: #000000;
+            /* NCS tarzı: Derin siyah iç gövde, dışarıya doğru dalgalanan parlak beyaz/gri halka efekti */
+            box-shadow: 
+                inset 0 0 15px rgba(255, 255, 255, 0.2), 
+                0 0 25px 2px rgba(0, 0, 0, 0.95), 
+                0 0 0 0 rgba(255, 255, 255, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            will-change: transform, box-shadow;
+            will-change: transform, box-shadow, border-radius;
             transition: border-color 0.15s;
         }
 
-        .top-center-avatar:hover {
-            border-color: var(--glass-hover-border);
-        }
-
         .top-center-avatar img {
-            width: 100%;
-            height: 100%;
+            width: 82%;
+            height: 82%;
             object-fit: cover;
+            border-radius: 50%;
             pointer-events: none;
         }
 
@@ -519,7 +516,7 @@
         <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="none"></video>
     </div>
 
-    <!-- Tam Merkez: Ses ve Siyah Çerçeve Tepkili Avatar -->
+    <!-- Tam Merkez: NCS Tarzı Siyah Top ve Ses Tepkili Avatar -->
     <div class="top-center-avatar" id="avatarElement">
         <img src="mert.PNG" alt="Avatar" id="userAvatar">
     </div>
@@ -618,7 +615,7 @@
             }
         }
 
-        // Avatar ve Siyah Çerçeve/Gölge Tepki Döngüsü
+        // NCS Top Tarzı Sese Duyarlı Dalgalanma ve Efekt Döngüsü
         function updateAvatarReactivity() {
             requestAnimationFrame(updateAvatarReactivity);
             
@@ -631,18 +628,23 @@
                 }
                 let average = sum / dataArray.length;
                 
-                // Frekansa bağlı boyut değişimi
-                let scale = 1 + (average / 255) * 0.25;
-                // Çerçeve arkasında ritmik büyüyüp küçülen siyah gölge/efekt boyutu
-                let blackSpread = (average / 255) * 28;
-                let whiteBlur = 10 + (average / 255) * 30;
+                // Müzikle birlikte ritmik boyut değişimi
+                let scale = 1 + (average / 255) * 0.28;
+                
+                // NCS dalgalı top efekti için dış parlama ve kenar yumuşatma dinamikleri
+                let glowSpread = 15 + (average / 255) * 45;
+                let outerGlow = (average / 255) * 35;
+                
+                // Sese duyarlı hafif form bükülmesi (NCS topunun o dalgalı hissi için border-radius animasyonu)
+                let borderAlt = 50 + Math.sin(Date.now() / 80) * ((average / 255) * 8);
                 
                 avatarElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
-                // Çok katmanlı gölge: 1. katman dış siyah dinamik parlama, 2. katman normal iç gölge
-                avatarElement.style.boxShadow = `0 0 ${blackSpread}px 4px rgba(0, 0, 0, 0.95), 0 10px ${whiteBlur}px rgba(255, 255, 255, ${0.2 + (average / 255) * 0.4})`;
+                avatarElement.style.borderRadius = `${borderAlt}%`;
+                avatarElement.style.boxShadow = `inset 0 0 20px rgba(255, 255, 255, ${0.1 + (average / 255) * 0.3}), 0 0 ${glowSpread}px ${outerGlow}px rgba(0, 0, 0, 0.98), 0 0 ${20 + outerGlow}px rgba(255, 255, 255, ${0.15 + (average / 255) * 0.4})`;
             } else {
                 avatarElement.style.transform = `translate(-50%, -50%) scale(1)`;
-                avatarElement.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(0, 0, 0, 0.8)`;
+                avatarElement.style.borderRadius = `50%`;
+                avatarElement.style.boxShadow = `inset 0 0 15px rgba(255, 255, 255, 0.2), 0 0 25px 2px rgba(0, 0, 0, 0.95), 0 0 0 0 rgba(255, 255, 255, 0.8)`;
             }
         }
         updateAvatarReactivity();
