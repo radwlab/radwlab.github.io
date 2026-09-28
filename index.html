@@ -100,7 +100,6 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             cursor: pointer;
-            transition: all 0.15s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -191,15 +190,15 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Tam Merkez: Ses Dalgası Çerçeveli Avatar */
+        /* Tam Merkez: Ses Dalgası Çerçeveli ve Sese Duyarlı Avatar */
         .top-center-avatar {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 100;
-            width: 170px;
-            height: 170px;
+            width: 200px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -227,6 +226,7 @@
             align-items: center;
             justify-content: center;
             z-index: 2;
+            transition: transform 0.05s ease-out;
         }
 
         .avatar-inner img {
@@ -530,10 +530,10 @@
         <video id="bgVideo" loop playsinline webkit-playsinline crossorigin="anonymous" preload="none"></video>
     </div>
 
-    <!-- Tam Merkez: Ses Dalgası Çerçeveli Avatar -->
+    <!-- Tam Merkez: Sese Göre Dalgalanan Çerçeve ve Avatar -->
     <div class="top-center-avatar" id="avatarElement">
-        <canvas id="audioVisualizerCanvas" width="200" height="200"></canvas>
-        <div class="avatar-inner">
+        <canvas id="audioVisualizerCanvas" width="240" height="240"></canvas>
+        <div class="avatar-inner" id="avatarInner">
             <img src="mert.PNG" alt="Avatar" id="userAvatar">
         </div>
     </div>
@@ -606,6 +606,7 @@
         const marqueeText = document.getElementById('marqueeText');
         const clockText = document.getElementById('clockText');
         const pingText = document.getElementById('pingText');
+        const avatarInner = document.getElementById('avatarInner');
         let hasInteracted = false;
 
         let audioCtx = null;
@@ -633,7 +634,7 @@
             }
         }
 
-        // Gönderdiğiniz fotoğraftaki gibi dalgalı ve sese duyarlı çember çizimi
+        // Sese duyarlı dalgalı blob çerçeve ve avatar hareketi
         function drawAudioVisualizer() {
             requestAnimationFrame(drawAudioVisualizer);
 
@@ -651,8 +652,12 @@
 
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const baseRadius = 52;
+            const baseRadius = 75;
             const numPoints = 120;
+
+            // Sese göre avatarı da hafifçe büyültüp küçültüyoruz (Pulse efekti)
+            const scaleFactor = 1 + (audioVal / 255) * 0.15;
+            avatarInner.style.transform = `scale(${scaleFactor})`;
 
             canvasCtx.save();
             canvasCtx.beginPath();
@@ -660,11 +665,10 @@
             for (let i = 0; i < numPoints; i++) {
                 const angle = (i / numPoints) * Math.PI * 2;
                 
-                // Gönderdiğiniz görseldeki gibi organik, yumuşak ve dalgalı geometri
                 let wave = Math.sin(angle * 4 + Date.now() / 180) * 4;
                 if (audioVal > 0) {
-                    wave += (Math.sin(angle * 6 - Date.now() / 120) * (audioVal / 255) * 18);
-                    wave += ((dataArray[i % dataArray.length] / 255) * 15);
+                    wave += (Math.sin(angle * 6 - Date.now() / 120) * (audioVal / 255) * 22);
+                    wave += ((dataArray[i % dataArray.length] / 255) * 18);
                 }
 
                 const r = baseRadius + wave;
@@ -680,15 +684,15 @@
 
             canvasCtx.closePath();
 
-            // Parlayan çember efekti (Görseldeki gibi beyaz parıltılı halka)
-            canvasCtx.shadowColor = 'rgba(255, 255, 255, 0.9)';
-            canvasCtx.shadowBlur = 15;
+            // Parlayan beyaz halka efekti (gönderdiğin fotoğraftaki gibi)
+            canvasCtx.shadowColor = 'rgba(255, 255, 255, 0.95)';
+            canvasCtx.shadowBlur = 18;
             canvasCtx.lineWidth = 4;
             canvasCtx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
             canvasCtx.stroke();
 
-            // Halkanın iç kısmına hafif koyu dolgu
-            canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+            // Halkanın iç kısmını hafifçe koyulaştırma
+            canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.55)';
             canvasCtx.fill();
             canvasCtx.restore();
         }
