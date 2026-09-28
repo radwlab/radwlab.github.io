@@ -177,7 +177,7 @@
             object-fit: cover;
         }
 
-        /* Sol Alt: Kayan Yazı ve Açılır Liste Kutusu */
+        /* Sol Alt: Tek Kayan Yazı ve Açılır Liste Kutusu */
         .bottom-left-container {
             position: fixed;
             bottom: 25px;
@@ -207,11 +207,12 @@
             background: var(--glass-hover-bg);
         }
 
-        /* Kesintisiz Sonsuz Kayan Yazı Efekti */
         .marquee-track {
             display: inline-block;
             white-space: nowrap;
-            animation: scrollMarquee 8s linear infinite;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .marquee-text {
@@ -221,12 +222,9 @@
             color: var(--text-primary);
             text-transform: uppercase;
             display: inline-block;
-            padding-right: 30px;
-        }
-
-        @keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Sol Altta Açılan Video Listesi Menüsü */
@@ -420,7 +418,7 @@
             background: transparent;
         }
 
-        /* Mobil Cihazlar İçin Uyumluluk Ayarları (Çakışmaları Önlemek İçin) */
+        /* Mobil Cihazlar İçin Uyumluluk Ayarları */
         @media screen and (max-width: 768px) {
             .bottom-left-container {
                 left: 15px;
@@ -462,13 +460,12 @@
         <img src="mert.PNG" alt="Avatar" id="userAvatar">
     </div>
 
-    <!-- Sol Alt: Kayan Video İsmi ve Açılır Liste -->
+    <!-- Sol Alt: Video İsmi ve Açılır Liste -->
     <div class="bottom-left-container" id="bottomLeftContainer">
         <div class="popup-menu" id="videoPopupList"></div>
         <button class="marquee-btn" id="marqueeBtn" title="Video Listesi">
             <div class="marquee-track">
-                <span class="marquee-text" id="marqueeText1">yükleniyor...</span>
-                <span class="marquee-text" id="marqueeText2">yükleniyor...</span>
+                <span class="marquee-text" id="marqueeText">yükleniyor...</span>
             </div>
         </button>
     </div>
@@ -529,8 +526,7 @@
         const enterBtn = document.getElementById('enterBtn');
         const typedTextEl = document.getElementById('typedText');
         const typeCursor = document.getElementById('typeCursor');
-        const marqueeText1 = document.getElementById('marqueeText1');
-        const marqueeText2 = document.getElementById('marqueeText2');
+        const marqueeText = document.getElementById('marqueeText');
         let hasInteracted = false;
 
         const greetingText = "hi stalker";
@@ -561,8 +557,7 @@
             bgVideo.play().catch(() => {});
             
             const name = videoList[currentVideoIndex].name;
-            marqueeText1.textContent = name;
-            marqueeText2.textContent = name;
+            marqueeText.textContent = name;
             
             updateVideoListUI();
         }
