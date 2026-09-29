@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>radw</title>
+    <title>forever</title>
     <link rel="icon" type="image/jpeg" href="radw.jpg">
     <style>
         :root {
@@ -619,14 +619,9 @@
                 }
                 let average = sum / dataArray.length;
                 
-                // Tepki katsayısı artırıldı (daha belirgin büyüme/küçülme)
                 let scale = 1 + (average / 255) * 0.42;
-                
-                // Daha güçlü parıltı ve dalgalanma efektleri
                 let glowSpread = 20 + (average / 255) * 65;
                 let outerGlow = 5 + (average / 255) * 45;
-                
-                // NCS dalgalı top hissi için çok daha belirgin border-radius bükülmesi
                 let borderAlt = 50 + Math.sin(Date.now() / 60) * ((average / 255) * 14);
                 
                 avatarElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
