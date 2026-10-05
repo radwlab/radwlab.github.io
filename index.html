@@ -156,13 +156,19 @@ body {
     align-items: center;
     gap: 11px;
     padding: 8px 12px;
-    border: 1px solid var(--border);
+    border:
+        1px solid
+        var(--border);
     border-radius: 11px;
-    background: var(--glass);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background:
+        var(--glass);
+    backdrop-filter:
+        blur(18px);
+    -webkit-backdrop-filter:
+        blur(18px);
     box-shadow:
-        0 15px 45px rgba(0,0,0,.3);
+        0 15px 45px
+        rgba(0,0,0,.3);
     font-size: 10px;
     letter-spacing: .08em;
 }
@@ -170,7 +176,8 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: rgba(255,255,255,.72);
+    color:
+        rgba(255,255,255,.72);
 }
 .online-dot {
     width: 5px;
@@ -178,16 +185,20 @@ body {
     border-radius: 50%;
     background: #fff;
     box-shadow:
-        0 0 10px rgba(255,255,255,.9);
+        0 0 10px
+        rgba(255,255,255,.9);
 }
 .separator {
     width: 1px;
     height: 11px;
-    background: rgba(255,255,255,.13);
+    background:
+        rgba(255,255,255,.13);
 }
 #clockText {
-    color: rgba(255,255,255,.7);
-    font-variant-numeric: tabular-nums;
+    color:
+        rgba(255,255,255,.7);
+    font-variant-numeric:
+        tabular-nums;
 }
 /* =========================
    CENTER
@@ -197,44 +208,51 @@ body {
     top: 50%;
     left: 50%;
     z-index: 20;
-    width: 170px;
-    height: 170px;
+    width: 260px;
+    height: 260px;
     transform:
         translate(-50%, -50%);
     pointer-events: none;
 }
 /* =========================
-   SMALL AUDIO RING
+   AUDIO SPECTRUM
 ========================= */
-.mini-ring {
+.audio-spectrum {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 106px;
-    height: 106px;
+    width: 210px;
+    height: 210px;
     transform:
         translate(-50%, -50%);
-    border:
-        1px solid
-        rgba(255,255,255,.16);
     border-radius: 50%;
-    opacity: .25;
-    box-shadow:
-        0 0 10px
-        rgba(255,255,255,.08);
+    overflow: visible;
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(255,255,255,.35)
+        );
+    will-change:
+        transform;
+}
+/*
+    Her bar farklı bir frekansı temsil ediyor.
+*/
+.audio-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 10px;
+    border-radius: 10px;
+    background:
+        rgba(255,255,255,.9);
+    transform-origin:
+        50% 100%;
+    opacity: .75;
     will-change:
         transform,
-        opacity,
-        box-shadow;
-}
-.mini-ring::before {
-    content: "";
-    position: absolute;
-    inset: 3px;
-    border:
-        1px solid
-        rgba(255,255,255,.055);
-    border-radius: 50%;
+        opacity;
 }
 /* =========================
    AVATAR
@@ -252,17 +270,17 @@ body {
     background:
         rgba(255,255,255,.13);
     box-shadow:
-        0 0 0 1px rgba(255,255,255,.06),
-        0 0 25px rgba(0,0,0,.95);
-    will-change:
-        transform,
-        box-shadow;
+        0 0 0 1px
+        rgba(255,255,255,.08),
+        0 0 25px
+        rgba(0,0,0,.95);
+    z-index: 10;
 }
 .avatar {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     display: block;
+    object-fit: cover;
     border-radius: 50%;
 }
 /* =========================
@@ -278,9 +296,10 @@ body {
         translate(-50%, -50%);
     border-radius: 50%;
     background: #fff;
-    filter: blur(32px);
-    opacity: .06;
-    z-index: -1;
+    filter:
+        blur(32px);
+    opacity: .04;
+    z-index: 1;
     will-change:
         transform,
         opacity;
@@ -295,29 +314,31 @@ body {
     z-index: 100;
     transform:
         translateX(-50%);
-    text-align: center;
-    pointer-events: none;
     width: max-content;
     max-width: 70vw;
+    text-align: center;
+    pointer-events: none;
 }
 .track-small {
     font-size: 8px;
     letter-spacing: .22em;
     color:
         rgba(255,255,255,.35);
-    text-transform: uppercase;
+    text-transform:
+        uppercase;
     margin-bottom: 7px;
 }
 #marqueeText {
     font-size: 12px;
     font-weight: 500;
     letter-spacing: .13em;
-    text-transform: lowercase;
+    text-transform:
+        lowercase;
     color:
         rgba(255,255,255,.85);
 }
 /* =========================
-   BOTTOM CONTROLS
+   BOTTOM BAR
 ========================= */
 .bottom-bar {
     position: fixed;
@@ -379,7 +400,7 @@ body {
     fill: currentColor;
 }
 /* =========================
-   VIDEO SELECTOR
+   SELECTOR
 ========================= */
 .selector {
     position: fixed;
@@ -510,7 +531,8 @@ body {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: currentColor;
+    background:
+        currentColor;
     opacity: .5;
 }
 /* =========================
@@ -593,16 +615,16 @@ body {
         left: 14px;
     }
     .center-stage {
-        width: 150px;
-        height: 150px;
+        width: 230px;
+        height: 230px;
+    }
+    .audio-spectrum {
+        width: 185px;
+        height: 185px;
     }
     .avatar-wrap {
         width: 82px;
         height: 82px;
-    }
-    .mini-ring {
-        width: 96px;
-        height: 96px;
     }
     .track-info {
         bottom: 105px;
@@ -637,6 +659,18 @@ body {
     .track-info {
         bottom: 88px;
     }
+    .center-stage {
+        width: 210px;
+        height: 210px;
+    }
+    .audio-spectrum {
+        width: 170px;
+        height: 170px;
+    }
+    .avatar-wrap {
+        width: 76px;
+        height: 76px;
+    }
     .selector-button {
         min-width: 42px;
         width: 42px;
@@ -652,18 +686,6 @@ body {
     }
     .slider {
         display: none;
-    }
-    .center-stage {
-        width: 140px;
-        height: 140px;
-    }
-    .avatar-wrap {
-        width: 76px;
-        height: 76px;
-    }
-    .mini-ring {
-        width: 88px;
-        height: 88px;
     }
 }
 </style>
@@ -724,9 +746,13 @@ body {
         class="audio-glow"
         id="audioGlow">
     </div>
+    <!--
+        NCS STYLE AUDIO RING
+        JS burada barları oluşturacak.
+    -->
     <div
-        class="mini-ring"
-        id="reactiveRing">
+        class="audio-spectrum"
+        id="audioSpectrum">
     </div>
     <div
         class="avatar-wrap"
@@ -738,7 +764,7 @@ body {
     </div>
 </div>
 <!-- =========================
-     TRACK INFO
+     TRACK
 ========================= -->
 <div class="track-info">
     <div class="track-small">
@@ -749,7 +775,7 @@ body {
     </div>
 </div>
 <!-- =========================
-     VIDEO SELECTOR
+     SELECTOR
 ========================= -->
 <div
     class="selector"
@@ -889,8 +915,8 @@ const avatarElement =
     document.getElementById("avatarElement");
 const audioGlow =
     document.getElementById("audioGlow");
-const reactiveRing =
-    document.getElementById("reactiveRing");
+const audioSpectrum =
+    document.getElementById("audioSpectrum");
 const videoPopupList =
     document.getElementById("videoPopupList");
 const marqueeBtn =
@@ -919,12 +945,41 @@ let analyser = null;
 let audioSource = null;
 let dataArray = null;
 let audioInitialized = false;
-let lastVolume = 0.5;
-let smoothBass = 0;
-let smoothKick = 0;
-let smoothMid = 0;
+let lastVolume = .5;
 /* =====================================================
-   AUDIO
+   AUDIO BARLARINI OLUŞTUR
+===================================================== */
+const BAR_COUNT = 64;
+const bars = [];
+for (
+    let i = 0;
+    i < BAR_COUNT;
+    i++
+) {
+    const bar =
+        document.createElement("div");
+    bar.className =
+        "audio-bar";
+    /*
+        Halkanın çevresine eşit dağıt.
+    */
+    const angle =
+        (
+            i /
+            BAR_COUNT
+        ) *
+        360;
+    bar.dataset.angle =
+        angle;
+    audioSpectrum.appendChild(
+        bar
+    );
+    bars.push(
+        bar
+    );
+}
+/* =====================================================
+   AUDIO INIT
 ===================================================== */
 function initAudio() {
     if (audioInitialized) {
@@ -942,17 +997,18 @@ function initAudio() {
         analyser =
             audioCtx.createAnalyser();
         /*
-            Daha yüksek FFT:
-            bass ve kick ayrımı daha iyi.
+            256 FFT:
+            hem bass hem mid daha belirgin.
         */
-        analyser.fftSize = 256;
+        analyser.fftSize =
+            256;
         /*
-            Düşük smoothing.
-            Böylece ses değişince avatar
-            hemen tepki veriyor.
+            Çok düşük smoothing.
+            Bass vurduğunda barlar
+            gecikmeden tepki verir.
         */
         analyser.smoothingTimeConstant =
-            0.18;
+            .12;
         analyser.minDecibels =
             -90;
         analyser.maxDecibels =
@@ -975,13 +1031,13 @@ function initAudio() {
             true;
     } catch (error) {
         console.log(
-            "Audio analyzer error:",
+            "Audio error:",
             error
         );
     }
 }
 /* =====================================================
-   SES REAKSİYONU
+   AUDIO VISUALIZER
 ===================================================== */
 function animateAudio() {
     requestAnimationFrame(
@@ -997,210 +1053,178 @@ function animateAudio() {
     analyser.getByteFrequencyData(
         dataArray
     );
-    /* ==========================================
-       FREKANSLAR
-    ========================================== */
-    let subBass = 0;
-    let bass = 0;
-    let mids = 0;
     /*
-        Çok düşük frekans.
-        Kick burada.
+        Her bar için farklı frekans.
+    */
+    const binCount =
+        dataArray.length;
+    let totalBass = 0;
+    /*
+        Bass ölçümü.
     */
     for (
         let i = 0;
-        i < 4;
+        i < 10;
         i++
     ) {
-        subBass +=
+        totalBass +=
             dataArray[i];
     }
-    subBass /=
-        4;
+    totalBass /=
+        10;
     /*
-        Bass.
+        Bass'ı daha agresif hale getir.
     */
-    for (
-        let i = 0;
-        i < 18;
-        i++
-    ) {
-        bass +=
-            dataArray[i];
-    }
-    bass /=
-        18;
-    /*
-        Mid.
-    */
-    for (
-        let i = 18;
-        i < 55;
-        i++
-    ) {
-        mids +=
-            dataArray[i];
-    }
-    mids /=
-        37;
-    /* ==========================================
-       GÜÇ
-    ========================================== */
-    let bassPower =
-        Math.pow(
-            Math.min(
-                1,
-                bass / 100
-            ),
-            1.0
-        );
-    let kickPower =
-        Math.pow(
-            Math.min(
-                1,
-                subBass / 85
-            ),
-            .85
-        );
-    let midPower =
+    const bassPower =
         Math.min(
             1,
-            mids / 160
+            Math.pow(
+                totalBass / 105,
+                .82
+            )
         );
-    /* ==========================================
-       HIZLI SMOOTH
-    ========================================== */
-    smoothBass +=
-        (
-            bassPower -
-            smoothBass
-        ) *
-        (
-            bassPower >
-            smoothBass
-                ? .78
-                : .35
-        );
-    smoothKick +=
-        (
-            kickPower -
-            smoothKick
-        ) *
-        (
-            kickPower >
-            smoothKick
-                ? .88
-                : .30
-        );
-    smoothMid +=
-        (
-            midPower -
-            smoothMid
-        ) *
-        .35;
-    /* ==========================================
-       ANA SES ENERJİSİ
-    ========================================== */
-    const audioEnergy =
-        Math.min(
-            1,
-            smoothBass * .75 +
-            smoothKick * .55 +
-            smoothMid * .04
-        );
-    /* ==========================================
-       SADECE BÜYÜ / KÜÇÜL
-       SAĞA SOLA HAREKET YOK
-       ROTATION YOK
-       SIN/COS YOK
-    ========================================== */
-    const scale =
-        1 +
-        audioEnergy * .62;
-    avatarElement.style.transform =
+    /*
+        Bass geldiğinde halkanın
+        genel çapı da büyüsün.
+    */
+    const baseRadius =
+        58 +
+        bassPower * 16;
+    audioSpectrum.style.transform =
         `
         translate(-50%, -50%)
-        scale(${scale})
+        scale(${1 + bassPower * .12})
         `;
-    /* ==========================================
-       GLOW
-    ========================================== */
-    const innerGlow =
-        15 +
-        audioEnergy * 100;
-    const outerGlow =
-        30 +
-        audioEnergy * 130;
-    const glowOpacity =
-        .10 +
-        audioEnergy * .82;
-    avatarElement.style.boxShadow =
-        `
-        0 0 0 1px rgba(255,255,255,.15),
-        0 0 ${innerGlow}px
-        rgba(
-            255,
-            255,
-            255,
-            ${glowOpacity}
-        ),
-        0 0 ${outerGlow}px
-        rgba(
-            255,
-            255,
-            255,
-            ${glowOpacity * .22}
-        ),
-        0 0 80px
-        rgba(0,0,0,.95)
-        `;
-    /* ==========================================
-       KÜÇÜK HALKA
-    ========================================== */
-    const ringScale =
-        1 +
-        audioEnergy * .70;
-    reactiveRing.style.transform =
-        `
-        translate(-50%, -50%)
-        scale(${ringScale})
-        `;
-    reactiveRing.style.opacity =
-        .10 +
-        audioEnergy * .90;
-    reactiveRing.style.boxShadow =
-        `
-        0 0 ${
-            8 +
-            audioEnergy * 48
-        }px
-        rgba(
-            255,
-            255,
-            255,
-            ${
-                .08 +
-                audioEnergy * .45
-            }
-        )
-        `;
-    /* ==========================================
-       ARKA IŞIK
-    ========================================== */
-    const glowScale =
-        1 +
-        audioEnergy * 3.4;
+    /*
+        Glow.
+    */
     audioGlow.style.transform =
         `
         translate(-50%, -50%)
-        scale(${glowScale})
+        scale(${1 + bassPower * 3})
         `;
     audioGlow.style.opacity =
         .025 +
-        audioEnergy * .45;
+        bassPower * .35;
+    /*
+        Her bar.
+    */
+    for (
+        let i = 0;
+        i < BAR_COUNT;
+        i++
+    ) {
+        /*
+            0 -> 1 arası.
+        */
+        const normalized =
+            i / BAR_COUNT;
+        /*
+            Frequency mapping.
+            Düşük frekansları daha fazla
+            merkeze yaklaştır.
+        */
+        const frequencyPosition =
+            Math.floor(
+                Math.pow(
+                    normalized,
+                    1.65
+                ) *
+                (
+                    binCount - 1
+                )
+            );
+        let value =
+            dataArray[
+                frequencyPosition
+            ] / 255;
+        /*
+            Bass tarafındaki barlar
+            daha güçlü.
+        */
+        const bassBoost =
+            normalized < .25
+                ? bassPower * .85
+                : bassPower * .25;
+        value =
+            Math.min(
+                1,
+                value * 1.25 +
+                bassBoost
+            );
+        /*
+            Minimum hareket.
+            Sessizken bile ince bir halka.
+        */
+        const height =
+            5 +
+            value * 36;
+        const angle =
+            parseFloat(
+                bars[i].dataset.angle
+            );
+        const x =
+            50 +
+            Math.cos(
+                angle *
+                Math.PI /
+                180
+            ) * 50;
+        const y =
+            50 +
+            Math.sin(
+                angle *
+                Math.PI /
+                180
+            ) * 50;
+        /*
+            Barın başlangıç noktası
+            halkanın üzerinde.
+        */
+        bars[i].style.left =
+            `${x}%`;
+        bars[i].style.top =
+            `${y}%`;
+        bars[i].style.height =
+            `${height}px`;
+        /*
+            Açısına göre dışarı bak.
+        */
+        bars[i].style.transform =
+            `
+            translate(-50%, -100%)
+            rotate(${angle + 90}deg)
+            `;
+        /*
+            Ses yükseldikçe parlaklık.
+        */
+        bars[i].style.opacity =
+            .32 +
+            value * .68;
+        /*
+            Bass vurduğunda
+            hafif glow.
+        */
+        bars[i].style.boxShadow =
+            `
+            0 0 ${
+                2 +
+                value * 9
+            }px
+            rgba(
+                255,
+                255,
+                255,
+                ${
+                    .08 +
+                    value * .35
+                }
+            )
+            `;
+    }
 }
 /* =====================================================
-   ANİMASYONU BAŞLAT
+   BAŞLAT
 ===================================================== */
 animateAudio();
 /* =====================================================
@@ -1209,20 +1233,20 @@ animateAudio();
 function updateClock() {
     const now =
         new Date();
-    const hours =
+    const h =
         String(
             now.getHours()
         ).padStart(2, "0");
-    const minutes =
+    const m =
         String(
             now.getMinutes()
         ).padStart(2, "0");
-    const seconds =
+    const s =
         String(
             now.getSeconds()
         ).padStart(2, "0");
     clockText.textContent =
-        `${hours}:${minutes}:${seconds}`;
+        `${h}:${m}:${s}`;
 }
 updateClock();
 setInterval(
@@ -1302,7 +1326,7 @@ window.addEventListener(
     }
 );
 /* =====================================================
-   VIDEO YÜKLE
+   VIDEO LOAD
 ===================================================== */
 function loadVideo(index) {
     currentVideoIndex =
@@ -1332,7 +1356,7 @@ function loadVideo(index) {
     updateVideoListUI();
 }
 /* =====================================================
-   VIDEO MENÜSÜ
+   VIDEO LIST
 ===================================================== */
 function updateVideoListUI() {
     videoPopupList.innerHTML =
@@ -1392,7 +1416,9 @@ document.addEventListener(
         if (
             !document
                 .getElementById("selector")
-                .contains(event.target)
+                .contains(
+                    event.target
+                )
         ) {
             closeMenu();
         }
@@ -1466,7 +1492,7 @@ nextVideoBtn.addEventListener(
     }
 );
 /* =====================================================
-   SITE BAŞLAT
+   SITE START
 ===================================================== */
 function startSite() {
     if (hasInteracted) {
