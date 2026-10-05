@@ -41,7 +41,7 @@
             -webkit-font-smoothing: antialiased;
         }
         /* =========================
-           SPLASH
+           GİRİŞ
         ========================= */
         #splash-screen {
             position: fixed;
@@ -81,8 +81,12 @@
             animation: blink .75s infinite;
         }
         @keyframes blink {
-            0%, 45% { opacity: 1; }
-            50%, 100% { opacity: 0; }
+            0%, 45% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 0;
+            }
         }
         .enter-btn {
             appearance: none;
@@ -93,7 +97,6 @@
             padding: 11px 26px;
             font-size: 12px;
             letter-spacing: .13em;
-            text-transform: lowercase;
             cursor: pointer;
             opacity: 0;
             transform: translateY(8px);
@@ -143,7 +146,7 @@
             transform: scale(1.01);
         }
         /* =========================
-           TOP STATUS
+           ÜST DURUM
         ========================= */
         .status {
             position: fixed;
@@ -186,38 +189,49 @@
             font-variant-numeric: tabular-nums;
         }
         /* =========================
-           CENTER AVATAR
+           SES TEPKİLİ MERKEZ
         ========================= */
         .center-stage {
             position: fixed;
             top: 50%;
             left: 50%;
             z-index: 20;
-            width: 190px;
-            height: 190px;
+            width: 170px;
+            height: 170px;
             transform: translate(-50%, -50%);
             pointer-events: none;
         }
-        .reactive-ring {
+        /*
+            Büyük halka yok.
+            Sadece küçük ve ince bir halka.
+        */
+        .mini-ring {
             position: absolute;
-            inset: 8px;
-            border: 1px solid rgba(255,255,255,.13);
+            top: 50%;
+            left: 50%;
+            width: 108px;
+            height: 108px;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255,255,255,.16);
             border-radius: 50%;
-            opacity: .5;
-            transform: rotate(0deg);
+            opacity: .35;
+            box-shadow:
+                0 0 10px rgba(255,255,255,.08);
+            will-change:
+                transform,
+                opacity,
+                box-shadow;
         }
-        .reactive-ring::before,
-        .reactive-ring::after {
+        .mini-ring::before {
             content: "";
             position: absolute;
-            inset: -7px;
-            border: 1px solid rgba(255,255,255,.045);
+            inset: 3px;
+            border: 1px solid rgba(255,255,255,.055);
             border-radius: 50%;
         }
-        .reactive-ring::after {
-            inset: 7px;
-            border-color: rgba(255,255,255,.06);
-        }
+        /*
+            Avatar
+        */
         .avatar-wrap {
             position: absolute;
             top: 50%;
@@ -230,8 +244,11 @@
             background: rgba(255,255,255,.13);
             box-shadow:
                 0 0 0 1px rgba(255,255,255,.06),
-                0 0 35px rgba(0,0,0,.95);
-            will-change: transform, box-shadow;
+                0 0 25px rgba(0,0,0,.95);
+            will-change:
+                transform,
+                box-shadow,
+                border-radius;
         }
         .avatar {
             width: 100%;
@@ -240,18 +257,27 @@
             border-radius: 50%;
             display: block;
         }
+        /*
+            Bass vurduğunda arkadan büyüyen ışık.
+        */
         .audio-glow {
             position: absolute;
-            inset: 25px;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
-            background: rgba(255,255,255,.08);
-            filter: blur(25px);
-            opacity: .4;
+            background: #fff;
+            filter: blur(32px);
+            opacity: .08;
             z-index: -1;
-            will-change: transform, opacity;
+            will-change:
+                transform,
+                opacity;
         }
         /* =========================
-           CURRENT TRACK
+           TRACK
         ========================= */
         .track-info {
             position: fixed;
@@ -279,7 +305,7 @@
             color: rgba(255,255,255,.85);
         }
         /* =========================
-           BOTTOM CONTROLS
+           ALT KONTROLLER
         ========================= */
         .bottom-bar {
             position: fixed;
@@ -327,7 +353,7 @@
             fill: currentColor;
         }
         /* =========================
-           VIDEO SELECTOR
+           VIDEO SEÇİCİ
         ========================= */
         .selector {
             position: fixed;
@@ -432,7 +458,7 @@
             opacity: .5;
         }
         /* =========================
-           VOLUME
+           SES
         ========================= */
         .volume {
             position: fixed;
@@ -497,7 +523,7 @@
             cursor: pointer;
         }
         /* =========================
-           MOBILE
+           MOBİL
         ========================= */
         @media (max-width: 768px) {
             .status {
@@ -505,12 +531,16 @@
                 left: 14px;
             }
             .center-stage {
-                width: 160px;
-                height: 160px;
+                width: 150px;
+                height: 150px;
             }
             .avatar-wrap {
                 width: 82px;
                 height: 82px;
+            }
+            .mini-ring {
+                width: 96px;
+                height: 96px;
             }
             .track-info {
                 bottom: 105px;
@@ -562,12 +592,16 @@
                 display: none;
             }
             .center-stage {
-                width: 145px;
-                height: 145px;
+                width: 140px;
+                height: 140px;
             }
             .avatar-wrap {
                 width: 76px;
                 height: 76px;
+            }
+            .mini-ring {
+                width: 88px;
+                height: 88px;
             }
         }
     </style>
@@ -583,17 +617,17 @@
             giriş
         </button>
     </div>
-    <!-- VIDEO -->
+    <!-- ARKA PLAN VIDEO -->
     <div class="video-layer">
         <video
             id="bgVideo"
             loop
             playsinline
             webkit-playsinline
-            preload="metadata"
-        ></video>
+            preload="metadata">
+        </video>
     </div>
-    <!-- DURUM -->
+    <!-- PING / SAAT -->
     <div class="status">
         <div class="online">
             <span class="online-dot"></span>
@@ -604,19 +638,26 @@
             00:00:00
         </div>
     </div>
-    <!-- SES TEPKİLİ MERKEZ -->
-    <div class="center-stage" id="centerStage">
-        <div class="audio-glow" id="audioGlow"></div>
-        <div class="reactive-ring" id="reactiveRing"></div>
-        <div class="avatar-wrap" id="avatarElement">
+    <!-- MERKEZ -->
+    <div class="center-stage">
+        <div
+            class="audio-glow"
+            id="audioGlow">
+        </div>
+        <div
+            class="mini-ring"
+            id="reactiveRing">
+        </div>
+        <div
+            class="avatar-wrap"
+            id="avatarElement">
             <img
                 src="mert.PNG"
                 class="avatar"
-                alt="forever"
-            >
+                alt="forever">
         </div>
     </div>
-    <!-- ŞARKI / VIDEO İSMİ -->
+    <!-- VİDEO ADI -->
     <div class="track-info">
         <div class="track-small">
             now playing
@@ -625,12 +666,21 @@
             beyaz
         </div>
     </div>
-    <!-- VIDEO SEÇİCİ -->
-    <div class="selector" id="selector">
-        <div class="video-menu" id="videoPopupList"></div>
-        <button class="selector-button" id="marqueeBtn">
+    <!-- VİDEO SEÇİCİ -->
+    <div
+        class="selector"
+        id="selector">
+        <div
+            class="video-menu"
+            id="videoPopupList">
+        </div>
+        <button
+            class="selector-button"
+            id="marqueeBtn">
             <span class="selector-icon"></span>
-            <span class="selector-name" id="selectorName">
+            <span
+                class="selector-name"
+                id="selectorName">
                 beyaz
             </span>
             <span class="selector-arrow"></span>
@@ -638,27 +688,54 @@
     </div>
     <!-- KONTROLLER -->
     <div class="bottom-bar">
-        <button class="control" id="prevVideoBtn" title="Önceki">
+        <button
+            class="control"
+            id="prevVideoBtn"
+            title="Önceki">
             <svg viewBox="0 0 24 24">
                 <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
             </svg>
         </button>
-        <button class="control" id="playPauseBtn" title="Oynat / Durdur">
-            <svg id="playPauseIcon" viewBox="0 0 24 24">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        <button
+            class="control"
+            id="playPauseBtn"
+            title="Oynat / Durdur">
+            <svg
+                id="playPauseIcon"
+                viewBox="0 0 24 24">
+                <path d="
+                    M6 19h4V5H6v14zm8-14v14h4V5h-4z
+                "/>
             </svg>
         </button>
-        <button class="control" id="nextVideoBtn" title="Sonraki">
+        <button
+            class="control"
+            id="nextVideoBtn"
+            title="Sonraki">
             <svg viewBox="0 0 24 24">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                <path d="
+                    M6 18l8.5-6L6 6v12z
+                    M16 6v12h2V6h-2z
+                "/>
             </svg>
         </button>
     </div>
     <!-- SES -->
     <div class="volume">
-        <button class="volume-button" id="muteToggleBtn">
-            <svg id="volumeIcon" viewBox="0 0 24 24">
-                <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.068.926-2.068 2.068v6.864c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.74 2.5-2.26 2.5-4.02z"/>
+        <button
+            class="volume-button"
+            id="muteToggleBtn">
+            <svg
+                id="volumeIcon"
+                viewBox="0 0 24 24">
+                <path d="
+                    M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508
+                    c-1.141 0-2.068.926-2.068 2.068v6.864
+                    c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5
+                    c.944.945 2.56.276 2.56-1.06V4.06z
+                    M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05
+                    c1.48-.74 2.5-2.26 2.5-4.02z
+                "/>
             </svg>
         </button>
         <input
@@ -668,13 +745,13 @@
             min="0"
             max="1"
             step="0.01"
-            value="0.5"
-        >
+            value="0.5">
     </div>
 <script>
-    /* =========================
-       SADECE BU 6 VIDEO
-    ========================= */
+    /* =====================================================
+       VİDEO LİSTESİ
+       SADECE 6 VİDEO
+    ===================================================== */
     const videoList = [
         {
             name: "beyaz",
@@ -701,30 +778,54 @@
             file: "scream.mp4"
         }
     ];
-    /* =========================
+    /* =====================================================
        ELEMENTLER
-    ========================= */
-    const bgVideo = document.getElementById("bgVideo");
-    const splashScreen = document.getElementById("splash-screen");
-    const enterBtn = document.getElementById("enterBtn");
-    const typedText = document.getElementById("typedText");
-    const typeCursor = document.getElementById("typeCursor");
-    const marqueeText = document.getElementById("marqueeText");
-    const selectorName = document.getElementById("selectorName");
-    const clockText = document.getElementById("clockText");
-    const pingText = document.getElementById("pingText");
-    const avatarElement = document.getElementById("avatarElement");
-    const audioGlow = document.getElementById("audioGlow");
-    const reactiveRing = document.getElementById("reactiveRing");
-    const videoPopupList = document.getElementById("videoPopupList");
-    const marqueeBtn = document.getElementById("marqueeBtn");
-    const prevVideoBtn = document.getElementById("prevVideoBtn");
-    const nextVideoBtn = document.getElementById("nextVideoBtn");
-    const playPauseBtn = document.getElementById("playPauseBtn");
-    const playPauseIcon = document.getElementById("playPauseIcon");
-    const volumeSlider = document.getElementById("volumeSlider");
-    const muteToggleBtn = document.getElementById("muteToggleBtn");
-    const volumeIcon = document.getElementById("volumeIcon");
+    ===================================================== */
+    const bgVideo =
+        document.getElementById("bgVideo");
+    const splashScreen =
+        document.getElementById("splash-screen");
+    const enterBtn =
+        document.getElementById("enterBtn");
+    const typedText =
+        document.getElementById("typedText");
+    const typeCursor =
+        document.getElementById("typeCursor");
+    const marqueeText =
+        document.getElementById("marqueeText");
+    const selectorName =
+        document.getElementById("selectorName");
+    const clockText =
+        document.getElementById("clockText");
+    const pingText =
+        document.getElementById("pingText");
+    const avatarElement =
+        document.getElementById("avatarElement");
+    const audioGlow =
+        document.getElementById("audioGlow");
+    const reactiveRing =
+        document.getElementById("reactiveRing");
+    const videoPopupList =
+        document.getElementById("videoPopupList");
+    const marqueeBtn =
+        document.getElementById("marqueeBtn");
+    const prevVideoBtn =
+        document.getElementById("prevVideoBtn");
+    const nextVideoBtn =
+        document.getElementById("nextVideoBtn");
+    const playPauseBtn =
+        document.getElementById("playPauseBtn");
+    const playPauseIcon =
+        document.getElementById("playPauseIcon");
+    const volumeSlider =
+        document.getElementById("volumeSlider");
+    const muteToggleBtn =
+        document.getElementById("muteToggleBtn");
+    const volumeIcon =
+        document.getElementById("volumeIcon");
+    /* =====================================================
+       DEĞİŞKENLER
+    ===================================================== */
     let currentVideoIndex = 0;
     let hasInteracted = false;
     let audioCtx = null;
@@ -733,160 +834,391 @@
     let dataArray = null;
     let audioInitialized = false;
     let lastVolume = 0.5;
-    /* =========================
-       AUDIO ANALYZER
-    ========================= */
+    /*
+        Yumuşatılmış değerler.
+        Ani sıçramaları kontrol ediyoruz.
+    */
+    let smoothBass = 0;
+    let smoothKick = 0;
+    let smoothMid = 0;
+    /* =====================================================
+       AUDIO CONTEXT
+    ===================================================== */
     function initAudio() {
-        if (audioInitialized) return;
+        if (audioInitialized) {
+            return;
+        }
         try {
             const AudioContext =
                 window.AudioContext ||
                 window.webkitAudioContext;
-            audioCtx = new AudioContext();
-            analyser = audioCtx.createAnalyser();
+            if (!AudioContext) {
+                return;
+            }
+            audioCtx =
+                new AudioContext();
+            analyser =
+                audioCtx.createAnalyser();
+            /*
+                256 FFT:
+                Daha fazla frekans bölgesi,
+                daha hassas ses tepkisi.
+            */
+            analyser.fftSize = 256;
+            /*
+                Düşük smoothing:
+                Bass vuruşlarını daha hızlı yakalar.
+            */
+            analyser.smoothingTimeConstant = 0.35;
+            analyser.minDecibels = -90;
+            analyser.maxDecibels = -5;
             audioSource =
-                audioCtx.createMediaElementSource(bgVideo);
-            audioSource.connect(analyser);
-            analyser.connect(audioCtx.destination);
-            analyser.fftSize = 128;
-            analyser.smoothingTimeConstant = 0.72;
+                audioCtx.createMediaElementSource(
+                    bgVideo
+                );
+            audioSource.connect(
+                analyser
+            );
+            analyser.connect(
+                audioCtx.destination
+            );
             dataArray =
-                new Uint8Array(analyser.frequencyBinCount);
+                new Uint8Array(
+                    analyser.frequencyBinCount
+                );
             audioInitialized = true;
         } catch (error) {
-            console.log("Audio analyzer başlatılamadı:", error);
+            console.log(
+                "Audio analyzer başlatılamadı:",
+                error
+            );
         }
     }
-    /* =========================
-       GELİŞMİŞ SES REAKSİYONU
-    ========================= */
+    /* =====================================================
+       SES REAKSİYONU
+    ===================================================== */
     function animateAudio() {
-        requestAnimationFrame(animateAudio);
+        requestAnimationFrame(
+            animateAudio
+        );
         if (
             !audioInitialized ||
             !analyser ||
+            !dataArray ||
             bgVideo.paused
         ) {
+            /*
+                Müzik durduğunda yavaşça
+                normal hale dön.
+            */
+            smoothBass *= .92;
+            smoothKick *= .90;
+            smoothMid *= .94;
+            const idleScale =
+                1 + smoothBass * .20;
+            avatarElement.style.transform =
+                `translate(-50%, -50%) scale(${idleScale})`;
             return;
         }
-        analyser.getByteFrequencyData(dataArray);
+        analyser.getByteFrequencyData(
+            dataArray
+        );
+        /* =================================================
+           BASS
+        ================================================= */
         let bass = 0;
+        let kick = 0;
         let mids = 0;
-        let total = 0;
         /*
-            İlk frekanslar bass ağırlıklı.
+            İlk 5 frekans:
+            en düşük bass.
         */
-        const bassEnd =
-            Math.min(12, dataArray.length);
-        for (let i = 0; i < bassEnd; i++) {
-            bass += dataArray[i];
-        }
-        bass /= bassEnd;
+        const kickCount =
+            Math.min(
+                5,
+                dataArray.length
+            );
         for (
-            let i = bassEnd;
-            i < dataArray.length;
+            let i = 0;
+            i < kickCount;
             i++
         ) {
-            mids += dataArray[i];
+            kick +=
+                dataArray[i];
+        }
+        kick /=
+            kickCount;
+        /*
+            Biraz daha geniş bass bölgesi.
+        */
+        const bassEnd =
+            Math.min(
+                18,
+                dataArray.length
+            );
+        for (
+            let i = 0;
+            i < bassEnd;
+            i++
+        ) {
+            bass +=
+                dataArray[i];
+        }
+        bass /=
+            bassEnd;
+        /*
+            Mid frekansları.
+        */
+        const midStart =
+            bassEnd;
+        const midEnd =
+            Math.min(
+                55,
+                dataArray.length
+            );
+        for (
+            let i = midStart;
+            i < midEnd;
+            i++
+        ) {
+            mids +=
+                dataArray[i];
         }
         mids /=
             Math.max(
                 1,
-                dataArray.length - bassEnd
+                midEnd - midStart
             );
-        for (let i = 0; i < dataArray.length; i++) {
-            total += dataArray[i];
-        }
-        const average =
-            total / dataArray.length;
+        /* =================================================
+           NORMALIZE
+        ================================================= */
+        let bassPower =
+            Math.pow(
+                bass / 145,
+                1.15
+            );
+        let kickPower =
+            Math.pow(
+                kick / 135,
+                1.2
+            );
+        let midPower =
+            mids / 190;
+        bassPower =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    bassPower
+                )
+            );
+        kickPower =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    kickPower
+                )
+            );
+        midPower =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    midPower
+                )
+            );
+        /* =================================================
+           SMOOTH
+        ================================================= */
         /*
-            Normalize.
+            Yükselirken hızlı,
+            düşerken biraz daha yumuşak.
         */
-        const bassPower =
-            Math.min(1, bass / 210);
-        const musicPower =
-            Math.min(1, average / 190);
-        /*
-            Avatar büyümesi.
-        */
+        smoothBass +=
+            (bassPower - smoothBass) *
+            (
+                bassPower > smoothBass
+                    ? .42
+                    : .16
+            );
+        smoothKick +=
+            (kickPower - smoothKick) *
+            (
+                kickPower > smoothKick
+                    ? .55
+                    : .18
+            );
+        smoothMid +=
+            (midPower - smoothMid) *
+            .20;
+        /* =================================================
+           AVATAR SCALE
+        ================================================= */
         const scale =
-            1 +
-            bassPower * 0.30 +
-            musicPower * 0.07;
-        /*
-            Hafif organik deformasyon.
-        */
-        const time =
-            performance.now() / 180;
-        const wobble =
-            Math.sin(time) *
-            bassPower *
-            2.2;
+            1
+            + smoothBass * .42
+            + smoothKick * .22
+            + smoothMid * .035;
+        /* =================================================
+           ORGANIC MOVEMENT
+        ================================================= */
+        const now =
+            performance.now();
+        const wobbleX =
+            Math.sin(
+                now / 105
+            ) *
+            smoothBass *
+            2.4;
+        const wobbleY =
+            Math.cos(
+                now / 125
+            ) *
+            smoothBass *
+            1.8;
+        const rotation =
+            Math.sin(
+                now / 90
+            ) *
+            smoothKick *
+            2;
         avatarElement.style.transform =
-            `translate(-50%, -50%)
-             scale(${scale})
-             rotate(${wobble}deg)`;
-        /*
-            Parlama.
-        */
-        const glow =
-            20 +
-            bassPower * 65 +
-            musicPower * 20;
-        const opacity =
-            .18 +
-            bassPower * .55;
+            `
+            translate(
+                calc(-50% + ${wobbleX}px),
+                calc(-50% + ${wobbleY}px)
+            )
+            scale(${scale})
+            rotate(${rotation}deg)
+            `;
+        /* =================================================
+           AVATAR ŞEKİL DEĞİŞİMİ
+        ================================================= */
+        const radius =
+            50 +
+            Math.sin(
+                now / 70
+            ) *
+            smoothBass *
+            5;
+        avatarElement.style.borderRadius =
+            `${radius}%`;
+        /* =================================================
+           GLOW
+        ================================================= */
+        const innerGlow =
+            15 +
+            smoothBass * 70 +
+            smoothKick * 35;
+        const outerGlow =
+            30 +
+            smoothBass * 100;
+        const glowOpacity =
+            .10 +
+            smoothBass * .72;
         avatarElement.style.boxShadow =
             `
-            0 0 0 1px rgba(255,255,255,.10),
-            0 0 ${glow}px rgba(255,255,255,${opacity}),
-            0 0 ${glow * 1.8}px rgba(255,255,255,${opacity * .22})
+            0 0 0 1px rgba(255,255,255,.12),
+            0 0 ${innerGlow}px rgba(
+                255,
+                255,
+                255,
+                ${glowOpacity}
+            ),
+            0 0 ${outerGlow}px rgba(
+                255,
+                255,
+                255,
+                ${glowOpacity * .20}
+            ),
+            0 0 80px rgba(0,0,0,.95)
             `;
-        /*
-            Dış halka.
-        */
+        /* =================================================
+           KÜÇÜK HALKA
+        ================================================= */
         const ringScale =
-            1 +
-            bassPower * .25;
+            1
+            + smoothBass * .30
+            + smoothKick * .15;
         reactiveRing.style.transform =
-            `rotate(${performance.now() / 35}deg)
-             scale(${ringScale})`;
+            `
+            translate(-50%, -50%)
+            scale(${ringScale})
+            `;
         reactiveRing.style.opacity =
-            .25 +
-            bassPower * .65;
-        reactiveRing.style.borderWidth =
-            `${1 + bassPower * 2}px`;
-        /*
-            Glow.
-        */
-        audioGlow.style.transform =
-            `scale(${1 + bassPower * 1.7})`;
-        audioGlow.style.opacity =
             .18 +
-            bassPower * .7;
+            smoothBass * .78;
+        reactiveRing.style.boxShadow =
+            `
+            0 0 ${
+                8 + smoothBass * 30
+            }px rgba(
+                255,
+                255,
+                255,
+                ${.08 + smoothBass * .28}
+            )
+            `;
+        /* =================================================
+           ARKA GLOW
+        ================================================= */
+        const glowScale =
+            1
+            + smoothBass * 2.2
+            + smoothKick * .9;
+        audioGlow.style.transform =
+            `
+            translate(-50%, -50%)
+            scale(${glowScale})
+            `;
+        audioGlow.style.opacity =
+            .035
+            + smoothBass * .34
+            + smoothKick * .18;
     }
     animateAudio();
-    /* =========================
+    /* =====================================================
        SAAT
-    ========================= */
+    ===================================================== */
     function updateClock() {
-        const now = new Date();
-        const h =
-            String(now.getHours()).padStart(2, "0");
-        const m =
-            String(now.getMinutes()).padStart(2, "0");
-        const s =
-            String(now.getSeconds()).padStart(2, "0");
+        const now =
+            new Date();
+        const hours =
+            String(
+                now.getHours()
+            ).padStart(
+                2,
+                "0"
+            );
+        const minutes =
+            String(
+                now.getMinutes()
+            ).padStart(
+                2,
+                "0"
+            );
+        const seconds =
+            String(
+                now.getSeconds()
+            ).padStart(
+                2,
+                "0"
+            );
         clockText.textContent =
-            `${h}:${m}:${s}`;
+            `${hours}:${minutes}:${seconds}`;
     }
     updateClock();
-    setInterval(updateClock, 1000);
-    /* =========================
+    setInterval(
+        updateClock,
+        1000
+    );
+    /* =====================================================
        PING
-    ========================= */
+    ===================================================== */
     async function measurePing() {
-        const start = performance.now();
+        const start =
+            performance.now();
         try {
             await fetch(
                 window.location.href,
@@ -902,21 +1234,30 @@
             pingText.textContent =
                 `${ms} ms`;
         } catch {
-            pingText.textContent = "-- ms";
+            pingText.textContent =
+                "-- ms";
         }
     }
     measurePing();
-    setInterval(measurePing, 10000);
-    /* =========================
+    setInterval(
+        measurePing,
+        10000
+    );
+    /* =====================================================
        TYPEWRITER
-    ========================= */
+    ===================================================== */
     const greeting =
         "hi stalker";
     let charIndex = 0;
     function typeWriter() {
-        if (charIndex < greeting.length) {
+        if (
+            charIndex <
+            greeting.length
+        ) {
             typedText.textContent +=
-                greeting.charAt(charIndex);
+                greeting.charAt(
+                    charIndex
+                );
             charIndex++;
             setTimeout(
                 typeWriter,
@@ -925,7 +1266,9 @@
         } else {
             typeCursor.style.display =
                 "none";
-            enterBtn.classList.add("show");
+            enterBtn.classList.add(
+                "show"
+            );
         }
     }
     window.addEventListener(
@@ -938,21 +1281,28 @@
             );
         }
     );
-    /* =========================
+    /* =====================================================
        VIDEO YÜKLE
-    ========================= */
+    ===================================================== */
     function loadVideo(index) {
         currentVideoIndex =
-            (index + videoList.length) %
+            (
+                index +
+                videoList.length
+            ) %
             videoList.length;
         const video =
-            videoList[currentVideoIndex];
+            videoList[
+                currentVideoIndex
+            ];
         bgVideo.src =
             video.file;
         bgVideo.load();
         bgVideo.play()
             .then(() => {
-                updatePlayPauseIcon(true);
+                updatePlayPauseIcon(
+                    true
+                );
             })
             .catch(() => {});
         marqueeText.textContent =
@@ -961,55 +1311,66 @@
             video.name;
         updateVideoListUI();
     }
-    /* =========================
+    /* =====================================================
        VIDEO MENÜSÜ
-    ========================= */
+    ===================================================== */
     function updateVideoListUI() {
-        videoPopupList.innerHTML = "";
+        videoPopupList.innerHTML =
+            "";
         videoList.forEach(
             (video, index) => {
                 const item =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
                 item.className =
                     "video-item" +
                     (
-                        index === currentVideoIndex
+                        index ===
+                        currentVideoIndex
                             ? " active"
                             : ""
                     );
-                item.innerHTML = `
+                item.innerHTML =
+                    `
                     <span class="item-dot"></span>
-                    <span>${video.name}</span>
-                `;
+                    <span>
+                        ${video.name}
+                    </span>
+                    `;
                 item.addEventListener(
                     "click",
-                    (event) => {
+                    event => {
                         event.stopPropagation();
-                        loadVideo(index);
+                        loadVideo(
+                            index
+                        );
                         closeMenu();
                     }
                 );
-                videoPopupList.appendChild(item);
+                videoPopupList.appendChild(
+                    item
+                );
             }
         );
     }
-    function openMenu() {
-        updateVideoListUI();
-        videoPopupList.classList.add("open");
-    }
     function closeMenu() {
-        videoPopupList.classList.remove("open");
+        videoPopupList.classList.remove(
+            "open"
+        );
     }
     marqueeBtn.addEventListener(
         "click",
-        (event) => {
+        event => {
             event.stopPropagation();
-            videoPopupList.classList.toggle("open");
+            videoPopupList.classList.toggle(
+                "open"
+            );
         }
     );
     document.addEventListener(
         "click",
-        (event) => {
+        event => {
             if (
                 !document
                     .getElementById("selector")
@@ -1019,9 +1380,9 @@
             }
         }
     );
-    /* =========================
+    /* =====================================================
        PLAY / PAUSE
-    ========================= */
+    ===================================================== */
     function updatePlayPauseIcon(
         playing
     ) {
@@ -1042,21 +1403,27 @@
     playPauseBtn.addEventListener(
         "click",
         () => {
-            if (bgVideo.paused) {
+            if (
+                bgVideo.paused
+            ) {
                 bgVideo.play()
                     .then(() => {
-                        updatePlayPauseIcon(true);
+                        updatePlayPauseIcon(
+                            true
+                        );
                     })
                     .catch(() => {});
             } else {
                 bgVideo.pause();
-                updatePlayPauseIcon(false);
+                updatePlayPauseIcon(
+                    false
+                );
             }
         }
     );
-    /* =========================
-       ÖNCEKİ / SONRAKİ
-    ========================= */
+    /* =====================================================
+       ÖNCEKİ
+    ===================================================== */
     prevVideoBtn.addEventListener(
         "click",
         () => {
@@ -1066,6 +1433,9 @@
             closeMenu();
         }
     );
+    /* =====================================================
+       SONRAKİ
+    ===================================================== */
     nextVideoBtn.addEventListener(
         "click",
         () => {
@@ -1075,15 +1445,21 @@
             closeMenu();
         }
     );
-    /* =========================
+    /* =====================================================
        SITEYİ BAŞLAT
-    ========================= */
+    ===================================================== */
     function startSite() {
-        if (hasInteracted) return;
+        if (hasInteracted) {
+            return;
+        }
         hasInteracted = true;
         splashScreen.classList.add(
             "fade-out"
         );
+        /*
+            Kullanıcı tıklamasından hemen sonra
+            AudioContext başlatılıyor.
+        */
         initAudio();
         if (
             audioCtx &&
@@ -1091,43 +1467,65 @@
         ) {
             audioCtx.resume();
         }
-        bgVideo.volume =
+        const volume =
             parseFloat(
                 volumeSlider.value
             );
-        bgVideo.muted = false;
+        bgVideo.volume =
+            volume;
+        bgVideo.muted =
+            false;
         loadVideo(0);
         bgVideo.play()
             .then(() => {
-                updatePlayPauseIcon(true);
+                updatePlayPauseIcon(
+                    true
+                );
             })
             .catch(() => {
-                bgVideo.muted = true;
+                /*
+                    Bazı mobil tarayıcılarda
+                    sesli autoplay engellenirse
+                    sessiz başlat.
+                */
+                bgVideo.muted =
+                    true;
                 bgVideo.play();
-                updatePlayPauseIcon(true);
+                updatePlayPauseIcon(
+                    true
+                );
             });
     }
     enterBtn.addEventListener(
         "click",
         startSite
     );
-    /* =========================
-       SES
-    ========================= */
+    /* =====================================================
+       SES SLIDER
+    ===================================================== */
     volumeSlider.addEventListener(
         "input",
-        (event) => {
+        event => {
             const value =
-                parseFloat(event.target.value);
-            bgVideo.volume = value;
+                parseFloat(
+                    event.target.value
+                );
+            bgVideo.volume =
+                value;
             bgVideo.muted =
                 value === 0;
             if (value > 0) {
-                lastVolume = value;
+                lastVolume =
+                    value;
             }
-            updateVolumeIcon(value);
+            updateVolumeIcon(
+                value
+            );
         }
     );
+    /* =====================================================
+       MUTE
+    ===================================================== */
     muteToggleBtn.addEventListener(
         "click",
         () => {
@@ -1139,31 +1537,44 @@
                     lastVolume > 0
                         ? lastVolume
                         : .5;
-                bgVideo.muted = false;
+                bgVideo.muted =
+                    false;
                 bgVideo.volume =
                     value;
                 volumeSlider.value =
                     value;
-                updateVolumeIcon(value);
+                updateVolumeIcon(
+                    value
+                );
             } else {
                 lastVolume =
                     bgVideo.volume;
-                bgVideo.muted = true;
-                bgVideo.volume = 0;
-                volumeSlider.value = 0;
-                updateVolumeIcon(0);
+                bgVideo.muted =
+                    true;
+                bgVideo.volume =
+                    0;
+                volumeSlider.value =
+                    0;
+                updateVolumeIcon(
+                    0
+                );
             }
         }
     );
+    /* =====================================================
+       SES İKONU
+    ===================================================== */
     function updateVolumeIcon(
         volume
     ) {
-        if (volume === 0) {
+        if (
+            volume === 0
+        ) {
             volumeIcon.innerHTML =
                 `
                 <path d="
-                M3.63 3.63a.996.996 0 0 0 0 1.41L7.29 8.7 4.5 11.49
-                c-1.141 0-2.068.926-2.068 2.068v6.864
+                M3.63 3.63a.996.996 0 0 0 0 1.41L7.29 8.7
+                4.5 11.49c-1.141 0-2.068.926-2.068 2.068v6.864
                 c0 1.142.927 2.068 2.068 2.068H6.44l4.5 4.5
                 c.944.945 2.56.276 2.56-1.06v-3.37l4.36 4.36
                 a.996.996 0 1 0 1.41-1.41L5.04 3.63
