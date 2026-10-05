@@ -48,6 +48,7 @@ body {
     content: "";
     position: absolute;
     inset: 0;
+
     background:
         radial-gradient(
             circle at center,
@@ -60,6 +61,7 @@ body {
             rgba(0,0,0,.10) 45%,
             rgba(0,0,0,.52)
         );
+
     pointer-events: none;
 }
 
@@ -95,7 +97,6 @@ body {
     min-height: 35px;
 }
 
-/* SADECE BİRAZ BÜYÜTÜLDÜ */
 .typewriter-text {
     font-size: 20px;
     letter-spacing: 2.5px;
@@ -106,7 +107,9 @@ body {
     width: 1px;
     height: 21px;
     margin-left: 5px;
+
     background: #fff;
+
     animation: blink .7s infinite;
 }
 
@@ -147,10 +150,10 @@ body {
 }
 
 /* =========================
-   TOP STATUS
+   TOP LEFT
 ========================= */
 
-.status {
+.top-left {
     position: fixed;
 
     top: 22px;
@@ -160,15 +163,21 @@ body {
 
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 10px;
 
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 1px;
 
-    color: rgba(255,255,255,.72);
+    color: rgba(255,255,255,.68);
 
     text-shadow:
         0 2px 10px rgba(0,0,0,.9);
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 
 .status-dot {
@@ -181,6 +190,35 @@ body {
 
     box-shadow:
         0 0 10px rgba(255,255,255,.8);
+}
+
+.ping {
+    color: rgba(255,255,255,.55);
+}
+
+.top-separator {
+    color: rgba(255,255,255,.25);
+}
+
+/* =========================
+   CLOCK
+========================= */
+
+.clock {
+    position: fixed;
+
+    right: 25px;
+    top: 22px;
+
+    z-index: 20;
+
+    font-size: 10px;
+    letter-spacing: 1px;
+
+    color: rgba(255,255,255,.6);
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,.9);
 }
 
 /* =========================
@@ -214,13 +252,6 @@ body {
 
     width: 94px;
     height: 94px;
-
-    /*
-       SADECE SCALE DEĞİŞİYOR.
-       MERKEZ SABİT.
-       SAĞA-SOLA HAREKET YOK.
-       DÖNME YOK.
-    */
 
     transform:
         translate(-50%, -50%)
@@ -352,7 +383,7 @@ body {
     position: fixed;
 
     left: 50%;
-    bottom: 38px;
+    bottom: 35px;
 
     transform: translateX(-50%);
 
@@ -360,17 +391,22 @@ body {
 
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 12px;
 }
 
+/* GENEL BUTON */
+
 .control-btn {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
 
-    border: 0;
-    background: transparent;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 50%;
 
-    color: #fff;
+    background:
+        rgba(0,0,0,.28);
+
+    color: rgba(255,255,255,.82);
 
     display: flex;
     align-items: center;
@@ -378,30 +414,110 @@ body {
 
     cursor: pointer;
 
-    font-size: 15px;
+    opacity: .85;
 
-    opacity: .72;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.35),
+        inset 0 0 0 1px rgba(255,255,255,.025);
 
     transition:
-        opacity .2s ease,
-        transform .2s ease;
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        box-shadow .2s ease,
+        opacity .2s ease;
 }
 
-.control-btn:hover {
+/* İLERİ GERİ */
+
+.nav-btn {
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 25px;
+    font-weight: 200;
+
+    line-height: 1;
+
+    padding-bottom: 2px;
+}
+
+.nav-btn:hover {
     opacity: 1;
+
+    color: #fff;
+
+    background:
+        rgba(255,255,255,.10);
+
+    border-color:
+        rgba(255,255,255,.42);
+
+    box-shadow:
+        0 0 18px rgba(255,255,255,.10),
+        0 5px 20px rgba(0,0,0,.45);
+
     transform: scale(1.08);
 }
 
+.nav-btn:active {
+    transform: scale(.94);
+}
+
+/* SOL */
+
+#prevBtn {
+    padding-right: 2px;
+}
+
+/* SAĞ */
+
+#nextBtn {
+    padding-left: 2px;
+}
+
+/* PLAY */
+
 .play-btn {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
 
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 50%;
+    border-color:
+        rgba(255,255,255,.30);
 
-    background: rgba(0,0,0,.18);
+    background:
+        rgba(255,255,255,.055);
+
+    color: #fff;
+
+    font-size: 13px;
 
     opacity: 1;
+
+    box-shadow:
+        0 0 22px rgba(255,255,255,.06),
+        0 6px 25px rgba(0,0,0,.45);
+}
+
+.play-btn:hover {
+    background:
+        rgba(255,255,255,.12);
+
+    border-color:
+        rgba(255,255,255,.55);
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,.12),
+        0 6px 25px rgba(0,0,0,.5);
+
+    transform: scale(1.06);
+}
+
+.play-btn:active {
+    transform: scale(.95);
 }
 
 /* =========================
@@ -421,9 +537,73 @@ body {
     gap: 8px;
 }
 
-.volume-icon {
-    font-size: 12px;
-    opacity: .65;
+/* HOPARLÖR */
+
+.speaker {
+    position: relative;
+
+    width: 15px;
+    height: 14px;
+
+    opacity: .68;
+
+    flex-shrink: 0;
+}
+
+.speaker-body {
+    position: absolute;
+
+    left: 0;
+    top: 4px;
+
+    width: 5px;
+    height: 6px;
+
+    background: #fff;
+
+    border-radius: 1px;
+}
+
+.speaker-cone {
+    position: absolute;
+
+    left: 4px;
+    top: 2px;
+
+    width: 0;
+    height: 0;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid #fff;
+}
+
+.speaker-wave-1 {
+    position: absolute;
+
+    left: 10px;
+    top: 4px;
+
+    width: 4px;
+    height: 6px;
+
+    border-right: 1px solid rgba(255,255,255,.9);
+
+    border-radius: 0 8px 8px 0;
+}
+
+.speaker-wave-2 {
+    position: absolute;
+
+    left: 11px;
+    top: 2px;
+
+    width: 5px;
+    height: 10px;
+
+    border-right: 1px solid rgba(255,255,255,.45);
+
+    border-radius: 0 10px 10px 0;
 }
 
 .volume-slider {
@@ -463,35 +643,15 @@ body {
 }
 
 /* =========================
-   CLOCK
-========================= */
-
-.clock {
-    position: fixed;
-
-    right: 25px;
-    top: 22px;
-
-    z-index: 20;
-
-    font-size: 10px;
-    letter-spacing: 1px;
-
-    color: rgba(255,255,255,.6);
-
-    text-shadow:
-        0 2px 10px rgba(0,0,0,.9);
-}
-
-/* =========================
    MOBILE
 ========================= */
 
 @media (max-width: 600px) {
 
-    .status {
+    .top-left {
         top: 17px;
         left: 17px;
+        gap: 7px;
     }
 
     .clock {
@@ -524,6 +684,17 @@ body {
 
     .controls {
         bottom: 24px;
+        gap: 10px;
+    }
+
+    .control-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .play-btn {
+        width: 42px;
+        height: 42px;
     }
 
     .typewriter-text {
@@ -599,30 +770,46 @@ body {
 
 
 <!-- =========================
-     STATUS
+     TOP LEFT
 ========================= -->
 
-<div class="status">
+<div class="top-left">
 
-    <span class="status-dot"></span>
+    <div class="status">
 
-    <span id="statusText">
-        online
+        <span class="status-dot"></span>
+
+        <span id="statusText">
+            online
+        </span>
+
+    </div>
+
+    <span class="top-separator">
+        |
+    </span>
+
+    <span class="ping">
+        <span id="pingValue">--</span>ms
     </span>
 
 </div>
 
 
+<!-- =========================
+     CLOCK
+========================= -->
+
 <div
     class="clock"
     id="clock"
 >
-    00:00
+    00:00:00
 </div>
 
 
 <!-- =========================
-     CENTER AVATAR
+     CENTER
 ========================= -->
 
 <div class="center-stage">
@@ -683,9 +870,9 @@ body {
 <div class="controls">
 
     <button
-        class="control-btn"
+        class="control-btn nav-btn"
         id="prevBtn"
-        aria-label="previous"
+        aria-label="Önceki video"
     >
         ‹
     </button>
@@ -693,15 +880,15 @@ body {
     <button
         class="control-btn play-btn"
         id="playBtn"
-        aria-label="play"
+        aria-label="Oynat"
     >
         ▶
     </button>
 
     <button
-        class="control-btn"
+        class="control-btn nav-btn"
         id="nextBtn"
-        aria-label="next"
+        aria-label="Sonraki video"
     >
         ›
     </button>
@@ -715,9 +902,17 @@ body {
 
 <div class="volume-area">
 
-    <span class="volume-icon">
-        ◼
-    </span>
+    <div class="speaker">
+
+        <span class="speaker-body"></span>
+
+        <span class="speaker-cone"></span>
+
+        <span class="speaker-wave-1"></span>
+
+        <span class="speaker-wave-2"></span>
+
+    </div>
 
     <input
         class="volume-slider"
@@ -837,6 +1032,11 @@ const typedText =
         "typedText"
     );
 
+const pingValue =
+    document.getElementById(
+        "pingValue"
+    );
+
 
 /* =========================================================
    STATE
@@ -890,6 +1090,63 @@ function typeWriter() {
 }
 
 typeWriter();
+
+
+/* =========================================================
+   PING
+========================================================= */
+
+async function updatePing() {
+
+    const start =
+        performance.now();
+
+    try {
+
+        const pingUrl =
+            window.location.origin +
+            window.location.pathname +
+            "?ping=" +
+            Date.now();
+
+        await fetch(
+            pingUrl,
+            {
+                method: "HEAD",
+                cache: "no-store",
+                credentials: "omit"
+            }
+        );
+
+        const elapsed =
+            Math.round(
+                performance.now() - start
+            );
+
+        const ping =
+            Math.max(
+                1,
+                elapsed
+            );
+
+        pingValue.textContent =
+            ping;
+
+    } catch (error) {
+
+        pingValue.textContent =
+            "--";
+
+    }
+
+}
+
+updatePing();
+
+setInterval(
+    updatePing,
+    5000
+);
 
 
 /* =========================================================
@@ -1257,23 +1514,14 @@ function animateAudio() {
 
     }
 
-
     analyser.getByteFrequencyData(
         dataArray
     );
 
 
-    /* =====================================================
-       BASS
-    ===================================================== */
+    /* BASS */
 
     let bass = 0;
-
-    /*
-       İlk frekanslar bass.
-       Daha fazla örnek alıyoruz ki
-       tepki daha stabil olsun.
-    */
 
     for (
         let i = 0;
@@ -1289,12 +1537,6 @@ function animateAudio() {
     bass /= 12;
 
 
-    /*
-       Bass hassasiyeti.
-       Büyük bass vuruşlarında avatar
-       belirgin şekilde büyür.
-    */
-
     const bassTarget =
         Math.min(
             1,
@@ -1304,10 +1546,6 @@ function animateAudio() {
             )
         );
 
-
-    /*
-       Bass yükselirken hızlı tepki.
-    */
 
     if (
         bassTarget >
@@ -1322,10 +1560,6 @@ function animateAudio() {
 
     } else {
 
-        /*
-           Küçülürken biraz daha yumuşak.
-        */
-
         smoothBass +=
             (
                 bassTarget -
@@ -1335,9 +1569,7 @@ function animateAudio() {
     }
 
 
-    /* =====================================================
-       GENERAL ENERGY
-    ===================================================== */
+    /* ENERGY */
 
     let energy = 0;
 
@@ -1369,40 +1601,13 @@ function animateAudio() {
         ) * .22;
 
 
-    /* =====================================================
-       AVATAR SCALE
-    ===================================================== */
-
-    /*
-       Normal boyut:
-       1.00
-
-       Bass vurduğunda:
-       yaklaşık 1.08 - 1.12
-
-       Böylece gözle görülür,
-       ama abartılı olmayan bir
-       büyüme/küçülme olur.
-    */
+    /* AVATAR SCALE */
 
     const avatarScale =
         1 +
         smoothBass * .105 +
         smoothEnergy * .018;
 
-
-    /*
-       Avatarın merkezi SABİT.
-
-       translate:
-       merkezde tutar.
-
-       scale:
-       sadece büyütür/küçültür.
-
-       rotate yok.
-       X/Y hareketi yok.
-    */
 
     avatarElement.style.transform =
         `
@@ -1411,9 +1616,7 @@ function animateAudio() {
         `;
 
 
-    /* =====================================================
-       VERY LIGHT AUDIO GLOW
-    ===================================================== */
+    /* GLOW */
 
     const innerGlow =
         15 +
@@ -1467,10 +1670,18 @@ function updateClock() {
             "0"
         );
 
+    const seconds =
+        String(
+            now.getSeconds()
+        ).padStart(
+            2,
+            "0"
+        );
+
     document.getElementById(
         "clock"
     ).textContent =
-        `${hours}:${minutes}`;
+        `${hours}:${minutes}:${seconds}`;
 
 }
 
