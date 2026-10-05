@@ -95,11 +95,11 @@ body {
     min-height: 35px;
 }
 
+/* SADECE BİRAZ BÜYÜTÜLDÜ */
 .typewriter-text {
     font-size: 20px;
     letter-spacing: 2.5px;
     color: rgba(255,255,255,.92);
-    font-weight: 400;
 }
 
 .cursor {
@@ -121,7 +121,7 @@ body {
 }
 
 .enter-btn {
-    margin-top: 30px;
+    margin-top: 28px;
 
     padding: 10px 28px;
 
@@ -216,9 +216,12 @@ body {
     height: 94px;
 
     /*
-       Sadece scale değişiyor.
-       X/Y hareketi veya rotation yok.
+       SADECE SCALE DEĞİŞİYOR.
+       MERKEZ SABİT.
+       SAĞA-SOLA HAREKET YOK.
+       DÖNME YOK.
     */
+
     transform:
         translate(-50%, -50%)
         scale(1);
@@ -650,7 +653,7 @@ body {
         class="track-title"
         id="trackTitle"
     >
-        beyaz
+        forever
     </div>
 
     <div
@@ -851,16 +854,8 @@ let dataArray = null;
 
 let audioStarted = false;
 
-
-/*
-   Bass değerinin yumuşatılmış hali.
-*/
 let smoothBass = 0;
 
-
-/*
-   Genel ses enerjisi.
-*/
 let smoothEnergy = 0;
 
 
@@ -920,11 +915,11 @@ videos.forEach(
 
         button.addEventListener(
             "click",
-            async () => {
+            () => {
 
                 loadVideo(index);
 
-                await playVideo();
+                playVideo();
 
             }
         );
@@ -938,7 +933,7 @@ videos.forEach(
 
 
 /* =========================================================
-   UPDATE SELECTOR
+   SELECTOR UPDATE
 ========================================================= */
 
 function updateSelector() {
@@ -1031,17 +1026,8 @@ function setupAudio() {
         analyser =
             audioContext.createAnalyser();
 
-        /*
-           Daha yüksek fft çözünürlüğü.
-        */
-
         analyser.fftSize =
             512;
-
-        /*
-           Düşük smoothing =
-           bass vuruşları daha net.
-        */
 
         analyser.smoothingTimeConstant =
             0.08;
@@ -1161,9 +1147,7 @@ playBtn.addEventListener(
     "click",
     async () => {
 
-        if (
-            bgVideo.paused
-        ) {
+        if (bgVideo.paused) {
 
             await playVideo();
 
@@ -1219,13 +1203,13 @@ nextBtn.addEventListener(
 
 bgVideo.addEventListener(
     "ended",
-    async () => {
+    () => {
 
         loadVideo(
             currentVideo + 1
         );
 
-        await playVideo();
+        playVideo();
 
     }
 );
@@ -1255,7 +1239,7 @@ volumeSlider.addEventListener(
 
 
 /* =========================================================
-   AUDIO REACTIVE AVATAR
+   AVATAR AUDIO REACTIVE
 ========================================================= */
 
 function animateAudio() {
@@ -1263,7 +1247,6 @@ function animateAudio() {
     requestAnimationFrame(
         animateAudio
     );
-
 
     if (
         !analyser ||
@@ -1275,24 +1258,21 @@ function animateAudio() {
     }
 
 
-    /*
-       Frekans verisini al.
-    */
-
     analyser.getByteFrequencyData(
         dataArray
     );
 
 
     /* =====================================================
-       BASS DETECTION
+       BASS
     ===================================================== */
 
     let bass = 0;
 
-
     /*
-       İlk 12 frekans bass bölgesi.
+       İlk frekanslar bass.
+       Daha fazla örnek alıyoruz ki
+       tepki daha stabil olsun.
     */
 
     for (
@@ -1310,18 +1290,17 @@ function animateAudio() {
 
 
     /*
-       Bass'ı daha hassas hale getiriyoruz.
-
-       Böylece küçük bass vuruşları
-       da avatar üzerinde belli oluyor.
+       Bass hassasiyeti.
+       Büyük bass vuruşlarında avatar
+       belirgin şekilde büyür.
     */
 
     const bassTarget =
         Math.min(
             1,
             Math.pow(
-                bass / 100,
-                .70
+                bass / 105,
+                .72
             )
         );
 
@@ -1344,14 +1323,14 @@ function animateAudio() {
     } else {
 
         /*
-           Düşerken yavaşça geri dönsün.
+           Küçülürken biraz daha yumuşak.
         */
 
         smoothBass +=
             (
                 bassTarget -
                 smoothBass
-            ) * .18;
+            ) * .16;
 
     }
 
@@ -1361,7 +1340,6 @@ function animateAudio() {
     ===================================================== */
 
     let energy = 0;
-
 
     for (
         let i = 0;
@@ -1380,7 +1358,7 @@ function animateAudio() {
     const energyTarget =
         Math.min(
             1,
-            energy / 135
+            energy / 145
         );
 
 
@@ -1388,7 +1366,7 @@ function animateAudio() {
         (
             energyTarget -
             smoothEnergy
-        ) * .25;
+        ) * .22;
 
 
     /* =====================================================
@@ -1396,35 +1374,34 @@ function animateAudio() {
     ===================================================== */
 
     /*
-       Normal:
+       Normal boyut:
        1.00
 
-       Bass vurunca:
-       yaklaşık 1.10 - 1.13
+       Bass vurduğunda:
+       yaklaşık 1.08 - 1.12
 
-       Böylece değişim gözle görülüyor
-       ama avatar aşırı büyümüyor.
+       Böylece gözle görülür,
+       ama abartılı olmayan bir
+       büyüme/küçülme olur.
     */
 
     const avatarScale =
-        1
-        +
-        smoothBass * .105
-        +
-        smoothEnergy * .025;
+        1 +
+        smoothBass * .105 +
+        smoothEnergy * .018;
 
 
     /*
-       ÖNEMLİ:
+       Avatarın merkezi SABİT.
 
-       translate(-50%, -50%)
-       avatarın merkezini sabit tutuyor.
+       translate:
+       merkezde tutar.
 
-       Sadece scale değişiyor.
+       scale:
+       sadece büyütür/küçültür.
 
-       Sağa-sola hareket yok.
-       Yukarı-aşağı hareket yok.
-       Dönme yok.
+       rotate yok.
+       X/Y hareketi yok.
     */
 
     avatarElement.style.transform =
@@ -1438,35 +1415,29 @@ function animateAudio() {
        VERY LIGHT AUDIO GLOW
     ===================================================== */
 
-    const glowSize =
-        25 +
+    const innerGlow =
+        15 +
         smoothBass * 45;
 
 
     avatarElement.style.boxShadow =
         `
         0 0 0 1px
-        rgba(255,255,255,.10),
+        rgba(255,255,255,.14),
 
-        0 0 ${glowSize}px
+        0 0 ${innerGlow}px
         rgba(
             255,
             255,
             255,
-            ${.08 + smoothBass * .22}
+            ${.10 + smoothBass * .25}
         ),
 
-        0 0 35px
-        rgba(
-            0,
-            0,
-            0,
-            .95
-        )
+        0 0 80px
+        rgba(0,0,0,.95)
         `;
 
 }
-
 
 animateAudio();
 
@@ -1533,9 +1504,7 @@ document.addEventListener(
 
             event.preventDefault();
 
-            if (
-                bgVideo.paused
-            ) {
+            if (bgVideo.paused) {
 
                 await playVideo();
 
