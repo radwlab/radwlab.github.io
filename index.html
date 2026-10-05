@@ -394,8 +394,6 @@ body {
     gap: 12px;
 }
 
-/* GENEL BUTON */
-
 .control-btn {
     width: 38px;
     height: 38px;
@@ -403,8 +401,7 @@ body {
     border: 1px solid rgba(255,255,255,.18);
     border-radius: 50%;
 
-    background:
-        rgba(0,0,0,.28);
+    background: rgba(0,0,0,.28);
 
     color: rgba(255,255,255,.82);
 
@@ -419,20 +416,15 @@ body {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 
-    box-shadow:
-        0 5px 20px rgba(0,0,0,.35),
-        inset 0 0 0 1px rgba(255,255,255,.025);
-
     transition:
-        transform .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease,
-        box-shadow .2s ease,
-        opacity .2s ease;
+        background .18s ease,
+        border-color .18s ease,
+        opacity .18s ease;
 }
 
-/* İLERİ GERİ */
+/* =========================
+   PREV / NEXT
+========================= */
 
 .nav-btn {
     font-family: Arial, Helvetica, sans-serif;
@@ -443,43 +435,47 @@ body {
     line-height: 1;
 
     padding-bottom: 2px;
+
+    transform: none !important;
+
+    box-shadow: none !important;
 }
 
 .nav-btn:hover {
     opacity: 1;
 
-    color: #fff;
+    background: rgba(255,255,255,.055);
 
-    background:
-        rgba(255,255,255,.10);
+    border-color: rgba(255,255,255,.24);
 
-    border-color:
-        rgba(255,255,255,.42);
+    box-shadow: none !important;
 
-    box-shadow:
-        0 0 18px rgba(255,255,255,.10),
-        0 5px 20px rgba(0,0,0,.45);
-
-    transform: scale(1.08);
+    transform: none !important;
 }
 
 .nav-btn:active {
-    transform: scale(.94);
-}
+    opacity: .75;
 
-/* SOL */
+    background: rgba(255,255,255,.04);
+
+    border-color: rgba(255,255,255,.18);
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
 
 #prevBtn {
     padding-right: 2px;
 }
 
-/* SAĞ */
-
 #nextBtn {
     padding-left: 2px;
 }
 
-/* PLAY */
+/* =========================
+   PLAY
+========================= */
 
 .play-btn {
     width: 44px;
@@ -500,24 +496,24 @@ body {
     box-shadow:
         0 0 22px rgba(255,255,255,.06),
         0 6px 25px rgba(0,0,0,.45);
+
+    transition:
+        background .18s ease,
+        border-color .18s ease;
 }
 
 .play-btn:hover {
     background:
-        rgba(255,255,255,.12);
+        rgba(255,255,255,.09);
 
     border-color:
-        rgba(255,255,255,.55);
+        rgba(255,255,255,.38);
 
-    box-shadow:
-        0 0 25px rgba(255,255,255,.12),
-        0 6px 25px rgba(0,0,0,.5);
-
-    transform: scale(1.06);
+    transform: none;
 }
 
 .play-btn:active {
-    transform: scale(.95);
+    transform: none;
 }
 
 /* =========================
@@ -537,73 +533,40 @@ body {
     gap: 8px;
 }
 
-/* HOPARLÖR */
+/* GERÇEK HOPARLÖR SVG */
 
-.speaker {
-    position: relative;
+.speaker-icon {
+    width: 16px;
+    height: 16px;
 
-    width: 15px;
-    height: 14px;
-
-    opacity: .68;
+    display: block;
 
     flex-shrink: 0;
+
+    opacity: .72;
 }
 
-.speaker-body {
-    position: absolute;
+.speaker-icon svg {
+    width: 100%;
+    height: 100%;
 
-    left: 0;
-    top: 4px;
+    display: block;
 
-    width: 5px;
-    height: 6px;
-
-    background: #fff;
-
-    border-radius: 1px;
+    overflow: visible;
 }
 
-.speaker-cone {
-    position: absolute;
-
-    left: 4px;
-    top: 2px;
-
-    width: 0;
-    height: 0;
-
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 7px solid #fff;
+.speaker-icon .speaker-fill {
+    fill: #fff;
 }
 
-.speaker-wave-1 {
-    position: absolute;
+.speaker-icon .speaker-line {
+    fill: none;
 
-    left: 10px;
-    top: 4px;
+    stroke: #fff;
 
-    width: 4px;
-    height: 6px;
+    stroke-width: 1.6;
 
-    border-right: 1px solid rgba(255,255,255,.9);
-
-    border-radius: 0 8px 8px 0;
-}
-
-.speaker-wave-2 {
-    position: absolute;
-
-    left: 11px;
-    top: 2px;
-
-    width: 5px;
-    height: 10px;
-
-    border-right: 1px solid rgba(255,255,255,.45);
-
-    border-radius: 0 10px 10px 0;
+    stroke-linecap: round;
 }
 
 .volume-slider {
@@ -722,9 +685,7 @@ body {
 
 <body>
 
-<!-- =========================
-     SPLASH
-========================= -->
+<!-- SPLASH -->
 
 <div id="splash-screen">
 
@@ -752,9 +713,7 @@ body {
 </div>
 
 
-<!-- =========================
-     VIDEO
-========================= -->
+<!-- VIDEO -->
 
 <div class="video-layer">
 
@@ -769,9 +728,7 @@ body {
 </div>
 
 
-<!-- =========================
-     TOP LEFT
-========================= -->
+<!-- TOP LEFT -->
 
 <div class="top-left">
 
@@ -796,9 +753,7 @@ body {
 </div>
 
 
-<!-- =========================
-     CLOCK
-========================= -->
+<!-- CLOCK -->
 
 <div
     class="clock"
@@ -808,9 +763,7 @@ body {
 </div>
 
 
-<!-- =========================
-     CENTER
-========================= -->
+<!-- CENTER -->
 
 <div class="center-stage">
 
@@ -830,9 +783,7 @@ body {
 </div>
 
 
-<!-- =========================
-     TRACK INFO
-========================= -->
+<!-- TRACK -->
 
 <div class="track-info">
 
@@ -853,9 +804,7 @@ body {
 </div>
 
 
-<!-- =========================
-     VIDEO SELECTOR
-========================= -->
+<!-- VIDEO SELECTOR -->
 
 <div
     class="video-selector"
@@ -863,9 +812,7 @@ body {
 ></div>
 
 
-<!-- =========================
-     CONTROLS
-========================= -->
+<!-- CONTROLS -->
 
 <div class="controls">
 
@@ -896,23 +843,42 @@ body {
 </div>
 
 
-<!-- =========================
-     VOLUME
-========================= -->
+<!-- VOLUME -->
 
 <div class="volume-area">
 
-    <div class="speaker">
+    <span
+        class="speaker-icon"
+        aria-hidden="true"
+    >
 
-        <span class="speaker-body"></span>
+        <svg
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+        >
 
-        <span class="speaker-cone"></span>
+            <!-- speaker body -->
 
-        <span class="speaker-wave-1"></span>
+            <path
+                class="speaker-fill"
+                d="M3 9v6h4l5 4V5L7 9H3z"
+            />
 
-        <span class="speaker-wave-2"></span>
+            <!-- sound waves -->
 
-    </div>
+            <path
+                class="speaker-line"
+                d="M16 8.5c1.7 2 1.7 5 0 7"
+            />
+
+            <path
+                class="speaker-line"
+                d="M18.5 6c2.8 3.3 2.8 8.7 0 12"
+            />
+
+        </svg>
+
+    </span>
 
     <input
         class="volume-slider"
@@ -1123,14 +1089,11 @@ async function updatePing() {
                 performance.now() - start
             );
 
-        const ping =
+        pingValue.textContent =
             Math.max(
                 1,
                 elapsed
             );
-
-        pingValue.textContent =
-            ping;
 
     } catch (error) {
 
