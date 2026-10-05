@@ -382,7 +382,6 @@
             gap: 10px;
         }
 
-        /* Yeni Şık Video İsim Göstergesi */
         .video-status-badge {
             display: flex;
             align-items: center;
@@ -426,9 +425,10 @@
             border-radius: 18px;
         }
 
+        /* Sıfırlanmış Kontrol Butonları (Tamamen Efektsiz) */
         .control-btn {
-            background: transparent;
-            border: 1px solid transparent;
+            background: transparent !important;
+            border: none !important;
             color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
             width: 36px;
@@ -437,20 +437,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s, color 0.15s;
             outline: none !important;
             box-shadow: none !important;
+            transform: none !important;
+            transition: color 0.15s ease;
+            -webkit-tap-highlight-color: transparent !important;
         }
 
         .control-btn:hover {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            transform: none !important;
         }
 
+        .control-btn:focus,
+        .control-btn:focus-visible,
         .control-btn:active {
-            background: rgba(255, 255, 255, 0.14);
-            transform: scale(0.96);
+            color: #ffffff;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            transform: none !important;
         }
 
         .control-btn svg {
@@ -610,7 +620,7 @@
     <!-- Orta Alt: Şık Video İsmi Göstergesi + Kontroller -->
     <div class="center-controls-wrapper">
         <div class="video-status-badge glass-panel" id="statusBadge">
-            <span class="badge-num" id="badgeNum">01/06</span>
+            <span class="badge-num" id="badgeNum">01/07</span>
             <span class="badge-dot"></span>
             <span class="badge-title" id="badgeTitle">beyaz</span>
         </div>
@@ -645,7 +655,8 @@
             { name: "prime", file: "prime.mp4" },
             { name: "southpaw", file: "southpaw.MP4" },
             { name: "zehir", file: "zehir.MP4" },
-            { name: "scream", file: "scream.mp4" }
+            { name: "scream", file: "scream.mp4" },
+            { name: "shadow", file: "shadow.mp4" }
         ];
 
         let currentVideoIndex = 0;
