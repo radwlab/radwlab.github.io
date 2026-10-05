@@ -25,7 +25,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent !important;
             -ms-overflow-style: none !important;
             scrollbar-width: none !important;
         }
@@ -34,6 +34,18 @@
             display: none !important;
             width: 0 !important;
             height: 0 !important;
+        }
+
+        /* Tüm Butonlarda Odak Parlamasını/Halkasını Engelleme */
+        button, input, a {
+            outline: none !important;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        button:focus, button:focus-visible, button:active {
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         html, body {
@@ -357,13 +369,57 @@
             opacity: 0.5;
         }
 
-        /* Orta Alt Kontrol Paneli */
-        .center-dock {
+        /* Orta Alt: Video Bilgi Rozeti ve Kontrol Grubu */
+        .center-controls-wrapper {
             position: fixed;
             bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Yeni Şık Video İsim Göstergesi */
+        .video-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: lowercase;
+            color: rgba(255, 255, 255, 0.85);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-status-badge .badge-num {
+            font-family: "SF Mono", Monaco, monospace;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.65rem;
+        }
+
+        .video-status-badge .badge-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            opacity: 0.6;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+        }
+
+        .video-status-badge .badge-title {
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+        }
+
+        .center-dock {
             display: flex;
             gap: 6px;
             padding: 6px;
@@ -381,7 +437,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s ease;
+            transition: background 0.15s, color 0.15s;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         .control-btn:hover {
@@ -390,10 +448,16 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
+        .control-btn:active {
+            background: rgba(255, 255, 255, 0.14);
+            transform: scale(0.96);
+        }
+
         .control-btn svg {
             width: 13px;
             height: 13px;
             fill: currentColor;
+            pointer-events: none;
         }
 
         /* Sağ Alt: Ses Paneli */
@@ -419,6 +483,7 @@
             justify-content: center;
             padding: 2px;
             transition: color 0.15s;
+            outline: none !important;
         }
 
         .audio-icon-btn:hover {
@@ -488,7 +553,7 @@
                 width: 110px;
                 padding: 8px 12px;
             }
-            .center-dock {
+            .center-controls-wrapper {
                 bottom: 20px;
             }
             .audio-dock {
@@ -542,17 +607,24 @@
         </button>
     </div>
 
-    <!-- Orta Alt: Kontroller -->
-    <div class="center-dock glass-panel">
-        <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
-            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-        </button>
-        <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
-            <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-        <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
-            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-        </button>
+    <!-- Orta Alt: Şık Video İsmi Göstergesi + Kontroller -->
+    <div class="center-controls-wrapper">
+        <div class="video-status-badge glass-panel" id="statusBadge">
+            <span class="badge-num" id="badgeNum">01/06</span>
+            <span class="badge-dot"></span>
+            <span class="badge-title" id="badgeTitle">beyaz</span>
+        </div>
+        <div class="center-dock glass-panel">
+            <button class="control-btn" id="prevVideoBtn" title="Önceki Video">
+                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="control-btn" id="playPauseBtn" title="Oynat / Durdur">
+                <svg id="playPauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button class="control-btn" id="nextVideoBtn" title="Sonraki Video">
+                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+        </div>
     </div>
 
     <!-- Sağ Alt: Ses Paneli -->
@@ -567,7 +639,6 @@
     </div>
 
     <script>
-        // İstenen videolar haricindekiler çıkarıldı
         const videoList = [
             { name: "beyaz", file: "beyaz.mp4" },
             { name: "atreides", file: "atreides.mp4" },
@@ -587,6 +658,8 @@
         const clockText = document.getElementById('clockText');
         const pingText = document.getElementById('pingText');
         const avatarElement = document.getElementById('avatarElement');
+        const badgeNum = document.getElementById('badgeNum');
+        const badgeTitle = document.getElementById('badgeTitle');
         let hasInteracted = false;
 
         let audioCtx = null;
@@ -594,10 +667,8 @@
         let dataArray = null;
         let isAudioInitialized = false;
 
-        // Akıcı Reaktivite Değişkenleri (Lerp Yumuşatması İçin)
         let currentScale = 1;
         let currentGlow = 0;
-        let currentBorderRadius = 50;
 
         function initAudioContext() {
             if (isAudioInitialized) return;
@@ -616,7 +687,6 @@
             }
         }
 
-        // Geliştirilmiş Bas Odaklı Akıcı Reaktif Döngü (Lerp)
         function updateAvatarReactivity() {
             requestAnimationFrame(updateAvatarReactivity);
             
@@ -626,21 +696,18 @@
             if (!bgVideo.paused && isAudioInitialized && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
                 
-                // Bas frekanslarına ağırlık ver (0-6 bin arası)
                 let bassSum = 0;
                 let bassCount = 6;
                 for (let i = 0; i < bassCount; i++) {
                     bassSum += dataArray[i];
                 }
-                let bassAvg = bassSum / bassCount; // 0 - 255 arası
-                
+                let bassAvg = bassSum / bassCount;
                 let intensity = bassAvg / 255;
                 
                 targetScale = 1 + (intensity * 0.38);
                 targetGlow = intensity;
             }
 
-            // Lerp (Smooth interpolation) ile takılmasız akıcı geçiş
             currentScale += (targetScale - currentScale) * 0.18;
             currentGlow += (targetGlow - currentGlow) * 0.18;
 
@@ -697,8 +764,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             updateFillBar(0.5);
-            marqueeText.textContent = videoList[0].name;
-            updateVideoListUI();
+            loadVideoUI(0);
             setTimeout(typeWriter, 400);
         });
 
@@ -708,8 +774,17 @@
             bgVideo.load();
             bgVideo.play().catch(() => {});
             
-            const name = videoList[currentVideoIndex].name;
+            loadVideoUI(currentVideoIndex);
+        }
+
+        function loadVideoUI(index) {
+            const name = videoList[index].name;
             marqueeText.textContent = name;
+            badgeTitle.textContent = name;
+            
+            const numFormatted = String(index + 1).padStart(2, '0');
+            const totalFormatted = String(videoList.length).padStart(2, '0');
+            badgeNum.textContent = `${numFormatted}/${totalFormatted}`;
             
             updateVideoListUI();
         }
@@ -749,6 +824,7 @@
         marqueeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             toggleVideoPopup(!videoPopupList.classList.contains('open'));
+            e.currentTarget.blur();
         });
 
         document.addEventListener('click', (e) => {
@@ -770,19 +846,21 @@
             }
         }
 
-        prevVideoBtn.addEventListener('click', () => {
+        prevVideoBtn.addEventListener('click', (e) => {
             loadVideo(currentVideoIndex - 1);
             updatePlayPauseIcon(true);
             toggleVideoPopup(false);
+            e.currentTarget.blur();
         });
 
-        nextVideoBtn.addEventListener('click', () => {
+        nextVideoBtn.addEventListener('click', (e) => {
             loadVideo(currentVideoIndex + 1);
             updatePlayPauseIcon(true);
             toggleVideoPopup(false);
+            e.currentTarget.blur();
         });
 
-        playPauseBtn.addEventListener('click', () => {
+        playPauseBtn.addEventListener('click', (e) => {
             if (bgVideo.paused) {
                 bgVideo.play().catch(() => {});
                 updatePlayPauseIcon(true);
@@ -790,6 +868,7 @@
                 bgVideo.pause();
                 updatePlayPauseIcon(false);
             }
+            e.currentTarget.blur();
         });
 
         function startSite() {
@@ -838,7 +917,7 @@
             if (vol > 0) lastVolume = vol;
         });
 
-        muteToggleBtn.addEventListener('click', () => {
+        muteToggleBtn.addEventListener('click', (e) => {
             if (bgVideo.muted || bgVideo.volume === 0) {
                 bgVideo.muted = false;
                 bgVideo.volume = lastVolume > 0 ? lastVolume : 0.5;
@@ -853,6 +932,7 @@
                 updateVolumeIcon(0);
                 updateFillBar(0);
             }
+            e.currentTarget.blur();
         });
 
         function updateVolumeIcon(vol) {
