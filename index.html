@@ -27,10 +27,17 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 .vig{position:fixed;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.55) 80%,#000 125%)}
 
-/* avatar */
-#av{position:fixed;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;z-index:60;
-  border-radius:50%;overflow:hidden;display:grid;place-items:center;pointer-events:none;will-change:transform}
-#av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+/* avatar & discord wrapper */
+#av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}
+#av{width:84px;height:84px;border-radius:50%;overflow:hidden;display:grid;place-items:center;will-change:transform,box-shadow;transition:transform .05s cubic-bezier(.21,1,.35,1)}
+#av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
+
+/* discord butonu */
+#dc-btn{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
+  color:rgba(255,255,255,.6);text-decoration:none;transition:all .25s ease;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+#dc-btn:hover{color:#fff;background:rgba(255,255,255,.1);transform:scale(1.08);border-color:rgba(255,255,255,.2)}
+#dc-btn svg{width:16px;height:16px;fill:currentColor}
 
 /* paneller */
 .g{background:var(--glass);border:1px solid var(--line);border-radius:14px;
@@ -55,7 +62,7 @@ body.in .ui{opacity:1;transform:none}
   opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:bottom left;
   transition:all .25s cubic-bezier(.16,1,.3,1)}
 #list.open{opacity:1;visibility:visible;transform:none}
-.it{display:flex;gap:10px;padding:8px 10px;border-radius:9px;cursor:pointer;font:500 .72rem var(--mono);
+.it{display:flex;gap:10px;padding:8px 10px;border-radius:99px;cursor:pointer;font:500 .72rem var(--mono);
   color:var(--dim);letter-spacing:.06em;transition:.15s}
 .it em{font-style:normal;opacity:.5}
 .it.act{color:#fff;background:rgba(255,255,255,.09)}
@@ -68,11 +75,15 @@ body.in #cc{transform:translateX(-50%)}
 .cb{background:none;border:0;width:38px;height:34px;display:grid;place-items:center;cursor:pointer;color:rgba(255,255,255,.62);-webkit-user-select:none;user-select:none}
 .cb svg{width:14px;height:14px;fill:currentColor}
 
-#br{bottom:24px;right:22px;display:flex;align-items:center;gap:8px;padding:8px 14px}
-#vol{position:relative;width:78px;height:14px;display:flex;align-items:center}
-#vol .tr{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:rgba(255,255,255,.12)}
-#vol .fl{position:absolute;left:0;height:2px;border-radius:2px;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.6)}
-#vol input{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;margin:0}
+/* yenilenen minimalist ses paneli */
+#br{bottom:24px;right:22px;display:flex;align-items:center;gap:10px;padding:8px 14px;height:38px}
+#mute{background:none;border:0;cursor:pointer;display:grid;place-items:center;color:rgba(255,255,255,.62);transition:color .2s}
+#mute:hover{color:#fff}
+#mute svg{width:15px;height:15px;fill:currentColor}
+#vol{position:relative;width:70px;height:14px;display:flex;align-items:center}
+#vol .tr{position:absolute;left:0;right:0;height:3px;border-radius:3px;background:rgba(255,255,255,.12)}
+#vol .fl{position:absolute;left:0;height:3px;border-radius:3px;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7);transition:width .05s linear}
+#vol input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
 
 #prog{position:fixed;left:0;bottom:0;height:2px;width:0;z-index:101;background:linear-gradient(90deg,transparent,#fff);opacity:.55}
 
@@ -91,7 +102,7 @@ body.in #cc{transform:translateX(-50%)}
 @media(max-width:768px){
   #tl{top:14px;left:14px;padding:7px 12px}
   #bl{left:14px;bottom:20px}#pick{width:104px;padding:9px 12px}
-  #cc{bottom:20px}#br{right:14px;bottom:20px;padding:7px 11px}#vol{width:44px}
+  #cc{bottom:20px}#br{right:14px;bottom:20px;padding:7px 11px}#vol{width:50px}
   #list{width:150px;bottom:calc(100% + 54px);max-height:42vh;overflow-y:auto}
 }
 </style>
@@ -106,7 +117,12 @@ body.in #cc{transform:translateX(-50%)}
 <video id="bg" loop playsinline webkit-playsinline preload="none"></video>
 <div class="vig"></div>
 
-<div id="av"><img src="mert.PNG" alt=""></div>
+<div id="av-wrapper">
+  <div id="av"><img src="mert.PNG" alt=""></div>
+  <a id="dc-btn" href="https://discord.gg/ebedi" target="_blank" title="Discord">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.098.245.195.372.288a.077.077 0 0 1-.006.128c-.598.35-1.222.648-1.873.892-.041.016-.062.064-.041.106.356.699.768 1.364 1.225 1.994.019.027.054.038.085.029a19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+  </a>
+</div>
 
 <div id="tl" class="ui g"><span><i class="dot" style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;margin:0 7px 0 0;box-shadow:0 0 9px #4ade80"></i><span id="ping">-- ms</span></span><i></i><span id="clock">00:00:00</span></div>
 
@@ -116,7 +132,7 @@ body.in #cc{transform:translateX(-50%)}
 </div>
 
 <div id="cc" class="ui">
-  <div id="badge" class="g"><s id="num">01/07</s><span id="name">beyaz</span></div>
+  <div id="badge" class="g"><s id="num">01/09</s><span id="name">spiderman</span></div>
   <div id="dock" class="g">
     <button class="cb" id="prev"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
     <button class="cb" id="pp"><svg viewBox="0 0 24 24" id="ppi"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
@@ -125,18 +141,26 @@ body.in #cc{transform:translateX(-50%)}
 </div>
 
 <div id="br" class="ui g">
-  <button class="cb" id="mute" style="width:24px"><svg viewBox="0 0 24 24" id="mi"></svg></button>
+  <button id="mute"><svg viewBox="0 0 24 24" id="mi"></svg></button>
   <div id="vol"><div class="tr"></div><div class="fl" id="fl"></div><input type="range" id="vs" min="0" max="1" step="0.01" value="0.5"></div>
 </div>
 <div id="prog"></div>
 
 <script>
+/* 1: spiderman, 2: jurrasic olacak şekilde sıralandı */
 const vids = [
-  {n:"beyaz",f:"beyaz.mp4"},{n:"atreides",f:"atreides.mp4"},{n:"prime",f:"prime.mp4"},
-  {n:"southpaw",f:"southpaw.MP4"},{n:"zehir",f:"zehir.MP4"},{n:"scream",f:"scream.mp4"},{n:"shadow",f:"shadow.mp4"},{n:"jurrasic",f:"jurrasic.MP4"},{n:"spiderman",f:"spiderman.mp4"}
+  {n:"spiderman",f:"spiderman.mp4"},
+  {n:"jurrasic",f:"jurrasic.MP4"},
+  {n:"beyaz",f:"beyaz.mp4"},
+  {n:"atreides",f:"atreides.mp4"},
+  {n:"prime",f:"prime.mp4"},
+  {n:"southpaw",f:"southpaw.MP4"},
+  {n:"zehir",f:"zehir.MP4"},
+  {n:"scream",f:"scream.mp4"},
+  {n:"shadow",f:"shadow.mp4"}
 ];
 const $ = id => document.getElementById(id);
-const v = $('bg'), av = $('av');
+const v = $('bg'), av =$('av');
 let idx = 0, started = false, last = 0.5;
 let actx, an, buf;
 
@@ -149,7 +173,7 @@ const hi = "hi stalker";
 let ci = 0;
 (function type(){
   if (ci < hi.length) { $('tt').textContent += hi[ci++]; setTimeout(type, 90 + Math.random()*70); }
-  else { $('cur').style.display = 'none'; $('enter').classList.add('show'); }
+  else { $('cur').style.display = 'none';$('enter').classList.add('show'); }
 })();
 
 /* video */
@@ -167,43 +191,41 @@ function ui(){
   const n = vids[idx].n;
   $('name').textContent = n;
   $('pickName').textContent = n;
-  $('num').textContent = String(idx+1).padStart(2,'0') + '/' + String(vids.length).padStart(2,'0');
-  $('list').innerHTML = vids.map((x,k) =>
+  $('num').textContent = String(idx+1).padStart(2,'0') + '/' + String(vids.length).padStart(2,'0');$('list').innerHTML = vids.map((x,k) =>
     `<div class="it ${k===idx?'act':''}" data-k="${k}"><em>${String(k+1).padStart(2,'0')}</em>${x.n}</div>`).join('');
 }
 $('list').addEventListener('click', e => {
   const it = e.target.closest('.it'); if (!it) return;
   load(+it.dataset.k); setPP(true); $('list').classList.remove('open');
 });
-$('pick').onclick = e => { e.stopPropagation(); $('list').classList.toggle('open'); };
-document.addEventListener('click', e => { if (!$('bl').contains(e.target)) $('list').classList.remove('open'); });
+$('pick').onclick = e => { e.stopPropagation();$('list').classList.toggle('open'); };
+document.addEventListener('click', e => { if (!$('bl').contains(e.target))$('list').classList.remove('open'); });
 
 function setPP(p){ $('ppi').innerHTML = p ? PAUSE : PLAY; }
 function toggle(){ if (v.paused) { v.play().catch(()=>{}); setPP(true); } else { v.pause(); setPP(false); } }
 $('prev').onclick = () => { load(idx-1); setPP(true); };
-$('next').onclick = () => { load(idx+1); setPP(true); };
-$('pp').onclick = toggle;
+$('next').onclick = () => { load(idx+1); setPP(true); };$('pp').onclick = toggle;
 
 /* ses */
 function setVol(x){
   v.volume = x; v.muted = x === 0;
-  $('fl').style.width = (x*100) + '%';
-  $('mi').innerHTML = x === 0 ? ICON_OFF : ICON_ON;
+  $('fl').style.width = (x*100) + '\%';$('mi').innerHTML = x === 0 ? ICON_OFF : ICON_ON;
   if (x > 0) last = x;
 }
-$('vs').oninput = e => setVol(+e.target.value);
-$('mute').onclick = () => {
+$('vs').oninput = e => setVol(+e.target.value);$('mute').onclick = () => {
   const x = (v.muted || v.volume === 0) ? (last || .5) : 0;
   $('vs').value = x; setVol(x);
 };
 setVol(.5);
 
+/* sese duyarlılık (Web Audio API) */
 function initAudio(){
   if (actx) return;
   try {
     actx = new (window.AudioContext || window.webkitAudioContext)();
     an = actx.createAnalyser();
-    an.fftSize = 256; an.smoothingTimeConstant = .4;
+    an.fftSize = 128; 
+    an.smoothingTimeConstant = .3; // Hızlı ve keskin tepki
     const s = actx.createMediaElementSource(v);
     s.connect(an); an.connect(actx.destination);
     buf = new Uint8Array(an.frequencyBinCount);
@@ -242,28 +264,32 @@ async function ping(){
 }
 ping(); setInterval(ping, 10000);
 
-/* avatar */
-let sc = 1, lvl = 0, peak = .3;
+/* avatar bas ve ritim animasyonu */
+let sc = 1, lvl = 0;
 function frame(t){
   requestAnimationFrame(frame);
   let target = 0;
-  const live = !v.paused && buf;
+  const live = !v.paused && buf && !v.muted;
+  
   if (live) {
     an.getByteFrequencyData(buf);
-    let b = 0, m = 0;
-    for (let i = 0; i < 8; i++) b += buf[i];
-    for (let i = 8; i < 22; i++) m += buf[i];
-    const raw = (b/8*.7 + m/14*.3) / 255;
-    peak = Math.max(raw, peak*.996, .18);
-    target = Math.pow(raw/peak, 1.7);
+    // Derin bas frekansları al (ilk 4 frekans bandı)
+    let bass = 0;
+    for (let i = 0; i < 4; i++) bass += buf[i];
+    bass = bass / 4 / 255; // 0.0 - 1.0
+    
+    // Bas vurduğunda daha belirgin tepki için üssel büyüme
+    target = Math.pow(bass, 1.8) * 1.4;
   }
-  lvl += (target - lvl) * (target > lvl ? .6 : .13);
+  
+  // Bas vurunca hızlı genişleme, sonra yumuşak sönümlenme
+  lvl += (target - lvl) * (target > lvl ? .7 : .18);
 
-  const idle = live ? 0 : (.5 + .5*Math.sin(t/1200)) * .012;
-  sc = 1 + lvl*.1 + idle;
+  const idle = live ? 0 : (.5 + .5*Math.sin(t/1000)) * .015;
+  sc = 1 + lvl * .22 + idle;
+  
   av.style.transform = `scale(${sc})`;
-  av.style.boxShadow =
-    `0 0 ${lvl*18}px rgba(255,255,255,${lvl*.08})`;
+  av.style.boxShadow = `0 0 ${lvl * 35}px rgba(255,255,255,${Math.min(lvl * 0.45, .8)})`;
 
   if (started && v.duration) $('prog').style.width = (v.currentTime/v.duration*100) + '%';
 }
