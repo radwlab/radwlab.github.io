@@ -28,16 +28,16 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
   background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.55) 80%,#000 125%)}
 
 /* avatar & discord wrapper */
-#av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}
+#av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:20px;pointer-events:none}
 #av{width:84px;height:84px;border-radius:50%;overflow:hidden;display:grid;place-items:center;will-change:transform,box-shadow;transition:transform .05s cubic-bezier(.21,1,.35,1)}
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
 
-/* discord butonu */
-#dc-btn{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+/* discord butonu (daha büyük & mesafeli) */
+#dc-btn{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;
   background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
-  color:rgba(255,255,255,.6);text-decoration:none;transition:all .25s ease;box-shadow:0 8px 20px rgba(0,0,0,.4)}
-#dc-btn:hover{color:#fff;background:rgba(255,255,255,.1);transform:scale(1.08);border-color:rgba(255,255,255,.2)}
-#dc-btn svg{width:16px;height:16px;fill:currentColor}
+  color:rgba(255,255,255,.7);text-decoration:none;transition:all .25s ease;box-shadow:0 8px 24px rgba(0,0,0,.45);margin-top:4px}
+#dc-btn:hover{color:#fff;background:rgba(255,255,255,.12);transform:scale(1.1);border-color:rgba(255,255,255,.25)}
+#dc-btn svg{width:22px;height:22px;fill:currentColor}
 
 /* paneller */
 .g{background:var(--glass);border:1px solid var(--line);border-radius:14px;
@@ -75,14 +75,14 @@ body.in #cc{transform:translateX(-50%)}
 .cb{background:none;border:0;width:38px;height:34px;display:grid;place-items:center;cursor:pointer;color:rgba(255,255,255,.62);-webkit-user-select:none;user-select:none}
 .cb svg{width:14px;height:14px;fill:currentColor}
 
-/* yenilenen minimalist ses paneli */
+/* sade ve temiz ses paneli (parlama kaldırıldı) */
 #br{bottom:24px;right:22px;display:flex;align-items:center;gap:10px;padding:8px 14px;height:38px}
-#mute{background:none;border:0;cursor:pointer;display:grid;place-items:center;color:rgba(255,255,255,.62);transition:color .2s}
+#mute{background:none;border:0;cursor:pointer;display:grid;place-items:center;color:rgba(255,255,255,.6);transition:color .2s}
 #mute:hover{color:#fff}
 #mute svg{width:15px;height:15px;fill:currentColor}
 #vol{position:relative;width:70px;height:14px;display:flex;align-items:center}
-#vol .tr{position:absolute;left:0;right:0;height:3px;border-radius:3px;background:rgba(255,255,255,.12)}
-#vol .fl{position:absolute;left:0;height:3px;border-radius:3px;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7);transition:width .05s linear}
+#vol .tr{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:rgba(255,255,255,.15)}
+#vol .fl{position:absolute;left:0;height:2px;border-radius:2px;background:rgba(255,255,255,.85);transition:width .05s linear}
 #vol input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
 
 #prog{position:fixed;left:0;bottom:0;height:2px;width:0;z-index:101;background:linear-gradient(90deg,transparent,#fff);opacity:.55}
@@ -147,17 +147,16 @@ body.in #cc{transform:translateX(-50%)}
 <div id="prog"></div>
 
 <script>
-/* 1: spiderman, 2: jurrasic olacak şekilde sıralandı */
 const vids = [
   {n:"spiderman",f:"spiderman.mp4"},
   {n:"jurrasic",f:"jurrasic.MP4"},
-  {n:"shadow",f:"shadow.mp4"}
+  {n:"shadow",f:"shadow.mp4"},
   {n:"atreides",f:"atreides.mp4"},
   {n:"prime",f:"prime.mp4"},
   {n:"southpaw",f:"southpaw.MP4"},
   {n:"zehir",f:"zehir.MP4"},
   {n:"scream",f:"scream.mp4"},
-  {n:"beyaz",f:"beyaz.mp4"},
+  {n:"beyaz",f:"beyaz.mp4"}
 ];
 const $ = id => document.getElementById(id);
 const v = $('bg'), av =$('av');
@@ -225,7 +224,7 @@ function initAudio(){
     actx = new (window.AudioContext || window.webkitAudioContext)();
     an = actx.createAnalyser();
     an.fftSize = 128; 
-    an.smoothingTimeConstant = .3; // Hızlı ve keskin tepki
+    an.smoothingTimeConstant = .3;
     const s = actx.createMediaElementSource(v);
     s.connect(an); an.connect(actx.destination);
     buf = new Uint8Array(an.frequencyBinCount);
@@ -273,16 +272,13 @@ function frame(t){
   
   if (live) {
     an.getByteFrequencyData(buf);
-    // Derin bas frekansları al (ilk 4 frekans bandı)
     let bass = 0;
     for (let i = 0; i < 4; i++) bass += buf[i];
-    bass = bass / 4 / 255; // 0.0 - 1.0
+    bass = bass / 4 / 255;
     
-    // Bas vurduğunda daha belirgin tepki için üssel büyüme
     target = Math.pow(bass, 1.8) * 1.4;
   }
   
-  // Bas vurunca hızlı genişleme, sonra yumuşak sönümlenme
   lvl += (target - lvl) * (target > lvl ? .7 : .18);
 
   const idle = live ? 0 : (.5 + .5*Math.sin(t/1000)) * .015;
