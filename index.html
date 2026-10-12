@@ -20,12 +20,11 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
   -webkit-font-smoothing:antialiased}
 
-/* video + efektler */
+/* video + efektler (Parlaklık ve netlik için güncellendi) */
 #bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;
   transition:opacity .7s ease;transform:scale(1.02)}
-#bg.on{opacity:.9}
-.vig{position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.55) 80%,#000 125%)}
+#bg.on{opacity:1}
+.vig{display:none}
 
 /* avatar & discord wrapper */
 #av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:20px;pointer-events:none}
@@ -58,7 +57,6 @@ body.in .ui{opacity:1;transform:none}
 #pick span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #pick b{font-weight:400;opacity:.4;margin-left:8px}
 
-/* Video listesi güncellendi (max-height ve kaydırma eklendi) */
 #list{position:absolute;bottom:calc(100% + 10px);left:0;width:190px;max-height:200px;overflow-y:auto;padding:6px;border-radius:14px;
   background:rgba(7,7,10,.9);border:1px solid var(--line);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
   opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:bottom left;
@@ -77,7 +75,6 @@ body.in #cc{transform:translateX(-50%)}
 .cb{background:none;border:0;width:38px;height:34px;display:grid;place-items:center;cursor:pointer;color:rgba(255,255,255,.62);-webkit-user-select:none;user-select:none}
 .cb svg{width:14px;height:14px;fill:currentColor}
 
-/* Ses paneli ve çubuğu kalınlaştırıldı */
 #br{bottom:24px;right:22px;display:flex;align-items:center;gap:10px;padding:8px 14px;height:38px}
 #mute{background:none;border:0;cursor:pointer;display:grid;place-items:center;color:rgba(255,255,255,.6);transition:color .2s}
 #mute:hover{color:#fff}
@@ -155,6 +152,7 @@ const vids = [
   {n:"john wick",f:"john wick.MP4"},
   {n:"mother of dragon",f:"mother of dragon.MP4"},
   {n:"jurrasic",f:"jurrasic.MP4"},
+  {n:"batman",f:"batman.MP4"}
   {n:"shadow",f:"shadow.mp4"},
   {n:"atreides",f:"atreides.mp4"},
   {n:"prime",f:"prime.mp4"},
