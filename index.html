@@ -93,9 +93,12 @@ body.in #cc{transform:translateX(-50%)}
 #typed{font:500 1.05rem var(--mono);letter-spacing:.22em;min-height:1.6rem}
 #typed u{display:inline-block;width:8px;height:1.05rem;background:#fff;vertical-align:middle;margin-left:5px;animation:bk .8s steps(1) infinite}
 @keyframes bk{50%{opacity:0}}
-#enter{padding:12px 38px;border-radius:99px;background:rgba(255,255,255,.04);border:1px solid var(--line);
-  font:500 .76rem var(--mono);letter-spacing:.24em;cursor:pointer;opacity:0;transform:translateY(10px);pointer-events:none;
-  transition:opacity .5s,transform .5s}
+
+/* Sadeleştirilmiş giriş butonu */
+#enter{padding:8px 24px;border:none;background:transparent;color:rgba(255,255,255,.45);
+  font:400 .72rem var(--mono);letter-spacing:.28em;cursor:pointer;opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:all .4s ease}
+#enter:hover{color:#fff;letter-spacing:.32em}
 #enter.show{opacity:1;transform:none;pointer-events:auto}
 
 @media(max-width:768px){
@@ -152,7 +155,7 @@ const vids = [
   {n:"john wick",f:"john wick.MP4"},
   {n:"mother of dragon",f:"mother of dragon.MP4"},
   {n:"jurrasic",f:"jurrasic.MP4"},
-  {n:"batman",f:"batman.MP4"}
+  {n:"batman",f:"batman.MP4"},
   {n:"shadow",f:"shadow.mp4"},
   {n:"atreides",f:"atreides.mp4"},
   {n:"prime",f:"prime.mp4"},
