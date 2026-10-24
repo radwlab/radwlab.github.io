@@ -45,16 +45,17 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 #fx{position:fixed;inset:0;z-index:50;pointer-events:none}
 
 /* avatar */
-#av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:30px;pointer-events:none}
+#av-wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:58px;pointer-events:none}
 #avw{position:relative;width:112px;height:112px;will-change:transform}
 #av{width:100%;height:100%;border-radius:50%;overflow:hidden;display:grid;place-items:center;box-shadow:0 0 0 rgba(255,255,255,0)}
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
 
-#dc-btn{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;
-  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
-  color:rgba(255,255,255,.7);text-decoration:none;transition:all .25s ease;box-shadow:0 8px 24px rgba(0,0,0,.45)}
-#dc-btn:hover{color:#fff;background:rgba(88,101,242,.35);transform:scale(1.15);border-color:rgba(255,255,255,.3);box-shadow:0 0 26px rgba(88,101,242,.7)}
-#dc-btn svg{width:22px;height:22px;fill:currentColor}
+#dc-btn{pointer-events:auto;position:relative;display:inline-flex;align-items:center;justify-content:center;width:50px;height:44px;margin-top:6px;
+  border-radius:50% 50% 48% 48%/55% 55% 45% 45%;background:radial-gradient(circle at 38% 32%,#2e2e32,#0c0c0e 62%,#000);
+  border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.6);text-decoration:none;transition:transform .25s ease;animation:fl 2.6s ease-in-out infinite}
+@keyframes fl{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.07)}50%{box-shadow:0 0 4px rgba(255,255,255,.03)}}
+#dc-btn:hover{transform:scale(1.15) rotate(-6deg);color:rgba(255,255,255,.85)}
+#dc-btn svg{width:25px;height:25px;fill:currentColor;filter:none}
 
 /* paneller */
 .g{background:var(--glass);border:1px solid var(--line);border-radius:6px;
@@ -303,7 +304,6 @@ function start(){
   load(0, false);
   v.muted = false; v.volume = +$('vs').value;
   v.play().then(()=>setPP(true)).catch(()=>{ v.muted = true; v.play(); setPP(true); });
-  ripples.push({x:innerWidth/2, y:innerHeight/2, r:0, a:.8});
   flash.animate([{opacity:.9},{opacity:0}],{duration:900,easing:'ease-out'});
 }
 $('enter').onclick = start;
@@ -347,7 +347,6 @@ let mx = innerWidth/2, my = innerHeight/2, tx = 0, ty = 0;
 function pointer(x, y){ mx = x; my = y; tx = (x/W - .5); ty = (y/H - .5);  }
 addEventListener('mousemove', e => pointer(e.clientX, e.clientY));
 addEventListener('touchmove', e => pointer(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
-addEventListener('pointerdown', e => { if (started) ripples.push({x:e.clientX, y:e.clientY, r:0, a:.7}); });
 
 let sc = 1, lvl = 0, hue = 0;
 function frame(t){
