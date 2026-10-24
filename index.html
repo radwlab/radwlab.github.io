@@ -35,13 +35,13 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 
 /* sinematik katmanlar */
 .vig{position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.75) 100%)}
+  background:radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.4) 100%)}
 .scan{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px)}
 .grain{position:fixed;inset:-50%;z-index:3;pointer-events:none;opacity:.07;animation:gr .6s steps(6) infinite;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
 @keyframes gr{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
-#flash{position:fixed;inset:0;z-index:4;background:#fff;opacity:0;pointer-events:none}
+#flash{position:fixed;inset:0;z-index:4;background:#000;opacity:0;pointer-events:none}
 #fx{position:fixed;inset:0;z-index:50;pointer-events:none}
 
 /* avatar */
@@ -144,8 +144,7 @@ body.in #glow{opacity:1}
 </div>
 
 <video id="bg" loop playsinline webkit-playsinline preload="none"></video>
-<div class="vig"></div><div class="scan"></div><div class="grain"></div><div id="flash"></div>
-<div id="glow"></div>
+<div class="vig"></div><div id="flash"></div>
 <canvas id="fx"></canvas>
 
 <div id="av-wrapper">
@@ -351,7 +350,7 @@ const P = Array.from({length: innerWidth < 768 ? 40 : 80}, () => ({
 }));
 const ripples = [];
 let mx = innerWidth/2, my = innerHeight/2, tx = 0, ty = 0;
-function pointer(x, y){ mx = x; my = y; tx = (x/W - .5); ty = (y/H - .5); const g = $('glow'); g.style.transform = `translate(${x}px,${y}px)`; }
+function pointer(x, y){ mx = x; my = y; tx = (x/W - .5); ty = (y/H - .5);  }
 addEventListener('mousemove', e => pointer(e.clientX, e.clientY));
 addEventListener('touchmove', e => pointer(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
 addEventListener('pointerdown', e => { if (started) ripples.push({x:e.clientX, y:e.clientY, r:0, a:.7}); });
@@ -371,27 +370,12 @@ function frame(t){
   lvl += (target - lvl) * (target > lvl ? .7 : .18);
 
   const idle = live ? 0 : (.5 + .5*Math.sin(t/1000)) * .015;
-  sc = 1 + lvl * .22 + idle;
+  sc = .95 + lvl * .42 + idle;
   avw.style.transform = `translate(${tx*14}px,${ty*14}px) scale(${sc})`;
-  av.style.boxShadow = `0 0 ${lvl * 45}px rgba(255,255,255,${Math.min(lvl * 0.5, .8)}), 0 0 ${lvl * 20}px rgba(255,255,255,${Math.min(lvl*.4,.6)})`;
-  if (started) v.style.transform = `scale(${1.04 + lvl*.03}) translate(${-tx*8}px,${-ty*8}px)`;
+  av.style.boxShadow = `0 0 ${lvl * 26}px rgba(255,255,255,${Math.min(lvl * 0.22, .35)})`;
+  if (started) v.style.transform = `scale(${1.04 + lvl*.01}) translate(${-tx*8}px,${-ty*8}px)`;
 
   cx.clearRect(0, 0, W, H);
-
-  /* parçacıklar */
-  const boost = 1 + lvl * 7;
-  cx.fillStyle = 'rgba(255,255,255,.55)';
-  for (const p of P){
-    p.x += p.vx * boost; p.y += p.vy * boost;
-    if (p.x < 0) p.x = W; else if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; else if (p.y > H) p.y = 0;
-    cx.beginPath(); cx.arc(p.x, p.y, p.r + lvl*1.2, 0, 6.283); cx.fill();
-    const dx = p.x - mx, dy = p.y - my, d = Math.hypot(dx, dy);
-    if (started && d < 140){
-      cx.strokeStyle = `rgba(255,255,255,${(1 - d/140) * .5})`;
-      cx.lineWidth = .8; cx.beginPath(); cx.moveTo(p.x, p.y); cx.lineTo(mx, my); cx.stroke();
-    }
-  }
 
   /* tıklama dalgaları */
   for (let i = ripples.length - 1; i >= 0; i--){
@@ -401,24 +385,23 @@ function frame(t){
     if (r.a < .02) ripples.splice(i, 1);
   }
 
-  /* avatar çevresinde ses halkası */
+  /* avatar çevresinde ince, akışkan dalga */
   if (started){
     const b = avw.getBoundingClientRect();
     const cxp = b.left + b.width/2, cyp = b.top + b.height/2;
-    const N = 72, r0 = 72;
-    cx.lineCap = 'round'; cx.lineWidth = 2.6;
-    for (let i = 0; i < N; i++){
-      const k = i < N/2 ? i : N - 1 - i;
-      const val = live ? buf[2 + k*2] / 255 : .08 + .05*Math.sin(t/450 + i*.45);
-      const len = val * 46 + 2, a = i / N * 6.283 - 1.5708;
-      const c = Math.cos(a), s = Math.sin(a);
-      cx.strokeStyle = `rgba(255,255,255,${.3 + val*.7})`;
-      cx.beginPath();
-      cx.moveTo(cxp + c*r0, cyp + s*r0);
-      cx.lineTo(cxp + c*(r0+len), cyp + s*(r0+len));
-      cx.stroke();
+    const N = 128, r0 = 70;
+    cx.lineWidth = 1.5; cx.lineJoin = 'round';
+    cx.strokeStyle = `rgba(255,255,255,${.3 + lvl*.4})`;
+    cx.beginPath();
+    for (let i = 0; i <= N; i++){
+      const m = i % N, k = m < N/2 ? m : N - 1 - m;
+      const val = live ? buf[1 + Math.floor(k * 40 / 64)] / 255 : .15;
+      const a = m / N * 6.283 - 1.5708;
+      const rr = r0 + val * 9 + Math.sin(a*5 + t/600) * (1 + val*2.5);
+      const px = cxp + Math.cos(a)*rr, py = cyp + Math.sin(a)*rr;
+      i ? cx.lineTo(px, py) : cx.moveTo(px, py);
     }
-    if (live && lvl > .55 && Math.random() < .5) ripples.push({x:cxp, y:cyp, r:r0, a:.25});
+    cx.stroke();
   }
 
   if (started && v.duration) $('prog').style.width = (v.currentTime/v.duration*100) + '%';
