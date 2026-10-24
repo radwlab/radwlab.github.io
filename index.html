@@ -385,25 +385,6 @@ function frame(t){
     if (r.a < .02) ripples.splice(i, 1);
   }
 
-  /* avatar çevresinde ince, akışkan dalga */
-  if (started){
-    const b = avw.getBoundingClientRect();
-    const cxp = b.left + b.width/2, cyp = b.top + b.height/2;
-    const N = 128, r0 = 70;
-    cx.lineWidth = 1.5; cx.lineJoin = 'round';
-    cx.strokeStyle = `rgba(255,255,255,${.3 + lvl*.4})`;
-    cx.beginPath();
-    for (let i = 0; i <= N; i++){
-      const m = i % N, k = m < N/2 ? m : N - 1 - m;
-      const val = live ? buf[1 + Math.floor(k * 40 / 64)] / 255 : .15;
-      const a = m / N * 6.283 - 1.5708;
-      const rr = r0 + val * 9 + Math.sin(a*5 + t/600) * (1 + val*2.5);
-      const px = cxp + Math.cos(a)*rr, py = cyp + Math.sin(a)*rr;
-      i ? cx.lineTo(px, py) : cx.moveTo(px, py);
-    }
-    cx.stroke();
-  }
-
   if (started && v.duration) $('prog').style.width = (v.currentTime/v.duration*100) + '%';
 }
 requestAnimationFrame(frame);
