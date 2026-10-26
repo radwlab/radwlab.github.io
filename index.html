@@ -144,11 +144,27 @@ body.in #cc{transform:translateX(-50%)}
 
 @media(max-width:768px){
   #tl{top:14px;left:14px;padding:8px 12px}
-  #bl{left:14px;bottom:20px}#pick{width:104px;padding:10px 12px}
-  #cc{bottom:20px}#br{right:14px;bottom:20px;padding:7px 11px;gap:16px}#vol{width:50px}
-  .cb{width:40px;height:40px}#dock{gap:8px;padding:7px}
+
+  /* avatar + discord küçülsün */
+  #av-wrapper{gap:30px;top:44%}
+  #avw{width:84px;height:84px}
+  #dc-row{gap:8px;margin-top:0}
+  #dc-text{height:38px;padding:0 15px;font-size:.68rem;letter-spacing:.18em}
+  #dc-btn{width:38px;height:38px}
+  #dc-btn svg{width:18px;height:18px}
+
+  /* alt kısım: dock en altta, liste + ses onun üstünde yan yana */
+  #cc{bottom:20px}
+  .cb{width:40px;height:40px}
+  #dock{gap:8px;padding:7px}
+
+  #bl{left:14px;bottom:128px}
+  #pick{width:104px;padding:10px 12px}
+  #list{width:150px;bottom:calc(100% + 14px);max-height:180px;overflow-y:auto}
+
+  #br{right:14px;bottom:128px;padding:7px 11px;gap:14px;height:46px}
   #mute{width:34px;height:34px}
-  #list{width:150px;bottom:calc(100% + 54px);max-height:180px;overflow-y:auto}
+  #vol{width:60px}
 }
 </style>
 </head>
@@ -398,7 +414,7 @@ function frame(t){
   lvl += (target - lvl) * (target > lvl ? .7 : .18);
 
   const idle = live ? 0 : (.5 + .5*Math.sin(t/1000)) * .015;
-  sc = .95 + lvl * .42 + idle;
+  sc = .95 + lvl * (W < 768 ? .18 : .42) + idle;
   avw.style.transform = `translate(${tx*14}px,${ty*14}px) scale(${sc})`;
   av.style.boxShadow = `0 0 ${lvl * 26}px rgba(255,255,255,${Math.min(lvl * 0.22, .35)})`;
   if (started) v.style.transform = `scale(${1.04 + lvl*.01}) translate(${-tx*8}px,${-ty*8}px)`;
