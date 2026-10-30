@@ -25,14 +25,6 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 #bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;
   transition:opacity .7s ease;transform:scale(1.04);will-change:transform}
 #bg.on{opacity:1}
-#bg.gl{animation:glitch .45s steps(2,end)}
-@keyframes glitch{
-  0%{filter:hue-rotate(0) saturate(1);clip-path:inset(0)}
-  20%{filter:hue-rotate(90deg) saturate(3) contrast(1.4);clip-path:inset(12% 0 55% 0);transform:scale(1.04) translateX(-14px)}
-  40%{filter:hue-rotate(-60deg) saturate(2);clip-path:inset(60% 0 8% 0);transform:scale(1.04) translateX(16px)}
-  60%{filter:hue-rotate(160deg) contrast(1.6);clip-path:inset(30% 0 30% 0);transform:scale(1.04) translateX(-8px)}
-  100%{filter:none;clip-path:inset(0)}
-}
 
 /* mat siyah katmanlar */
 .vig{position:fixed;inset:0;z-index:2;pointer-events:none;
@@ -140,7 +132,7 @@ body.in #cc{transform:translateX(-50%)}
   .cb:active,#dc-btn:active,#dc-text:active{transform:scale(1.15)}
   #pick:active{transform:scale(1.06)}
 }
-@media(prefers-reduced-motion:reduce){.dot{animation:none}#bg.gl{animation:none}}
+@media(prefers-reduced-motion:reduce){.dot{animation:none}}
 
 @media(max-width:768px){
   #tl{top:14px;left:14px;padding:8px 12px}
@@ -213,6 +205,7 @@ body.in #cc{transform:translateX(-50%)}
 
 <script>
 const vids = [
+  {n:"morty",f:"c137.mp4"},
   {n:"batman",f:"batman.mp4"},
   {n:"cod",f:"cod.mp4"},
   {n:"bumblebee",f:"bee.mp4"},
@@ -228,7 +221,6 @@ const vids = [
   {n:"prime",f:"prime.mp4"},
   {n:"bumblebee",f:"bumblebee.mp4"},
   {n:"southpaw",f:"southpaw.MP4"},
-  {n:"morty",f:"c137.mp4"},
   {n:"scream",f:"scream.mp4"}
 ];
 const $ = id => document.getElementById(id);
@@ -273,14 +265,11 @@ function load(i, fx = true){
   v.src = vids[idx].f;
   v.load();
   v.play().catch(()=>{});
-  if (fx) glitch();
+  if (fx) {
+    scramble($('name'), vids[idx].n);
+    scramble($('pickName'), vids[idx].n);
+  }
   ui();
-}
-function glitch(){
-  v.classList.remove('gl'); void v.offsetWidth; v.classList.add('gl');
-  flash.animate([{opacity:.55},{opacity:0}],{duration:420,easing:'ease-out'});
-  const n = $('name'); scramble(n, vids[idx].n);
-  scramble($('pickName'), vids[idx].n);
 }
 v.addEventListener('loadeddata', () => v.classList.add('on'));
 
