@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>forever</title>
-<link rel="icon" href="mertbest.png">
-<link rel="apple-touch-icon" href="mertbest.png">
+<link rel="icon" type="image/png" sizes="512x512" href="mertbest.png">
+<link rel="shortcut icon" href="mertbest.png">
+<link rel="apple-touch-icon" sizes="512x512" href="mertbest.png">
 <style>
 :root{
   --line:rgba(255,255,255,.075);
@@ -39,14 +40,32 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
   box-shadow:0 0 0 rgba(255,255,255,0);border:1px solid rgba(255,255,255,.1)}
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
 
-#dc-row{pointer-events:auto;display:flex;align-items:center;gap:12px;margin-top:6px}
-#dc-text{display:grid;place-items:center;height:46px;padding:0 20px;border-radius:99px;background:rgba(9,9,9,.6);
-  border:1px solid rgba(255,255,255,calc(.08 + var(--m,0)*.2));color:rgba(255,255,255,calc(.55 + var(--m,0)*.45));
-  font:500 .78rem var(--mono);letter-spacing:.22em;text-decoration:none;will-change:transform}
-#dc-btn{pointer-events:auto;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;
-  background:rgba(9,9,9,.6);border:1px solid rgba(255,255,255,calc(.08 + var(--m,0)*.2));
-  color:rgba(255,255,255,calc(.55 + var(--m,0)*.45));text-decoration:none;will-change:transform}
-#dc-btn svg{width:22px;height:22px;fill:currentColor}
+/* video listesi butonu + aşağı açılan liste */
+#dc-row{pointer-events:auto;display:flex;align-items:center;justify-content:center;margin-top:6px}
+#lw{position:relative;display:flex;justify-content:center}
+#lb{display:flex;align-items:center;gap:11px;height:46px;padding:0 20px;border-radius:99px;cursor:pointer;
+  background:rgba(9,9,9,.6);
+  border:1px solid rgba(255,255,255,calc(.08 + var(--m,0)*.2));
+  color:rgba(255,255,255,calc(.55 + var(--m,0)*.45));
+  font:500 .78rem var(--mono);letter-spacing:.22em;
+  -webkit-user-select:none;user-select:none;will-change:transform}
+#lb svg{width:16px;height:16px;fill:currentColor;flex:none}
+#lb .chev{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .45s cubic-bezier(.16,1,.3,1)}
+#lb.open .chev{transform:rotate(180deg)}
+
+#dlist{position:absolute;top:calc(100% + 14px);left:50%;width:210px;margin-left:-105px;max-height:230px;overflow-y:auto;padding:6px;
+  background:rgba(8,8,8,.84);border:1px solid var(--line);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  box-shadow:0 18px 50px rgba(0,0,0,.6);
+  opacity:0;visibility:hidden;transform:translateY(-12px);
+  clip-path:inset(0 0 100% 0 round 14px);border-radius:14px;
+  transition:clip-path .55s cubic-bezier(.16,1,.3,1),opacity .3s ease,transform .55s cubic-bezier(.16,1,.3,1),visibility 0s .55s}
+#dlist.open{opacity:1;visibility:visible;transform:none;clip-path:inset(0 0 0 0 round 14px);
+  transition:clip-path .55s cubic-bezier(.16,1,.3,1),opacity .3s ease,transform .55s cubic-bezier(.16,1,.3,1),visibility 0s 0s}
+#dlist .it{opacity:0;transform:translateY(-10px);transition:opacity .2s ease,transform .2s ease,color .15s,background .15s}
+#dlist.open .it{opacity:1;transform:none;
+  transition:opacity .4s ease calc(var(--i)*32ms + 140ms),transform .45s cubic-bezier(.16,1,.3,1) calc(var(--i)*32ms + 140ms),color .15s,background .15s}
 
 /* paneller: mat siyah cam */
 .g{background:var(--glass);border:1px solid var(--line);border-radius:14px;
@@ -63,11 +82,6 @@ body.in .ui{opacity:1;transform:none}
 #rootname .root-char:nth-child(2){animation-delay:.12s}
 #rootname .root-char:nth-child(3){animation-delay:.24s}
 #rootname .root-char:nth-child(4){animation-delay:.36s}
-#rootname .root-char:nth-child(5){animation-delay:.48s}
-#rootname .root-char:nth-child(6){animation-delay:.60s}
-#rootname .root-char:nth-child(7){animation-delay:.72s}
-#rootname .root-char:nth-child(8){animation-delay:.84s}
-#rootname .root-char:nth-child(9){animation-delay:.96s}
 @keyframes rootMono{0%,100%{color:rgba(245,245,245,.62);text-shadow:none}50%{color:rgba(35,35,35,.58);text-shadow:none}}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e8e8e8;box-shadow:0 0 8px rgba(255,255,255,.45);margin-right:7px;animation:pl 2.4s ease-in-out infinite}
 @keyframes pl{50%{opacity:.3}}
@@ -116,8 +130,13 @@ body.in #cc{transform:translateX(-50%)}
   transition:opacity 1s ease,visibility 1s,filter 1s,transform 1s}
 #splash.out{opacity:0;visibility:hidden;filter:blur(14px);transform:scale(1.15);pointer-events:none}
 #typed{font:500 1.15rem var(--mono);letter-spacing:.25em;min-height:1.6rem;position:relative}
+/* renksiz glitch: sadece beyaz/gri gölgeler */
 #typed.gl{animation:tg .35s steps(2) 1}
-@keyframes tg{0%{text-shadow:3px 0 #f0f,-3px 0 #0ff;transform:translateX(-3px)}50%{text-shadow:-4px 0 #f0f,4px 0 #0ff;transform:translateX(4px)}100%{text-shadow:none;transform:none}}
+@keyframes tg{
+  0%{text-shadow:3px 0 rgba(255,255,255,.55),-3px 0 rgba(110,110,110,.55);transform:translateX(-3px)}
+  50%{text-shadow:-4px 0 rgba(255,255,255,.55),4px 0 rgba(110,110,110,.55);transform:translateX(4px)}
+  100%{text-shadow:none;transform:none}
+}
 #typed u{display:inline-block;width:8px;height:1.1rem;background:#fff;vertical-align:middle;margin-left:5px;animation:bk .8s steps(1) infinite}
 @keyframes bk{50%{opacity:0}}
 #enter{padding:11px 30px;border:1px solid rgba(255,255,255,.14);border-radius:99px;background:rgba(255,255,255,.025);color:rgba(255,255,255,.55);
@@ -128,8 +147,8 @@ body.in #cc{transform:translateX(-50%)}
 
 /* dokunmatik ekran: hover yok, basınca büyüsün */
 @media(hover:none){
-  .cb,#dc-btn,#dc-text,#pick{transition:transform .18s ease}
-  .cb:active,#dc-btn:active,#dc-text:active{transform:scale(1.15)}
+  .cb,#lb,#pick{transition:transform .18s ease}
+  .cb:active,#lb:active{transform:scale(1.15)}
   #pick:active{transform:scale(1.06)}
 }
 @media(prefers-reduced-motion:reduce){.dot{animation:none}}
@@ -137,13 +156,13 @@ body.in #cc{transform:translateX(-50%)}
 @media(max-width:768px){
   #tl{top:14px;left:14px;padding:8px 12px}
 
-  /* avatar + discord küçülsün */
+  /* avatar + buton küçülsün */
   #av-wrapper{gap:30px;top:44%}
   #avw{width:84px;height:84px}
-  #dc-row{gap:8px;margin-top:0}
-  #dc-text{height:38px;padding:0 15px;font-size:.68rem;letter-spacing:.18em}
-  #dc-btn{width:38px;height:38px}
-  #dc-btn svg{width:18px;height:18px}
+  #dc-row{margin-top:0}
+  #lb{height:38px;padding:0 15px;font-size:.68rem;letter-spacing:.18em;gap:9px}
+  #lb svg{width:14px;height:14px}
+  #dlist{width:190px;margin-left:-95px;max-height:170px}
 
   /* alt kısım: dock en altta, liste + ses onun üstünde yan yana */
   #cc{bottom:20px}
@@ -174,14 +193,18 @@ body.in #cc{transform:translateX(-50%)}
 <div id="av-wrapper">
   <div id="avw"><div id="av"><img src="mert.PNG" alt=""></div></div>
   <div id="dc-row">
-    <a id="dc-btn" data-mag="1.3" data-sig="45" aria-label="Discord" href="https://discord.gg/ebedi" target="_blank" rel="noopener" title="Discord">
-    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.098.245.195.372.288a.077.077 0 0 1-.006.128c-.598.35-1.222.648-1.873.892-.041.016-.062.064-.041.106.356.699.768 1.364 1.225 1.994.019.027.054.038.085.029a19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-  </a>
-    <a id="dc-text" data-mag="1.12" data-sig="60" href="https://discord.gg/ebedi" target="_blank" rel="noopener">ebedi</a>
+    <div id="lw">
+      <button id="lb" data-mag="1.14" data-sig="70" aria-label="video listesi" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg>
+        <span>videolar</span>
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="dlist"></div>
+    </div>
   </div>
 </div>
 
-<div id="tl" class="ui g"><span id="rootname" aria-label="root@mert"><span class="root-char">r</span><span class="root-char">o</span><span class="root-char">o</span><span class="root-char">t</span><span class="root-char">@</span><span class="root-char">m</span><span class="root-char">e</span><span class="root-char">r</span><span class="root-char">t</span></span><i class="sep"></i><span><i class="dot"></i><span id="ping">-- ms</span></span><i class="sep"></i><span id="clock">00:00:00</span></div>
+<div id="tl" class="ui g"><span id="rootname" aria-label="mert"><span class="root-char">m</span><span class="root-char">e</span><span class="root-char">r</span><span class="root-char">t</span></span><i class="sep"></i><span><i class="dot"></i><span id="ping">-- ms</span></span><i class="sep"></i><span id="clock">00:00:00</span></div>
 
 <div id="bl" class="ui">
   <div id="list"></div>
@@ -282,13 +305,33 @@ function ui(){
   $('num').textContent = String(idx+1).padStart(2,'0') + '/' + String(vids.length).padStart(2,'0');
   $('list').innerHTML = vids.map((x,k) =>
     `<div class="it ${k===idx?'act':''}" data-k="${k}"><em>${String(k+1).padStart(2,'0')}</em>${x.n}</div>`).join('');
+  $('dlist').innerHTML = vids.map((x,k) =>
+    `<div class="it ${k===idx?'act':''}" data-k="${k}" style="--i:${k}"><em>${String(k+1).padStart(2,'0')}</em>${x.n}</div>`).join('');
 }
+
+/* alttaki klasik liste */
 $('list').addEventListener('click', e => {
   const it = e.target.closest('.it'); if (!it) return;
   load(+it.dataset.k); setPP(true); $('list').classList.remove('open');
 });
 $('pick').onclick = e => { e.stopPropagation(); $('list').classList.toggle('open'); };
-document.addEventListener('click', e => { if (!$('bl').contains(e.target)) $('list').classList.remove('open'); });
+
+/* avatar altındaki buton: aşağı doğru animasyonlu açılan liste */
+function setDrop(open){
+  $('dlist').classList.toggle('open', open);
+  $('lb').classList.toggle('open', open);
+  $('lb').setAttribute('aria-expanded', open);
+}
+$('lb').onclick = e => { e.stopPropagation(); setDrop(!$('dlist').classList.contains('open')); };
+$('dlist').addEventListener('click', e => {
+  const it = e.target.closest('.it'); if (!it) return;
+  load(+it.dataset.k); setPP(true); setDrop(false);
+});
+
+document.addEventListener('click', e => {
+  if (!$('bl').contains(e.target)) $('list').classList.remove('open');
+  if (!$('lw').contains(e.target)) setDrop(false);
+});
 
 function setPP(p){ $('ppi').innerHTML = p ? PAUSE : PLAY; }
 function toggle(){ if (v.paused) { v.play().catch(()=>{}); setPP(true); } else { v.pause(); setPP(false); } }
@@ -344,6 +387,7 @@ addEventListener('keydown', e => {
   if (e.code === 'Space') { e.preventDefault(); toggle(); }
   else if (e.key === 'ArrowRight') $('next').click();
   else if (e.key === 'ArrowLeft') $('prev').click();
+  else if (e.key === 'Escape') { setDrop(false); $('list').classList.remove('open'); }
   else if (e.key.toLowerCase() === 'm') $('mute').click();
 });
 
@@ -368,12 +412,6 @@ async function ping(){
   } catch { $('ping').textContent = navigator.onLine ? '-- ms' : 'offline'; }
 }
 ping(); setInterval(ping, 5000);
-
-/* sekme başlığı animasyonu */
-const T = "forever", seq = [];
-for (let i = 1; i <= T.length; i++) seq.push(T.slice(0,i));
-for (let i = T.length - 1; i >= 1; i--) seq.push(T.slice(0,i));
-let ti = 0; setInterval(() => { document.title = seq[ti++ % seq.length] + "_"; }, 400);
 
 /* canvas: parçacıklar + ses halkası + dalga efekti */
 const cv = $('fx'), cx = cv.getContext('2d');
@@ -406,7 +444,8 @@ function frame(t){
 
   const idle = live ? 0 : (.5 + .5*Math.sin(t/1000)) * .015;
   sc = .95 + lvl * (W < 768 ? .18 : .42) + idle;
-  avw.style.transform = `translate(${tx*14}px,${ty*14}px) scale(${sc})`;
+  /* avatar artık mouse'u takip etmiyor: sadece ses ile büyür/küçülür */
+  avw.style.transform = `scale(${sc})`;
   av.style.boxShadow = `0 0 ${lvl * 26}px rgba(255,255,255,${Math.min(lvl * 0.22, .35)})`;
   if (started) v.style.transform = `scale(${1.04 + lvl*.01}) translate(${-tx*8}px,${-ty*8}px)`;
 
