@@ -40,33 +40,6 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
   box-shadow:0 0 0 rgba(255,255,255,0);border:1px solid rgba(255,255,255,.1)}
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
 
-/* video listesi butonu + aşağı açılan liste */
-#dc-row{pointer-events:auto;display:flex;align-items:center;justify-content:center;margin-top:6px}
-#lw{position:relative;display:flex;justify-content:center}
-#lb{display:flex;align-items:center;gap:11px;height:46px;padding:0 20px;border-radius:99px;cursor:pointer;
-  background:rgba(9,9,9,.6);
-  border:1px solid rgba(255,255,255,calc(.08 + var(--m,0)*.2));
-  color:rgba(255,255,255,calc(.55 + var(--m,0)*.45));
-  font:500 .78rem var(--mono);letter-spacing:.22em;
-  -webkit-user-select:none;user-select:none;will-change:transform}
-#lb svg{width:16px;height:16px;fill:currentColor;flex:none}
-#lb .chev{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
-  transition:transform .45s cubic-bezier(.16,1,.3,1)}
-#lb.open .chev{transform:rotate(180deg)}
-
-#dlist{position:absolute;top:calc(100% + 14px);left:50%;width:210px;margin-left:-105px;max-height:230px;overflow-y:auto;padding:6px;
-  background:rgba(8,8,8,.84);border:1px solid var(--line);
-  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
-  box-shadow:0 18px 50px rgba(0,0,0,.6);
-  opacity:0;visibility:hidden;transform:translateY(-12px);
-  clip-path:inset(0 0 100% 0 round 14px);border-radius:14px;
-  transition:clip-path .55s cubic-bezier(.16,1,.3,1),opacity .3s ease,transform .55s cubic-bezier(.16,1,.3,1),visibility 0s .55s}
-#dlist.open{opacity:1;visibility:visible;transform:none;clip-path:inset(0 0 0 0 round 14px);
-  transition:clip-path .55s cubic-bezier(.16,1,.3,1),opacity .3s ease,transform .55s cubic-bezier(.16,1,.3,1),visibility 0s 0s}
-#dlist .it{opacity:0;transform:translateY(-10px);transition:opacity .2s ease,transform .2s ease,color .15s,background .15s}
-#dlist.open .it{opacity:1;transform:none;
-  transition:opacity .4s ease calc(var(--i)*32ms + 140ms),transform .45s cubic-bezier(.16,1,.3,1) calc(var(--i)*32ms + 140ms),color .15s,background .15s}
-
 /* paneller: mat siyah cam */
 .g{background:var(--glass);border:1px solid var(--line);border-radius:14px;
   backdrop-filter:blur(26px) brightness(.72);-webkit-backdrop-filter:blur(26px) brightness(.72);
@@ -147,8 +120,8 @@ body.in #cc{transform:translateX(-50%)}
 
 /* dokunmatik ekran: hover yok, basınca büyüsün */
 @media(hover:none){
-  .cb,#lb,#pick{transition:transform .18s ease}
-  .cb:active,#lb:active{transform:scale(1.15)}
+  .cb,#pick{transition:transform .18s ease}
+  .cb:active{transform:scale(1.15)}
   #pick:active{transform:scale(1.06)}
 }
 @media(prefers-reduced-motion:reduce){.dot{animation:none}}
@@ -156,14 +129,9 @@ body.in #cc{transform:translateX(-50%)}
 @media(max-width:768px){
   #tl{top:14px;left:14px;padding:8px 12px}
 
-  /* avatar + buton küçülsün */
-  #av-wrapper{gap:30px;top:44%}
+  /* avatar küçülsün */
+  #av-wrapper{top:50%}
   #avw{width:84px;height:84px}
-  #dc-row{margin-top:0}
-  #lb{height:38px;padding:0 15px;font-size:.68rem;letter-spacing:.18em;gap:9px}
-  #lb svg{width:14px;height:14px}
-  #dlist{width:190px;margin-left:-95px;max-height:170px}
-
   /* alt kısım: dock en altta, liste + ses onun üstünde yan yana */
   #cc{bottom:20px}
   .cb{width:40px;height:40px}
@@ -192,16 +160,6 @@ body.in #cc{transform:translateX(-50%)}
 
 <div id="av-wrapper">
   <div id="avw"><div id="av"><img src="mert.PNG" alt=""></div></div>
-  <div id="dc-row">
-    <div id="lw">
-      <button id="lb" data-mag="1.14" data-sig="70" aria-label="video listesi" aria-expanded="false">
-        <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg>
-        <span>videolar</span>
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div id="dlist"></div>
-    </div>
-  </div>
 </div>
 
 <div id="tl" class="ui g"><span id="rootname" aria-label="mert"><span class="root-char">m</span><span class="root-char">e</span><span class="root-char">r</span><span class="root-char">t</span></span><i class="sep"></i><span><i class="dot"></i><span id="ping">-- ms</span></span><i class="sep"></i><span id="clock">00:00:00</span></div>
@@ -305,8 +263,6 @@ function ui(){
   $('num').textContent = String(idx+1).padStart(2,'0') + '/' + String(vids.length).padStart(2,'0');
   $('list').innerHTML = vids.map((x,k) =>
     `<div class="it ${k===idx?'act':''}" data-k="${k}"><em>${String(k+1).padStart(2,'0')}</em>${x.n}</div>`).join('');
-  $('dlist').innerHTML = vids.map((x,k) =>
-    `<div class="it ${k===idx?'act':''}" data-k="${k}" style="--i:${k}"><em>${String(k+1).padStart(2,'0')}</em>${x.n}</div>`).join('');
 }
 
 /* alttaki klasik liste */
@@ -316,21 +272,8 @@ $('list').addEventListener('click', e => {
 });
 $('pick').onclick = e => { e.stopPropagation(); $('list').classList.toggle('open'); };
 
-/* avatar altındaki buton: aşağı doğru animasyonlu açılan liste */
-function setDrop(open){
-  $('dlist').classList.toggle('open', open);
-  $('lb').classList.toggle('open', open);
-  $('lb').setAttribute('aria-expanded', open);
-}
-$('lb').onclick = e => { e.stopPropagation(); setDrop(!$('dlist').classList.contains('open')); };
-$('dlist').addEventListener('click', e => {
-  const it = e.target.closest('.it'); if (!it) return;
-  load(+it.dataset.k); setPP(true); setDrop(false);
-});
-
 document.addEventListener('click', e => {
   if (!$('bl').contains(e.target)) $('list').classList.remove('open');
-  if (!$('lw').contains(e.target)) setDrop(false);
 });
 
 function setPP(p){ $('ppi').innerHTML = p ? PAUSE : PLAY; }
@@ -387,7 +330,7 @@ addEventListener('keydown', e => {
   if (e.code === 'Space') { e.preventDefault(); toggle(); }
   else if (e.key === 'ArrowRight') $('next').click();
   else if (e.key === 'ArrowLeft') $('prev').click();
-  else if (e.key === 'Escape') { setDrop(false); $('list').classList.remove('open'); }
+  else if (e.key === 'Escape') $('list').classList.remove('open');
   else if (e.key.toLowerCase() === 'm') $('mute').click();
 });
 
