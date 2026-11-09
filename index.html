@@ -42,11 +42,11 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 
 /* spotify ikonu */
 #spt{pointer-events:auto;display:grid;place-items:center;width:40px;height:40px;margin-top:-22px;
-  background:none;border:0;border-radius:0;box-shadow:none;
-  filter:drop-shadow(0 0 3px rgba(255,255,255,.55)) drop-shadow(0 0 1px rgba(255,255,255,.35));
+  background:none;border:0;box-shadow:none;
+  filter:drop-shadow(0 0 2px rgba(255,255,255,.25));
   transition:transform .25s cubic-bezier(.16,1,.3,1),filter .25s}
-#spt svg{width:100%;height:100%;fill:none;stroke:#000;stroke-width:2.3;stroke-linecap:round;overflow:visible}
-#spt:hover{transform:scale(1.15);filter:drop-shadow(0 0 5px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(255,255,255,.4))}
+#spt svg{width:100%;height:100%;display:block}
+#spt:hover{transform:scale(1.15);filter:drop-shadow(0 0 4px rgba(255,255,255,.45))}
 #spt:active{transform:scale(1.05)}
 
 /* paneller: mat siyah cam */
@@ -173,9 +173,17 @@ body.in #cc{transform:translateX(-50%)}
 
   <a id="spt" href="https://open.spotify.com/user/31alpf7nibvvp7nhatbqesppru64?si=z_hD58ipTRSOAK1heR8dPg&utm_source=copy-link" target="_blank" rel="noopener" aria-label="spotify">
     <svg viewBox="0 0 24 24">
-      <path d="M3.5 8.4 Q12 5 20.5 8.4" pathLength="100" stroke-dasharray="64 7 29"/>
-      <path d="M5 12.6 Q12 10 19 12.6"/>
-      <path d="M6.6 16.8 Q12 15 17.4 16.8"/>
+      <defs>
+        <mask id="sptm">
+          <rect width="24" height="24" fill="#fff"/>
+          <g fill="none" stroke="#000" stroke-width="1.9" stroke-linecap="round">
+            <path d="M5.4 8.6 Q12 5.8 18.6 8.6" pathLength="100" stroke-dasharray="62 9 29"/>
+            <path d="M6.4 12.4 Q12 10.2 17.6 12.4"/>
+            <path d="M7.6 16 Q12 14.6 16.4 16"/>
+          </g>
+        </mask>
+      </defs>
+      <circle cx="12" cy="12" r="11.5" fill="#000" mask="url(#sptm)"/>
     </svg>
   </a>
 </div>
