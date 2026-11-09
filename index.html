@@ -41,12 +41,12 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
 
 /* spotify ikonu */
-#spt{pointer-events:auto;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
-  background:#fff;padding:2px;margin-top:-22px;
-  box-shadow:0 6px 20px rgba(0,0,0,.5);
-  transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s}
-#spt svg{width:100%;height:100%;fill:#000}
-#spt:hover{transform:scale(1.15);box-shadow:0 8px 28px rgba(255,255,255,.18)}
+#spt{pointer-events:auto;display:grid;place-items:center;width:40px;height:40px;margin-top:-22px;
+  background:none;border:0;border-radius:0;box-shadow:none;
+  filter:drop-shadow(0 0 3px rgba(255,255,255,.55)) drop-shadow(0 0 1px rgba(255,255,255,.35));
+  transition:transform .25s cubic-bezier(.16,1,.3,1),filter .25s}
+#spt svg{width:100%;height:100%;fill:none;stroke:#000;stroke-width:2.3;stroke-linecap:round;overflow:visible}
+#spt:hover{transform:scale(1.15);filter:drop-shadow(0 0 5px rgba(255,255,255,.75)) drop-shadow(0 0 1px rgba(255,255,255,.4))}
 #spt:active{transform:scale(1.05)}
 
 /* paneller: mat siyah cam */
@@ -141,7 +141,7 @@ body.in #cc{transform:translateX(-50%)}
   /* avatar küçülsün */
   #av-wrapper{top:50%}
   #avw{width:84px;height:84px}
-  #spt{width:34px;height:34px;margin-top:-30px}
+  #spt{width:36px;height:36px;margin-top:-28px}
   /* alt kısım: dock en altta, liste + ses onun üstünde yan yana */
   #cc{bottom:20px}
   .cb{width:40px;height:40px}
@@ -172,7 +172,11 @@ body.in #cc{transform:translateX(-50%)}
   <div id="avw"><div id="av"><img src="mert.png" alt=""></div></div>
 
   <a id="spt" href="https://open.spotify.com/user/31alpf7nibvvp7nhatbqesppru64?si=z_hD58ipTRSOAK1heR8dPg&utm_source=copy-link" target="_blank" rel="noopener" aria-label="spotify">
-    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    <svg viewBox="0 0 24 24">
+      <path d="M3.5 8.4 Q12 5 20.5 8.4" pathLength="100" stroke-dasharray="64 7 29"/>
+      <path d="M5 12.6 Q12 10 19 12.6"/>
+      <path d="M6.6 16.8 Q12 15 17.4 16.8"/>
+    </svg>
   </a>
 </div>
 
