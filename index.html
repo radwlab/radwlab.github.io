@@ -34,7 +34,7 @@ html,body{height:100%;overflow:hidden;background:#000;color:#fff;font-family:var
 #flash{position:fixed;inset:0;z-index:4;background:#000;opacity:0;pointer-events:none}
 
 /* avatar */
-#av-wrapper{position:fixed;left:50%;top:48%;transform:translate(-50%,-50%);z-index:60;pointer-events:none}
+#av-wrapper{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:60;pointer-events:none}
 #avw{position:relative;width:112px;height:112px;will-change:transform}
 #av{width:100%;height:100%;border-radius:50%;overflow:hidden;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16)}
 #av img{width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
@@ -114,21 +114,43 @@ body.in #cc{transform:translateX(-50%)}
 #prog{display:none}
 
 /* discord kartı */
-#dc{top:calc(48% + 104px);left:50%;transform:translate(-50%,14px);display:none;align-items:center;gap:12px;padding:8px 18px 8px 8px;
-  border:1px solid var(--line);border-radius:99px;background:rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  color:#fff;max-width:min(320px,88vw);transition:opacity .9s .5s var(--ease),transform .9s .5s var(--ease),border-color .3s,background .3s}
+#dc{top:calc(42% + 104px);left:50%;transform:translate(-50%,14px);display:none;flex-direction:column;gap:12px;width:min(330px,90vw);padding:14px;
+  border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#fff}
 body.in #dc{transform:translateX(-50%)}
 #dc.ready{display:flex}
-#dcav{position:relative;width:36px;height:36px;flex:none}
-#dcav img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
-#dcst{position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:50%;border:2px solid #0b0b0b;background:#6b6b6b}
-#dcst.online{background:#e8e8e8}
+#dch{display:flex;align-items:center;gap:12px}
+#dcav{position:relative;width:48px;height:48px;flex:none}
+#dcimg{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+#dcdeco{position:absolute;left:-12%;top:-12%;width:124%;height:124%;pointer-events:none;display:none}
+#dcst{position:absolute;right:-2px;bottom:-2px;width:13px;height:13px;border-radius:50%;border:2.5px solid #0b0b0b;background:#6b6b6b}
+#dcst.online{background:#f0f0f0}
 #dcst.idle{background:#a8a8a8}
 #dcst.dnd{background:#7a7a7a}
 #dcst.offline{background:#3a3a3a}
-#dctx{display:flex;flex-direction:column;gap:3px;min-width:0}
-#dcname{font:600 .78rem var(--sans);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#dcact{font:500 .62rem var(--mono);letter-spacing:.1em;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dcid{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+#dcrow{display:flex;align-items:center;gap:8px;min-width:0}
+#dcname{font:600 .92rem var(--sans);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dctag{font:600 .56rem var(--mono);letter-spacing:.12em;padding:2px 6px;border:1px solid var(--line);border-radius:5px;color:rgba(255,255,255,.8);flex:none}
+#dcuser{font:500 .66rem var(--mono);letter-spacing:.08em;color:var(--dim)}
+#dcplat{display:flex;gap:8px;color:var(--dim);flex:none}
+.plat svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block}
+#dcbadges{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 .56rem var(--mono);letter-spacing:.12em;padding:3px 8px;border:1px solid var(--line);border-radius:99px;color:rgba(255,255,255,.7)}
+#dccs{display:flex;align-items:center;gap:8px;font:500 .74rem var(--sans);letter-spacing:.03em;color:rgba(255,255,255,.88);padding-top:12px;border-top:1px solid var(--line);min-width:0}
+#dccs span:not(.emo){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dccs .dim{color:var(--dim);font-family:var(--mono);font-size:.66rem;letter-spacing:.12em}
+.emo{width:18px;height:18px;flex:none;font-size:1rem;line-height:18px;text-align:center}
+#dcbody:empty{display:none}
+.albl{font:500 .58rem var(--mono);letter-spacing:.22em;color:var(--dim);margin-bottom:9px;text-transform:uppercase}
+.act{display:flex;gap:12px;align-items:center}
+.aimg{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:none;border:1px solid var(--line)}
+.atx{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.at{font:600 .8rem var(--sans);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as,.as2{font:500 .66rem var(--mono);letter-spacing:.06em;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as2{color:var(--dim)}
+.pb{height:2px;background:var(--line);border-radius:2px;margin-top:6px;overflow:hidden}
+.pb i{display:block;height:100%;width:0;background:#fff}
+.pt{display:flex;justify-content:space-between;font:500 .56rem var(--mono);color:var(--dim);letter-spacing:.08em}
 
 /* ============ GİRİŞ EKRANI ============ */
 #splash{position:fixed;inset:0;z-index:9999;background:#020202;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;
@@ -193,7 +215,8 @@ body.in #dc{transform:translateX(-50%)}
   #tl{top:16px;left:16px;font-size:.62rem;gap:10px}
   #tl i.sep{width:10px}
   #avw{width:84px;height:84px}
-  #dc{top:calc(48% + 78px)}
+  #dc{top:calc(42% + 74px);padding:12px;gap:10px}
+  .aimg{width:48px;height:48px}
   #cc{bottom:22px;gap:16px}
   #pp{width:54px;height:54px}
   .cb{width:42px;height:42px}
@@ -228,8 +251,17 @@ body.in #dc{transform:translateX(-50%)}
 </div>
 
 <div id="dc" class="ui">
-  <div id="dcav"><img id="dcimg" alt=""><i id="dcst"></i></div>
-  <div id="dctx"><span id="dcname"></span><span id="dcact"></span></div>
+  <div id="dch">
+    <div id="dcav"><img id="dcimg" alt=""><img id="dcdeco" alt=""><i id="dcst"></i></div>
+    <div id="dcid">
+      <div id="dcrow"><span id="dcname"></span><span id="dctag"></span></div>
+      <span id="dcuser"></span>
+    </div>
+    <div id="dcplat"></div>
+  </div>
+  <div id="dcbadges"></div>
+  <div id="dccs"></div>
+  <div id="dcbody"></div>
 </div>
 
 <div id="tl" class="ui"><span id="rootname" aria-label="mert"><span class="root-char">m</span><span class="root-char">e</span><span class="root-char">r</span><span class="root-char">t</span></span><i class="sep"></i><span><i class="dot"></i><span id="ping">-- ms</span></span><i class="sep"></i><span id="clock">00:00:00</span></div>
@@ -410,29 +442,110 @@ v.addEventListener('canplay', () => setTimeout(preloadAround, 600));
 /* ============ DISCORD KARTI (Lanyard) ============ */
 /* Lanyard için hesabın discord.gg/lanyard sunucusunda olmalı. */
 const DISCORD_ID = "1089970384889192558";
+const STATUS_TR = {online:'çevrimiçi', idle:'boşta', dnd:'rahatsız etmeyin', offline:'çevrimdışı'};
+const ACT_TR = {0:'oynuyor', 1:'yayında', 2:'dinliyor', 3:'izliyor', 5:'yarışıyor'};
+const BADGES = [[1,'discord staff'],[2,'partner'],[4,'hypesquad events'],[8,'bug hunter'],[64,'bravery'],[128,'brilliance'],[256,'balance'],[512,'early supporter'],[16384,'bug hunter'],[131072,'bot dev'],[4194304,'active developer']];
+const PLAT = {
+  active_on_discord_desktop:['masaüstü','<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>'],
+  active_on_discord_mobile:['mobil','<svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>'],
+  active_on_discord_web:['web','<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>']
+};
+let actState = null;
+const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const p2 = n => String(n).padStart(2,'0');
+const fmt = sec => { sec = Math.max(0, Math.floor(sec)); const h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), x = sec%60; return (h ? h + ':' + p2(m) : m) + ':' + p2(x); };
+function actImg(a){
+  const li = a.assets && a.assets.large_image; if (!li) return null;
+  if (li.startsWith('mp:')) return 'https://media.discordapp.net/' + li.slice(3);
+  if (li.startsWith('spotify:')) return 'https://i.scdn.co/image/' + li.slice(8);
+  return a.application_id ? `https://cdn.discordapp.com/app-assets/${a.application_id}/${li}.png` : null;
+}
+function render(d){
+  const u = d.discord_user, st = d.discord_status || 'offline';
+  $('dcimg').src = u.avatar
+    ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`
+    : `https://cdn.discordapp.com/embed/avatars/${Number((BigInt(u.id) >> 22n) % 6n)}.png`;
+  const deco = u.avatar_decoration_data && u.avatar_decoration_data.asset, dd = $('dcdeco');
+  if (deco){ dd.src = 'https://cdn.discordapp.com/avatar-decoration-presets/' + deco + '.png?size=160'; dd.style.display = 'block'; } else dd.style.display = 'none';
+  $('dcst').className = st;
+  $('dcname').textContent = u.global_name || u.username;
+  const tag = u.primary_guild && u.primary_guild.tag;
+  $('dctag').textContent = tag || ''; $('dctag').style.display = tag ? '' : 'none';
+  $('dcuser').textContent = '@' + u.username;
+
+  const bx = $('dcbadges'); bx.replaceChildren();
+  const seen = new Set();
+  BADGES.forEach(([bit, name]) => { if ((u.public_flags & bit) && !seen.has(name)){ seen.add(name); bx.appendChild(mk('span','chip',name)); } });
+  bx.style.display = bx.children.length ? '' : 'none';
+
+  const pl = $('dcplat'); pl.replaceChildren();
+  Object.keys(PLAT).forEach(k => { if (d[k]){ const el = mk('span','plat'); el.title = PLAT[k][0]; el.innerHTML = PLAT[k][1]; pl.appendChild(el); } });
+
+  /* özel durum */
+  const cs = (d.activities || []).find(x => x.type === 4), cc = $('dccs'); cc.replaceChildren();
+  if (cs && (cs.state || cs.emoji)){
+    if (cs.emoji){
+      if (cs.emoji.id){ const im = mk('img','emo'); im.src = `https://cdn.discordapp.com/emojis/${cs.emoji.id}.${cs.emoji.animated ? 'gif' : 'png'}?size=32`; cc.appendChild(im); }
+      else if (cs.emoji.name) cc.appendChild(mk('span','emo',cs.emoji.name));
+    }
+    if (cs.state) cc.appendChild(mk('span', null, cs.state));
+  } else cc.appendChild(mk('span','dim',STATUS_TR[st] || ''));
+
+  /* aktivite: spotify veya oyun/uygulama */
+  const body = $('dcbody'); body.replaceChildren(); actState = null;
+  if (d.listening_to_spotify && d.spotify){
+    const sp = d.spotify;
+    body.appendChild(mk('div','albl','♪ spotify dinliyor'));
+    const row = mk('div','act');
+    if (sp.album_art_url){ const im = mk('img','aimg'); im.src = sp.album_art_url; row.appendChild(im); }
+    const tx = mk('div','atx');
+    tx.appendChild(mk('b','at',sp.song));
+    tx.appendChild(mk('span','as',String(sp.artist).replace(/;\s*/g, ', ')));
+    if (sp.album) tx.appendChild(mk('span','as2',sp.album));
+    const pb = mk('div','pb'), f = mk('i'); f.id = 'pbf'; pb.appendChild(f); tx.appendChild(pb);
+    const pt = mk('div','pt'), t1 = mk('span', null, '0:00'); t1.id = 'pt1';
+    pt.appendChild(t1); pt.appendChild(mk('span', null, fmt((sp.timestamps.end - sp.timestamps.start)/1000)));
+    tx.appendChild(pt); row.appendChild(tx); body.appendChild(row);
+    actState = {kind:'spotify', start:sp.timestamps.start, end:sp.timestamps.end};
+  } else {
+    const a = (d.activities || []).find(x => [0,1,2,3,5].includes(x.type));
+    if (a){
+      body.appendChild(mk('div','albl',ACT_TR[a.type] || ''));
+      const row = mk('div','act'), img = actImg(a);
+      if (img){ const im = mk('img','aimg'); im.src = img; row.appendChild(im); }
+      const tx = mk('div','atx');
+      tx.appendChild(mk('b','at',a.name));
+      if (a.details) tx.appendChild(mk('span','as',a.details));
+      if (a.state) tx.appendChild(mk('span','as2',a.state));
+      if (a.timestamps && a.timestamps.start){
+        const t1 = mk('span','as2','0:00'); t1.id = 'pt1'; tx.appendChild(t1);
+        actState = {kind:'game', start:a.timestamps.start};
+      }
+      row.appendChild(tx); body.appendChild(row);
+    }
+  }
+  tickAct();
+  $('dc').classList.add('ready');
+}
+function tickAct(){
+  if (!actState) return;
+  const now = Date.now(), t = $('pt1');
+  if (actState.kind === 'spotify'){
+    const dur = actState.end - actState.start, el = Math.min(Math.max(now - actState.start, 0), dur), f = $('pbf');
+    if (f) f.style.width = (el/dur*100) + '%';
+    if (t) t.textContent = fmt(el/1000);
+  } else if (t) t.textContent = fmt((now - actState.start)/1000) + ' geçti';
+}
+setInterval(tickAct, 1000);
 async function discord(){
   if (!/^\d{15,25}$/.test(DISCORD_ID)) return;
   try {
     const r = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_ID, {cache:'no-store'});
     const j = await r.json(); if (!j.success) return;
-    const d = j.data, u = d.discord_user;
-    $('dcimg').src = u.avatar
-      ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`
-      : `https://cdn.discordapp.com/embed/avatars/${(BigInt(u.id) >> 22n) % 6n}.png`;
-    $('dcname').textContent = u.global_name || u.username;
-    $('dcst').className = d.discord_status || 'offline';
-    let line = { online:'çevrimiçi', idle:'boşta', dnd:'rahatsız etme', offline:'çevrimdışı' }[d.discord_status] || '';
-    if (d.listening_to_spotify && d.spotify) line = '♪ ' + d.spotify.song + ' — ' + d.spotify.artist;
-    else {
-      const a = (d.activities || []).find(x => x.type === 0);
-      if (a) line = a.name;
-      else { const c = (d.activities || []).find(x => x.type === 4 && x.state); if (c) line = c.state; }
-    }
-    $('dcact').textContent = line;
-    $('dc').classList.add('ready');
+    render(j.data);
   } catch(e){}
 }
-discord(); setInterval(discord, 20000);
+discord(); setInterval(discord, 12000);
 
 /* ============ SES ============ */
 function setVol(x){
