@@ -114,10 +114,24 @@ body.in #cc{transform:translateX(-50%)}
 #prog{display:none}
 
 /* discord kartı */
-#dc{top:calc(42% + 104px);left:50%;transform:translate(-50%,14px);display:none;flex-direction:column;gap:12px;width:min(330px,90vw);padding:14px;
-  border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#fff}
-body.in #dc{transform:translateX(-50%)}
+#dc{top:calc(42% + 104px);left:50%;display:none;flex-direction:column;gap:12px;width:min(330px,90vw);padding:14px;
+  border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#fff;
+  transform-origin:50% -104px;transform:translate(-50%,-30px) scale(.8);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .3s var(--ease),transform .45s var(--ease),visibility 0s .45s}
+body.in #dc{transform:translate(-50%,-30px) scale(.8);opacity:0}
 #dc.ready{display:flex}
+#dc.open,body.in #dc.open{transform:translate(-50%,0) scale(1);opacity:1;visibility:visible;pointer-events:auto;
+  transition:opacity .45s var(--ease),transform .75s var(--ease),visibility 0s}
+/* içerik sırayla gelir */
+#dc > *{opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s}
+#dc.open > *{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease)}
+#dc.open > :nth-child(1){transition-delay:.12s}
+#dc.open > :nth-child(2){transition-delay:.18s}
+#dc.open > :nth-child(3){transition-delay:.24s}
+#dc.open > :nth-child(4){transition-delay:.3s}
+#avw{pointer-events:auto;cursor:pointer}
+#av{transition:border-color .35s}
+#avw.act #av{border-color:rgba(255,255,255,.6)}
 #dch{display:flex;align-items:center;gap:12px}
 #dcav{position:relative;width:48px;height:48px;flex:none}
 #dcimg{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
@@ -215,7 +229,7 @@ body.in #dc{transform:translateX(-50%)}
   #tl{top:16px;left:16px;font-size:.62rem;gap:10px}
   #tl i.sep{width:10px}
   #avw{width:84px;height:84px}
-  #dc{top:calc(42% + 74px);padding:12px;gap:10px}
+  #dc{top:calc(42% + 74px);padding:12px;gap:10px;transform-origin:50% -74px}
   .aimg{width:48px;height:48px}
   #cc{bottom:22px;gap:16px}
   #pp{width:54px;height:54px}
@@ -546,6 +560,31 @@ async function discord(){
   } catch(e){}
 }
 discord(); setInterval(discord, 12000);
+
+/* ============ KARTI AÇ / KAPA ============ */
+(function(){
+  const dc = $('dc');
+  let t = 0, locked = false;
+  const canHover = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const isOpen = () => dc.classList.contains('open');
+  const set = o => { dc.classList.toggle('open', o); avw.classList.toggle('act', o); };
+  const open = () => { clearTimeout(t); if (dc.classList.contains('ready')) set(true); };
+  const closeLater = () => { clearTimeout(t); t = setTimeout(() => set(false), 220); };
+  if (canHover){
+    [avw, dc].forEach(el => {
+      el.addEventListener('mouseenter', () => { if (!locked) open(); else clearTimeout(t); });
+      el.addEventListener('mouseleave', () => { locked = false; closeLater(); });
+    });
+  }
+  /* tıklayınca aç, tekrar tıklayınca kapa */
+  avw.addEventListener('click', e => {
+    e.stopPropagation(); clearTimeout(t);
+    if (isOpen()){ set(false); locked = true; } else { locked = false; open(); }
+  });
+  dc.addEventListener('click', e => { e.stopPropagation(); clearTimeout(t); set(false); locked = true; });
+  document.addEventListener('click', () => { if (isOpen()) set(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+})();
 
 /* ============ SES ============ */
 function setVol(x){
