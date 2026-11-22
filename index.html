@@ -119,7 +119,7 @@ body.in #cc{transform:translateX(-50%)}
   transform-origin:50% -104px;transform:translate(-50%,-30px) scale(.8);opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .3s var(--ease),transform .45s var(--ease),visibility 0s .45s}
 body.in #dc{transform:translate(-50%,-30px) scale(.8);opacity:0}
-#dc.ready{display:flex}
+#dc.ready{display:flex;z-index:120}
 #dc.open,body.in #dc.open{transform:translate(-50%,0) scale(1);opacity:1;visibility:visible;pointer-events:auto;
   transition:opacity .45s var(--ease),transform .75s var(--ease),visibility 0s}
 /* içerik sırayla gelir */
@@ -222,7 +222,7 @@ body.in #dc{transform:translate(-50%,-30px) scale(.8);opacity:0}
 @media(prefers-reduced-motion:reduce){.dot,.blob,.scn{animation:none}}
 
 @media(hover:none){
-  .sp,.sx{opacity:.38;pointer-events:auto;transform:none}
+  .sp,.sx{opacity:0!important;pointer-events:none!important}
 }
 
 @media(max-width:768px){
@@ -234,12 +234,24 @@ body.in #dc{transform:translate(-50%,-30px) scale(.8);opacity:0}
   #cc{bottom:22px;gap:16px}
   #pp{width:54px;height:54px}
   .cb{width:42px;height:42px}
-  .sc{font-size:.92rem}
-  #bl{left:16px;bottom:140px}
-  #pick{min-width:120px}
-  #list{width:180px;max-height:200px}
-  #br{right:16px;bottom:140px;gap:12px}
+  .sc{font-size:.92rem;letter-spacing:.14em}
+  #bl{left:16px;top:54px;bottom:auto}
+  #pick{min-width:120px;padding:8px 0}
+  #list{top:calc(100% + 8px);bottom:auto;width:190px;max-height:min(260px,50vh);transform:translateY(-8px);transform-origin:top left}
+  #br{right:16px;top:50px;bottom:auto;gap:12px}
+  #mute{width:34px;height:34px}
   #vol{width:70px}
+}
+@media(max-height:520px){
+  #cc{bottom:10px;gap:10px}
+  #num{display:none}
+  #ttl{gap:8px}
+  #avw{width:60px;height:60px}
+  #dc{top:calc(42% + 56px);transform-origin:50% -56px}
+  #pp{width:44px;height:44px}
+  .cb{width:38px;height:38px}
+  #bl{bottom:auto;top:50px}
+  #br{bottom:auto;top:46px}
 }
 </style>
 </head>
