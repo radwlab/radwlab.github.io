@@ -50,6 +50,12 @@ body.pr #card{opacity:1;visibility:visible;transform:none;transition:opacity .3s
 .cr b{font:600 .8rem var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cr span{font:500 .66rem var(--mono);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+/* avatar */
+#av{position:fixed;z-index:5;left:50%;top:50%;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;overflow:hidden;border:1px solid rgba(255,255,255,.26);box-shadow:0 14px 40px rgba(0,0,0,.5);will-change:transform;pointer-events:none;opacity:0;transition:opacity 1.2s .7s ease}
+body.in #av{opacity:1}
+#av img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:768px){#av{width:104px;height:104px;margin:-52px 0 0 -52px}}
+
 /* oynat + ses */
 #dock{position:fixed;z-index:10;left:50%;bottom:calc(26px + var(--sb));transform:translate(-50%,10px);display:flex;align-items:center;gap:12px;padding:8px;border-radius:99px;background:rgba(10,10,10,.55);border:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 body.in #dock{transform:translateX(-50%)}
@@ -99,6 +105,7 @@ body.in #dock{transform:translateX(-50%)}
 
 <video id="bg" loop playsinline webkit-playsinline preload="auto" muted></video>
 <div class="shade"></div>
+<div id="av"><img src="mert.png" alt=""></div>
 
 <button id="pres" class="ui" aria-label="discord"><i class="dot" id="dot" data-s="offline"></i><span id="pt">discord</span></button>
 
@@ -141,9 +148,20 @@ setVol(.5);setPP(false);
 function start(){
   if(started)return;started=true;
   $('splash').classList.add('out');B.classList.add('in');
+  initAudio();if(actx&&actx.state==='suspended')actx.resume();
   v.currentTime=0;v.muted=+$('vs').value===0;v.volume=+$('vs').value;
   v.play().then(()=>setPP(true)).catch(()=>{v.muted=true;v.play().catch(()=>{});setPP(true)});
 }
+let actx,an,buf,lvl=0;
+function initAudio(){if(actx)return;try{actx=new(window.AudioContext||window.webkitAudioContext)();an=actx.createAnalyser();an.fftSize=256;an.smoothingTimeConstant=.55;const s=actx.createMediaElementSource(v);s.connect(an);an.connect(actx.destination);buf=new Uint8Array(an.frequencyBinCount)}catch(e){}}
+(function f(){
+  requestAnimationFrame(f);
+  let t=0;if(started&&!v.paused&&buf&&!v.muted){an.getByteFrequencyData(buf);let b=0;for(let i=0;i<4;i++)b+=buf[i];t=Math.pow(b/4/255,1.8)*1.4}
+  lvl+=(t-lvl)*(t>lvl?.7:.18);
+  const idle=(.5+.5*Math.sin(performance.now()/1000))*.012,a=$('av');
+  a.style.transform=`scale(${1+lvl*.3+idle})`;
+  a.style.boxShadow=`0 14px 40px rgba(0,0,0,.5),0 0 ${lvl*30}px rgba(255,255,255,${Math.min(lvl*.25,.35)})`;
+})();
 $('enter').onclick=start;
 addEventListener('keydown',e=>{
   if(!started){if(e.key==='Enter')start();return}
